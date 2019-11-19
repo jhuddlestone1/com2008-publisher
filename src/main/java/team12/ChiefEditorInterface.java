@@ -2,19 +2,19 @@ package team12;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
-public class EditorInterface extends JFrame {
+public class ChiefEditorInterface extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -27,7 +27,7 @@ public class EditorInterface extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditorInterface frame = new EditorInterface();
+					ChiefEditorInterface frame = new ChiefEditorInterface();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,7 @@ public class EditorInterface extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditorInterface() {
+	public ChiefEditorInterface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 925, 592);
 		contentPane = new JPanel();
@@ -69,7 +69,8 @@ public class EditorInterface extends JFrame {
 		tabbedPane.addTab("New tab", null, panel, null);
 		panel.setLayout(null);
 		
-		String actions[] = {"See articles","Retire"};
+		String actions[] = {"Publish","Retire","Register","Pass role","See roles"};
+		
 		
 		txtArticle = new JTextField();
 		txtArticle.setHorizontalAlignment(SwingConstants.CENTER);
