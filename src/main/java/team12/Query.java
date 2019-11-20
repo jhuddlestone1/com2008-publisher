@@ -11,7 +11,7 @@ public class Query {
             "team012",
             "8d470425"
         )) {
-            //System.out.println("Hello");
+            System.out.println("Hello");
             PreparedStatement ps = conn.prepareStatement(query);
             for (int i = 0; i < vars.length ; i++) {
                 ps.setString(i+1, vars[i]);
