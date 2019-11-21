@@ -2,9 +2,30 @@
 import java.sql.*;
 import java.util.*;
 
-public class Query {
+public class Database {
 
-	public static ResultSet execute(String query, String[] vars) {
+	public static int update(String query, String[] vars) {
+		int rs = null;
+		try (Connection conn = DriverManager.getConnection(
+			"jdbc:mysql://stusql.dcs.shef.ac.uk/team012",
+			"team012",
+			"8d470425"
+		)) {
+			//System.out.println(conn);
+			PreparedStatement ps = conn.prepareStatement(query);
+			for (int i = 0; i < vars.length ; i++) {
+				ps.setString(i+1, vars[i]);
+			}
+			rs = ps.executeUpdate();
+			ps.close();
+		}
+		catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return rs;
+	}
+
+	public static ResultSet query(String query, String[] vars) {
 		ResultSet rs = null;
 		try (Connection conn = DriverManager.getConnection(
 			"jdbc:mysql://stusql.dcs.shef.ac.uk/team012",
