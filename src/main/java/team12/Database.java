@@ -5,7 +5,7 @@ import java.util.*;
 public class Database {
 
 	public static int update(String query, String[] vars) {
-		int rs = null;
+		int rs = 0;
 		try (Connection conn = DriverManager.getConnection(
 			"jdbc:mysql://stusql.dcs.shef.ac.uk/team012",
 			"team012",
