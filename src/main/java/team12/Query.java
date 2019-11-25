@@ -1,11 +1,13 @@
 //import com.mysql.cj.jdbc.Driver;
+//package team12;
 import java.sql.*;
 import java.util.*;
 
 public class Query {
     
-	public static ResultSet execute(String query, String[] vars) {
+	public static void execute(String query, String[] vars) {
         ResultSet rs = null;
+        int count;
         try (Connection conn = DriverManager.getConnection(
             "jdbc:mysql://stusql.dcs.shef.ac.uk/team012",
             "team012",
@@ -16,24 +18,34 @@ public class Query {
             for (int i = 0; i < vars.length ; i++) {
                 ps.setString(i+1, vars[i]);
             }
-            rs = ps.executeQuery();
+            if (ps.execute()){
+                rs = ps.getResultSet();               
+                ResultSetMetaData rsmt = rs.getMetaData();
+                int col = rsmt.getColumnCount();
+                while (rs.next()){
+                    for (int x=1; x<=col ; x++){
+                        System.out.print(rs.getObject(x) + " | ");
+                    }
+                    System.out.println();
+                }
+            }
+            else {
+                count = ps.getUpdateCount();
+                System.out.println(count);
+            };
             ps.close();
         }
         catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return rs;
     }
     
     public static void main(String[] args) {
         String query = args[0];
         String[] vars = new String[args.length - 1];
-        System.out.println(query);
         for (int a = 0; a < args.length - 1; a++) {
             vars[a] = args[a+1];
-            //System.out.println(vars[a]);
         }
-        ResultSet result = execute(query, vars);
-        //System.out.println(result);
+        Query.execute(query, vars);
     }
 }
