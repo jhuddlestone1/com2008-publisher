@@ -1,0 +1,3 @@
+#!bash
+cd "src/main/java"
+ls -al $1
