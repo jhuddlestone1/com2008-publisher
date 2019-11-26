@@ -20,11 +20,12 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 
+
 public class DefaultPage extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField textField;
-	private JPasswordField passwordField;
+	public JPanel contentPane;
+	public JTextField textField;
+	public JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -99,6 +100,8 @@ public class DefaultPage extends JFrame {
 		panel_1.add(btnNewButton);
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
 		
+		btnNewButton.addActionListener(new ActionHandlers.logInListener(textField,passwordField));
+		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		
@@ -108,13 +111,19 @@ public class DefaultPage extends JFrame {
 		btnSubmitArticle.setHorizontalAlignment(SwingConstants.LEADING);
 		panel_2.add(btnSubmitArticle);
 		
+		btnSubmitArticle.addActionListener(new ActionHandlers.SubmitArticle());
+		
 		JButton btnImAReader = new JButton("I'm a reader");
 		btnImAReader.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		panel_2.add(btnImAReader);
 		
+		btnImAReader.addActionListener(new ActionHandlers.Reader());
+		
 		JButton btnRegisterJournal = new JButton("Register journal");
 		btnRegisterJournal.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		panel_2.add(btnRegisterJournal);
+		
+		btnRegisterJournal.addActionListener(new ActionHandlers.RegisterJournal());
 	}
 
 }

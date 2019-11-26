@@ -51,6 +51,7 @@ public class Reviewer1Interface extends JFrame {
 		JButton btnChangeDetails = new JButton("Change details");
 		btnChangeDetails.setBounds(43, 27, 167, 52);
 		contentPane.add(btnChangeDetails);
+		btnChangeDetails.addActionListener(new ActionHandlers.ChangeDetails());
 		
 		String journals[] = {"Journal1","Journal2","Journal3"};
 		
@@ -92,6 +93,7 @@ public class Reviewer1Interface extends JFrame {
 		JButton btnGoBack = new JButton("Go back");
 		btnGoBack.setBounds(743, 39, 115, 29);
 		contentPane.add(btnGoBack);
+		btnGoBack.addActionListener(new ActionHandlers.ChangeRole());
 		
 		String actions[] = {"See articles","Retire"};
 	}

@@ -51,6 +51,7 @@ public class ChiefEditorInterface extends JFrame {
 		JButton btnChangeDetails = new JButton("Change details");
 		btnChangeDetails.setBounds(43, 27, 167, 52);
 		contentPane.add(btnChangeDetails);
+		btnChangeDetails.addActionListener(new ActionHandlers.ChangeDetails());
 		
 		String journals[] = {"Journal1","Journal2","Journal3"};
 		JComboBox comboBox = new JComboBox(journals);
@@ -91,5 +92,6 @@ public class ChiefEditorInterface extends JFrame {
 		JButton btnGoBack = new JButton("Go back");
 		btnGoBack.setBounds(735, 27, 115, 29);
 		contentPane.add(btnGoBack);
+		btnGoBack.addActionListener(new ActionHandlers.ChangeRole());
 	}
 }

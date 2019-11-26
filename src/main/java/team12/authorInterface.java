@@ -85,9 +85,13 @@ public class authorInterface extends JFrame {
 		btnNewButton.setBounds(37, 37, 201, 48);
 		contentPane.add(btnNewButton);
 		
+		btnNewButton.addActionListener(new ActionHandlers.ChangeDetails());
+		
 		JButton btnSubmitArticle = new JButton("Submit article");
 		btnSubmitArticle.setBounds(717, 37, 201, 48);
 		contentPane.add(btnSubmitArticle);
+		
+		btnSubmitArticle.addActionListener(new ActionHandlers.SubmitArticle());
 		
 		String articles[] = {"Article1","Article2","Article3"};
 		JComboBox comboBox = new JComboBox(articles);

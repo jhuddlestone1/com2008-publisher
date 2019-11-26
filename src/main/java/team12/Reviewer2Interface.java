@@ -51,6 +51,7 @@ public class Reviewer2Interface extends JFrame {
 		JButton btnNewButton = new JButton("Change details");
 		btnNewButton.setBounds(37, 37, 201, 48);
 		contentPane.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionHandlers.ChangeDetails());
 		
 		String articles[] = {"Article1","Article2","Article3"};
 		JComboBox comboBox = new JComboBox(articles);
@@ -65,6 +66,7 @@ public class Reviewer2Interface extends JFrame {
 		JButton btnGoBack = new JButton("Go back");
 		btnGoBack.setBounds(782, 22, 115, 29);
 		contentPane.add(btnGoBack);
+		btnGoBack.addActionListener(new ActionHandlers.ChangeRole());
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(42, 154, 855, 372);
