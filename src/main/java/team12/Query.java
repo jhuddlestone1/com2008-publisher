@@ -1,11 +1,11 @@
 //import com.mysql.cj.jdbc.Driver;
-//package team12;
+package team12;
 import java.sql.*;
 import java.util.*;
 
 public class Query {
     
-	public static List<List<Object>> execute(String query, String[] vars) {
+	public static List<List<Object>> execute(String query, Object[] vars) {
         ResultSet rs = null;
         List<List<Object>> table = new ArrayList<>();
         
@@ -16,7 +16,7 @@ public class Query {
         )) {
             PreparedStatement ps = conn.prepareStatement(query);
             for (int i = 0; i < vars.length ; i++) {
-                ps.setString(i+1, vars[i]); 
+                ps.setObject(i+1, vars[i]); 
             }
             if (ps.execute()){
                 rs = ps.getResultSet(); 
