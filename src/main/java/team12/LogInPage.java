@@ -81,6 +81,7 @@ public LogInPage() {
 	JButton btnLogOut = new JButton("Log out");
 	btnLogOut.setFont(new Font("Tahoma", Font.PLAIN, 24));
 	panel_2.add(btnLogOut);
+	btnLogOut.addActionListener(new ActionHandlers.LogOut());
 }
 
 }
