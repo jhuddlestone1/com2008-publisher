@@ -100,12 +100,5 @@ public class UserController {
         Query.execute(query,vars);
     }
 
-    public static Object[][] getArticles() {
-        String query = "SELECT * FROM Submission";
-        Object[] vars = new Object[0];
-        Object[][] result = Query.formTable(query,vars);
-        return result;
-    }
-
     public static void main(String[]args) {}
 } 

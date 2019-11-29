@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 
-public class ChangeDetails extends JFrame {
+public class Register extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -29,7 +29,7 @@ public class ChangeDetails extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ChangeDetails frame = new ChangeDetails();
+					Register frame = new Register();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,7 +41,7 @@ public class ChangeDetails extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ChangeDetails() {
+	public Register() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 836, 538);
 		contentPane = new JPanel();
@@ -49,9 +49,9 @@ public class ChangeDetails extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Edit details:");
+		JLabel lblNewLabel = new JLabel("Registration form:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 40));
-		lblNewLabel.setBounds(301, 32, 262, 53);
+		lblNewLabel.setBounds(241, 32, 320, 53);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblEmail = new JLabel("Forenames:");
@@ -122,7 +122,7 @@ public class ChangeDetails extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.setBounds(640, 399, 115, 29);
 		contentPane.add(btnSubmit);
-		btnSubmit.addActionListener(new ActionHandlers.SubmitUpdatedDetails(textField, textField_1,
+		btnSubmit.addActionListener(new ActionHandlers.SubmitNewDetails(textField, textField_1,
 									 textField_2, textField_3, textField_4, passwordField));
 	}
 }

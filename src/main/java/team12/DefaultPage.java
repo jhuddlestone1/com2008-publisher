@@ -1,4 +1,4 @@
-//package team12;
+package team12;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -100,7 +100,7 @@ public class DefaultPage extends JFrame {
 		panel_1.add(btnNewButton);
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
 		
-		//btnNewButton.addActionListener(new ActionHandlers.logInListener(textField,passwordField));
+		btnNewButton.addActionListener(new ActionHandlers.logInListener(textField,passwordField));
 		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
@@ -124,10 +124,6 @@ public class DefaultPage extends JFrame {
 		panel_2.add(btnRegisterJournal);
 		
 		btnRegisterJournal.addActionListener(new ActionHandlers.RegisterJournal());
-
-		JButton btnTest = new JButton("Test");
-		panel_2.add(btnTest);
-		btnTest.addMouseListener(new ActionHandlers.Hover());
 	}
 
 }
