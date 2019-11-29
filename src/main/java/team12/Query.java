@@ -45,6 +45,23 @@ public class Query {
         return table;
     }
     
+    public static Object[][] formTable(String query, Object[] vars){
+        List<List<Object>> table = new ArrayList<>(Query.execute(query,vars));
+        Object[][] result;
+        if (!table.isEmpty()){
+            result = new Object[table.size()][table.get(0).size()];
+            for (int x=0; x<table.size(); x++){
+                for (int y=0; y<table.get(0).size(); y++){
+                result[x][y] = table.get(x).get(y);
+                }
+            }
+        }
+        else {
+            result = new Object[0][0];
+        }
+        return result;
+    }
+    
     public static void main(String[] args) {
         String query = args[0];
         String[] vars = new String[args.length - 1];
