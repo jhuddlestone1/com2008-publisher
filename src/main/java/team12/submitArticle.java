@@ -2,9 +2,10 @@ package team12;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -18,7 +19,7 @@ public class submitArticle extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextArea textField_4;
 
 	/**
 	 * Launch the application.
@@ -86,19 +87,27 @@ public class submitArticle extends JFrame {
 		textField_2.setBounds(294, 340, 146, 26);
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
-		
-		JButton btnAdd = new JButton("add:");
-		btnAdd.setBounds(63, 452, 115, 29);
-		contentPane.add(btnAdd);
-		
+				
 		textField_3 = new JTextField();
 		textField_3.setBounds(294, 418, 358, 26);
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
 		
-		textField_4 = new JTextField();
+		textField_4 = new JTextArea();
 		textField_4.setColumns(10);
 		textField_4.setBounds(294, 453, 358, 107);
 		contentPane.add(textField_4);
+
+		JButton btnAdd = new JButton("add:");
+		btnAdd.setBounds(63, 452, 115, 29);
+		contentPane.add(btnAdd);
+		btnAdd.addActionListener(new ActionHandlers.AddCoauthor(textField_3, textField_4));		
+		
+		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.setBounds(780, 499, 115, 29);
+		contentPane.add(btnSubmit);	
+		btnSubmit.addActionListener(new ActionHandlers.AddArticle(textField, textField_1,
+				 textField_2, textField_3, textField_4));		
+		
 	}
 }
