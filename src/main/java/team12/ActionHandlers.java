@@ -255,16 +255,6 @@ public static class AddCoauthor implements ActionListener {
 	}
 }	
 	
-<<<<<<< HEAD
-	public static class Hover implements MouseListener { 
-
-		public void mouseEntered(MouseEvent e) { 
-			Object[][] vars = UserController.getArticles(); 
-		
-			for (Object[] var: vars) { 
-				String summary = (String) var[2];
-				System.out.println(summary);
-=======
 public static class AddArticle implements ActionListener {
 	
 	JTextField abstractField;
@@ -298,7 +288,6 @@ public static class AddArticle implements ActionListener {
 					System.out.println(coauthor);
 					//Controller.addArticle(title,abs,pdf,coauthor)
 				}
->>>>>>> fa4a4ac974ba0f5617be8963b71dc34fe8f03d55
 			}
 			JOptionPane.showMessageDialog(src(e).getParent(), "Yay!", "Yay", JOptionPane.INFORMATION_MESSAGE);
 			//Controller.addArticle(title,abs,pdf,mainauthorusrname)
