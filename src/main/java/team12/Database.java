@@ -54,7 +54,7 @@ public class Database {
 			vars[a] = args[a+1];
 			//System.out.println(vars[a]);
 		}
-		ResultSet result = execute(query, vars);
+		ResultSet result = Database.query(query, vars);
 		//System.out.println(result);
 	}
 }
