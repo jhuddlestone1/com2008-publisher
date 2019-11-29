@@ -35,20 +35,19 @@ public class Controller {
         Query.execute(query,vars);
     }
 
-    // check if email exist - applied in validateUser
-    // separate them for different output to user? e.g. "invalid email" || "wrong password"
-    // public static Boolean validateEmail(String email){
-    //     String query = "SELECT * FROM UserLogin WHERE email=?";
-    //     Object[] vars = {email};      
-    //     if (Query.execute(query,vars).isEmpty()) {
-    //         return false;
-    //     }
-    //     else {
-    //         return true;
-    //     }
-    // }
+    //check if email exist -  return "invalid email if false"
+    public static Boolean validateEmail(String email){
+        String query = "SELECT * FROM UserLogin WHERE email=?";
+        Object[] vars = {email};      
+        if (Query.execute(query,vars).isEmpty()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
-    //check if email and password is valid
+    //check if email and password is valid - return "incorrect password"
     public static Boolean validateUser(String email, String password){
         String query = "SELECT password FROM UserLogin WHERE email=?";
         Object[] vars = {email};
