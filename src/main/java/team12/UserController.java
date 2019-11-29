@@ -45,6 +45,13 @@ public class UserController {
         }
     }
 
+    public static int getUserID(String email){
+        String query = "SELECT userID FROM UserDetails WHERE email=?";
+        Object[] vars = {email};
+        int userID = (Integer) Query.execute(query,vars).get(0).get(0);
+        return userID;
+    }
+
     //check if email and password is valid - return "incorrect password"
     public static Boolean validateUser(String email, String password){
         String query = "SELECT password FROM UserLogin WHERE email=?";

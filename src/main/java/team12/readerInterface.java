@@ -2,18 +2,11 @@ package team12;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JRadioButton;
-import javax.swing.JTextPane;
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
-public class readerInterface extends JFrame {
+public class ReaderInterface extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -25,7 +18,7 @@ public class readerInterface extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					readerInterface frame = new readerInterface();
+					ReaderInterface frame = new ReaderInterface();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +30,7 @@ public class readerInterface extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public readerInterface() {
+	public ReaderInterface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 996, 667);
 		contentPane = new JPanel();

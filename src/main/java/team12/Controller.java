@@ -232,7 +232,7 @@ public class Controller {
     }
 
     public static void addReview(String title, String summay, String typoList, String verdict, int submissionID, int reviewerID){
-        String query = "INSERT INTO Review(title,summary,typoList,verdict,submissionID,reviewerID) VALUES(?,?,?,?,?)";
+        String query = "INSERT INTO Review(title,summary,typoList,verdict,submissionID,reviewerID) VALUES(?,?,?,?,?,?)";
         Object[] vars = {title,summay,typoList,verdict,submissionID,reviewerID};
         Query.execute(query,vars);
     }
