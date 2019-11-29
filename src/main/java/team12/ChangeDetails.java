@@ -1,8 +1,8 @@
 package team12;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -118,11 +118,5 @@ public class ChangeDetails extends JFrame {
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		passwordField.setBounds(239, 361, 186, 26);
 		contentPane.add(passwordField);
-		
-		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setBounds(640, 399, 115, 29);
-		contentPane.add(btnSubmit);
-		btnSubmit.addActionListener(new ActionHandlers.SubmitUpdatedDetails(textField, textField_1,
-									 textField_2, textField_3, textField_4, passwordField));
 	}
 }

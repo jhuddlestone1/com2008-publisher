@@ -62,21 +62,32 @@ public class ChiefEditorInterface extends JFrame {
 		lblChooseJournal.setBounds(377, 27, 160, 20);
 		contentPane.add(lblChooseJournal);
 		
-		String actions[] = {"Publish","Retire","Register","Pass role","See roles"};
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(43, 113, 807, 385);
+		contentPane.add(tabbedPane);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(15, 155, 832, 342);
-		contentPane.add(panel);
+		tabbedPane.addTab("New tab", null, panel, null);
 		panel.setLayout(null);
 		
+		String actions[] = {"Publish","Retire","Register","Pass role","See roles"};
+		
+		
+		txtArticle = new JTextField();
+		txtArticle.setHorizontalAlignment(SwingConstants.CENTER);
+		txtArticle.setText("article1");
+		txtArticle.setBounds(63, 143, 692, 26);
+		panel.add(txtArticle);
+		txtArticle.setColumns(10);
+		JComboBox comboBox_1 = new JComboBox(actions);
+		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		comboBox_1.setBounds(307, 27, 185, 38);
+		panel.add(comboBox_1);
+		
 		textField = new JTextField();
-		textField.setBounds(15, 52, 802, 290);
+		textField.setBounds(28, 100, 759, 235);
 		panel.add(textField);
 		textField.setColumns(10);
-		JComboBox comboBox_1 = new JComboBox(actions);
-		comboBox_1.setBounds(337, 0, 185, 38);
-		panel.add(comboBox_1);
-		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));		
 		
 		JButton btnGoBack = new JButton("Go back");
 		btnGoBack.setBounds(735, 27, 115, 29);

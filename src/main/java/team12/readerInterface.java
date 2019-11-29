@@ -1,13 +1,15 @@
 //package team12;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Font;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class readerInterface extends JFrame {
+public class ReaderInterface extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField search;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -16,7 +18,7 @@ public class readerInterface extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					readerInterface frame = new readerInterface();
+					ReaderInterface frame = new ReaderInterface();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -28,7 +30,7 @@ public class readerInterface extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public readerInterface() {
+	public ReaderInterface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 996, 667);
 		contentPane = new JPanel();
@@ -51,46 +53,38 @@ public class readerInterface extends JFrame {
 		rdbtnJournal.setBounds(63, 102, 155, 29);
 		contentPane.add(rdbtnJournal);
 		
-		ButtonGroup group = new ButtonGroup();
-		group.add(rdbtnArticle);
-		group.add(rdbtnJournal);
-		
-		JTextField search = new JTextField();
-		search.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		search.setBounds(278, 67, 464, 64);
-		contentPane.add(search);
+		JTextPane textPane = new JTextPane();
+		textPane.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		textPane.setBounds(278, 67, 464, 64);
+		contentPane.add(textPane);
 		
 		JButton btnSearch = new JButton("search");
 		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnSearch.setBounds(798, 102, 115, 29);
 		contentPane.add(btnSearch);
 		
-		JButton btnGoBack = new JButton("Log in");
+		JButton btnGoBack = new JButton("Go back");
 		btnGoBack.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnGoBack.setBounds(844, 17, 115, 29);
 		contentPane.add(btnGoBack);
-		btnGoBack.addActionListener(new ActionHandlers.GoToLogIn());
 		
-		JTextPane articles = new JTextPane();
-		articles.setBounds(25, 249, 451, 346);
-		contentPane.add(articles);
+		JTextPane textPane_1 = new JTextPane();
+		textPane_1.setBounds(25, 249, 451, 346);
+		contentPane.add(textPane_1);
 		
 		JLabel lblResults = new JLabel("Results:");
 		lblResults.setFont(new Font("Tahoma", Font.ITALIC, 22));
 		lblResults.setBounds(25, 209, 155, 35);
 		contentPane.add(lblResults);
 		
-		JTextPane abstr = new JTextPane();
-		abstr.setBounds(511, 249, 448, 346);
-		contentPane.add(abstr);
-
+		textField = new JTextField();
+		textField.setBounds(511, 249, 448, 346);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
 		JLabel lblSelectedAbstract = new JLabel("Selected abstract:");
 		lblSelectedAbstract.setFont(new Font("Tahoma", Font.ITALIC, 22));
 		lblSelectedAbstract.setBounds(511, 209, 251, 35);
 		contentPane.add(lblSelectedAbstract);
-	
-		btnSearch.addActionListener(new ActionHandlers.FindArticles(rdbtnJournal, rdbtnArticle,
-																	 search, articles, abstr));	
-	
 	}
 }
