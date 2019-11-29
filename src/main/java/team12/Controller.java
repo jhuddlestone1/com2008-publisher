@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.sql.*;
 
 public class Controller {
 
@@ -12,23 +13,26 @@ public class Controller {
     //insert new user information into tables UserLogin and UserDetails
     public static void addUser(String email, String password, String title, String forename, String surname, String uniAffiliation){
         //insert into table UserDetails
-        String query = "INSERT INTO UserDetails(title,forename,surname,uniAffiliation,email) VALUES(?,?,?,?,?)";
-        Object[] vars = {title,forename,surname,uniAffiliation,email};
-        Query.execute(query,vars); //execute this first to get the auto incremented userID, to be put into UserLogin
+        String query = "SELECT * FROM UserDetails WHERE email=?";
+        Object[] vars = {email};
+        if (Query.execute(query,vars).isEmpty()){
+            String query1 = "INSERT INTO UserDetails(title,forename,surname,uniAffiliation,email) VALUES(?,?,?,?,?)";
+            Object[] vars1 = {title,forename,surname,uniAffiliation,email};
+            Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
 
-        //insert into table UserLogin
-        //method1 - safer practice
-        String queryU = "SELECT userID FROM UserDetails WHERE email=?";
-        Object[] varsU = {email};
-        Object[][] result = Query.formTable(queryU,varsU);
-        String query2 = "INSERT INTO UserLogin(email,password,userID) VALUES(?,?,?)";
-        Object[] vars2 = {email,password,result[0][0]};
-        Query.execute(query2, vars2);
-        // method2 - more efficient but might produce bug when table have same email in different rows (which is not supposed to happen?)
-        // and also practice - VALUES and SELECT shouldn't exist together
-        // String query2 = "INSERT INTO UserLogin(email,password,userID) VALUES(?,?,(SELECT userID FROM UserDetails WHERE email=?))";
-        // Object[] vars2 = {email,password,email};
-        // Query.execute(query2, vars2);
+            String query2 = "INSERT INTO UserLogin(email,password,userID) VALUES(?,?,(SELECT userID FROM UserDetails WHERE email=?))";
+            Object[] vars2 = {email,password,email};
+            Query.execute(query2, vars2);
+        }
+        else {System.out.println("user existed");}
+    }
+
+    //change user password in tatble UserLogin
+    //input email and new password
+    public static void updatePassword(String email, String password){
+        String query = "UPDATE UserLogin SET password=? WHERE email=?";
+        Object[] vars = {password, email};
+        Query.execute(query,vars);
     }
 
     // check if email exist - applied in validateUser
@@ -85,6 +89,13 @@ public class Controller {
         return result;
     }
 
+    //delete user from tables UserLogin and UserDetails
+    public static void deleteUser(String email){
+        String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";
+        Object[] vars = {email};
+        Query.execute(query,vars);
+    }
+    
     //Journals
 
     //add journal into table Journal
@@ -97,7 +108,7 @@ public class Controller {
     //return list of journals in a 2d array 
     //[[ISSN | journalTitle | chiefEditorID]]
     public static Object[][] getJournals(int editorID){
-        String query = "SELECT * FROM Journal WHERE ISSN = (SELECT ISSN FROM JournalEditors WHERE editorID=?)";
+        String query = "SELECT * FROM Journal WHERE ISSN IN (SELECT ISSN FROM JournalEditors WHERE editorID=?)";
         Object[] vars = {editorID};
         Object[][] result = Query.formTable(query,vars);
         return result;
@@ -156,7 +167,7 @@ public class Controller {
     //same problem as addUser - two methods available
     public static void addEditors(int ISSN, String[] emails){
         String query = "INSERT INTO JournalEditors(ISSN,editorID) SELECT ISSN,userID FROM Journal,UserDetails WHERE ISSN=? and email=?";
-        for (String email : emails){ 
+        for (String email : emails){
             Object[] vars = {ISSN, email};
             Query.execute(query,vars);
         }
@@ -199,30 +210,34 @@ public class Controller {
         Query.execute(query,vars);
     }
 
-    public static String[] getSubmissions(int authorID){
-        String query = "SELECT * FROM Submission s JOIN SubmissionAuthors sa ON s.submissionID = sa.submissionID WHERE authorID =?";
+    public static Object[][] getSubmissions(int authorID){
+        String query = "SELECT * FROM Submission WHERE submissionID IN (SELECT submissionID FROM SubmissionAuthors WHERE authorID=?)";
         Object[] vars = {authorID};
-        List<List<Object>> table = new ArrayList<>(Query.execute(query,vars));
-        int row = table.size();
-        String[] articles = new String[row];
-        for (int x=0;x<row;x++){
-            articles[x] = (String) table.get(x).get(0);
-        }
-        return articles;
+        Object[][] result = Query.formTable(query,vars);
+        return result;
     }
 
     public static void addAuthors(int submissionID, String[] emails){
-        String query = "INSERT INTO SubmissionAuthors(submissionID,authorID) SELECT submissionID,userID FROM Submission,UserDetails WHERE submissionID = ? and email =?";
+        String query = "INSERT INTO SubmissionAuthors(submissionID,authorID) SELECT submissionID,userID FROM Submission,UserDetails WHERE submissionID=? and email=?";
         for (String email : emails){
             Object[] vars = {submissionID,email};
             Query.execute(query,vars);
         }
     }
 
+    public static Object[][] getAuthors(int submissionID){
+        String query = "SELECT * FROM UserDetails WHERE userID IN (SELECT authorID FROM SubmissionAuthors WHERE submissionID=?)";
+        Object[] vars = {submissionID};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+
     public static void main(String[] args){
-        Object[][] es = getEditions(1);
-        for (Object[] e : es){
-            System.out.println(Arrays.toString(e));
-        }
+        //String[] user = {"eskchieng1@sheffield.ac.uk"};
+        addUser("dami@hotmail.com","1","ads","asdf","asdf","asd");
+        // Object[][] es = getAuthors(1);
+        // for (Object[] e : es){
+        //     System.out.println(Arrays.toString(e));
+        // }
     }
 }
