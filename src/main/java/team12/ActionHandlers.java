@@ -85,8 +85,8 @@ public class ActionHandlers {
 		public void mouseEntered(MouseEvent e) { 
 			Object[][] vars = UserController.getArticles(); 
 		
-			for (String var: vars) { 
-				String summary = var[2];
+			for (Object[] var: vars) { 
+				String summary = (String) var[2];
 				System.out.println(summary);
 			}
 		}

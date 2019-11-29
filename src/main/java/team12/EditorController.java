@@ -8,8 +8,6 @@ import java.sql.*;
 
 public class EditorController {
 
-    //journal
-
       //add journal into table Journal
       public static void addJournal(int ISSN, String journalTitle, int chiefEditorID){
         String query = "INSERT INTO Journal(ISSN, journalTitle, chiefEditorID) VALUES(?,?,?)";

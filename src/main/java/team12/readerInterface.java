@@ -1,4 +1,4 @@
-package team12;
+//package team12;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
