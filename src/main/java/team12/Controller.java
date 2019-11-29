@@ -231,6 +231,12 @@ public class Controller {
         return result;
     }
 
+    public static void addReview(String title, String summay, String typoList, String verdict, int submissionID, int reviewerID){
+        String query = "INSERT INTO Review(title,summary,typoList,verdict,submissionID,reviewerID) VALUES(?,?,?,?,?)";
+        Object[] vars = {title,summay,typoList,verdict,submissionID,reviewerID};
+        Query.execute(query,vars);
+    }
+
     public static void main(String[] args){
         //String[] user = {"eskchieng1@sheffield.ac.uk"};
         addUser("dami@hotmail.com","1","ads","asdf","asdf","asd");
