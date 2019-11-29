@@ -37,5 +37,13 @@ public class AuthorController {
         return result;
     }
 
-    public static void main(String[]args) {}
+    public static void addAnswer(String answer, int criticismID){
+        String query = "UPDATE Criticism SET answer=? WHERE criticismID=?";
+        Object[] vars = {answer,criticismID};
+        Query.execute(query,vars);
+    }
+
+    public static void main(String[]args) {
+
+    }
 }
