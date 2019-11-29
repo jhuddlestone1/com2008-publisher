@@ -1,6 +1,9 @@
 package team12;
 import java.awt.*;
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.awt.event.*;
 
 public class ActionHandlers {
@@ -77,7 +80,17 @@ public class ActionHandlers {
 		}
 	}
 	
+	public static class Hover implements MouseListener { 
 
+		public void mouseEntered(MouseEvent e) { 
+			Object[][] vars = UserController.getArticles(); 
+		
+			for (String var: vars) { 
+				String summary = var[2];
+				System.out.println(summary);
+			}
+		}
+	}
 	
 	
 }
