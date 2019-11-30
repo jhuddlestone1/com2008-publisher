@@ -2,7 +2,6 @@ package team12;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
 
 public class EditorController {
@@ -26,8 +25,7 @@ public class EditorController {
         }
     }
  
-    //only return journals the editor has access to
-    //return list of journals in a 2d array
+    //display journals an editor has access to
     //[[ ISSN | journalTitle | chiefEditorID]]
     public static Object[][] getJournals(int editorID){
         String query = "SELECT * FROM Journal WHERE ISSN IN (SELECT ISSN FROM JournalEditors WHERE editorID=?)";
@@ -36,10 +34,10 @@ public class EditorController {
         return result;
     }
 
-    //add new volume to a journal
+    //enable editors to add volume to a journal
     //date format as string "yyyy-MM-dd" e.g. "2019-11-28"
     //try-catch block needed for date formating
-    //input volume as integer e.g. 1 and will be formatted to "vol.1" 
+    //input volume as integer e.g. 1 and will be formatted to "vol.1"
     public static void addVolume(int volume, String date, int ISSN){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -53,7 +51,7 @@ public class EditorController {
         }
     }
 
-    //return list of volumes of a journal in 2d array
+    //display list of volumes of a journal
     //[[volumeID | ISSN | volume(e.g. "vol.1") | date(e.g. "2019-11-28")]]
     public static Object[][] getVolumes(int ISSN){
         String query = "SELECT * FROM Volume WHERE ISSN=?";
@@ -62,7 +60,7 @@ public class EditorController {
         return result;
     }
 
-    //add new edition to a volume 
+    //enable an editor to add new edition to a volume
     //date format as string "yyyy-MM-dd" e.g. "2019-11-28"
     //try-catch block needed for date formating
     //String edition in the format of ordinal number e.g. "1st" and will be formatted to "vol.X, no.Y"
@@ -83,7 +81,7 @@ public class EditorController {
         }
     }
 
-    //return list of editions of a volume in 2d array
+    //display list of editions of a volume
     //[[editionID | volumeID | edition(e.g. "vol. X, no. 1") | date ]]
     public static Object[][] getEditions(int volumeID){
         String query = "SELECT * FROM Edition WHERE volumeID=?";
@@ -136,5 +134,19 @@ public class EditorController {
         else {return false;}
     }
 
+    //transfer the chief editor role to another editor operating the journal
+    public static void transferChief(int ISSN, int editorID){
+        //check if editor is on the board of editor of the journal
+        String query1 = "SELECT * FROM JournalEditors WHERE ISSN=? AND editorID=?";
+        Object[] vars1 = {ISSN,editorID};
+        if (!Query.execute(query1,vars1).isEmpty()){
+            String query2 = "UPDATE Journal SET chiefEditorID=? WHERE ISSN=?";
+            Object[] vars2 = {editorID,ISSN};
+            Query.execute(query2,vars2);
+        }
+        else {
+            System.out.println("Editor don't have authorisation to this journal");
+        }
+    }
     public static void main(String[]args) {}
 }
