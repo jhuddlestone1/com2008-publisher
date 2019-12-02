@@ -12,11 +12,11 @@ public class WelcomeView extends AppView {
 	JButton articleButton = new JButton("Submit article");
 	JButton journalButton = new JButton("Register journal");
 	
-	public WelcomeView() {
+	public WelcomeView(App app) {
 		super("wrap", "grow, align center", "grow");
 		
 		loginPanel.loginButton.addActionListener(new ActionHandlers.logInListener(loginPanel.usernameField, loginPanel.passwordField));
-		browseButton.addActionListener(e -> this.switchView("reader"));
+		browseButton.addActionListener(e -> app.switchView("reader"));
 		
 		this.add(new JLabel("Team 12 Academic Publishing"));
 		this.add(new JLabel("Welcome")).setFont(App.headerFont);

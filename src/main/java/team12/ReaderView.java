@@ -10,7 +10,7 @@ public class ReaderView extends AppView {
 	ListPanel resultsPanel = new ListPanel("Results");
 	ListPanel abstractPanel = new ListPanel("Abstract");
 	
-	public ReaderView() {
+	public ReaderView(App app) {
 		super("wrap 2", "grow", "[][grow]");
 		
 		searchPanel.searchButton.addActionListener(e -> updateResultsPanel());

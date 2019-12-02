@@ -27,8 +27,8 @@ public class App extends JFrame {
 		
 		// Add views to be used in the app here, along with their reference names.
 		// The first view added will be shown when the app loads.
-		content.add(new WelcomeView(), "welcome");
-		content.add(new ReaderView(), "reader");
+		content.add(new WelcomeView(this), "welcome");
+		content.add(new ReaderView(this), "reader");
 		
 		this.pack();                      // resizes app to contain all elements
 		this.setLocationRelativeTo(null); // centers app on screen
