@@ -8,8 +8,11 @@ public class AppMenu extends JMenu {
 	
 	public AppMenu() {
 		super("User");
-		this.add(new JMenuItem("Change role..."));
-		this.add(new JMenuItem("Log out"));
+		this.setMnemonic(KeyEvent.VK_U);
+		this.add(new JMenuItem("Change role...")).setMnemonic(KeyEvent.VK_C);
+		this.add(new JMenuItem("Log out")).setMnemonic(KeyEvent.VK_L);
+		this.addSeparator();
+		this.add(new JMenuItem("Quit program")).setMnemonic(KeyEvent.VK_Q);
 	}
 	
 }
