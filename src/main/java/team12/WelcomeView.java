@@ -7,14 +7,23 @@ import net.miginfocom.layout.*;
 
 public class WelcomeView extends AppView {
 	
+	LoginPanel loginPanel = new LoginPanel();
+	JButton browseButton = new JButton("Browse articles");
+	JButton articleButton = new JButton("Submit article");
+	JButton journalButton = new JButton("Register journal");
+	
 	public WelcomeView() {
 		super("wrap", "grow, align center", "grow");
+		
+		loginPanel.loginButton.addActionListener(new ActionHandlers.logInListener(loginPanel.usernameField, loginPanel.passwordField));
+		browseButton.addActionListener(e -> this.switchView("reader"));
+		
 		this.add(new JLabel("Team 12 Academic Publishing"));
 		this.add(new JLabel("Welcome")).setFont(App.headerFont);
-		this.add(new LoginPanel());
-		this.add(new JButton("Browse articles"), "split 3");
-		this.add(new JButton("Submit article"));
-		this.add(new JButton("Register journal"));
+		this.add(loginPanel);
+		this.add(browseButton, "split 3");
+		this.add(articleButton);
+		this.add(journalButton);
 	}
 	
 }

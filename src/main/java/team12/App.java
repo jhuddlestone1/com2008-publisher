@@ -52,7 +52,7 @@ public class App extends JFrame {
 		
 		App frame = new App();
 		
-		frame.switchView("reader");
+		//frame.switchView("reader");
 	}
 
 }

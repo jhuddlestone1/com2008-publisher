@@ -7,6 +7,10 @@ import javax.swing.border.*;
 
 public class ListPanel extends AppPanel {
 	
+	void empty() {
+		this.removeAll();
+	}
+	
 	public ListPanel() {
 		super("wrap");
 		this.setBorder(App.defaultBorder);
