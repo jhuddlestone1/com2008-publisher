@@ -1,9 +1,6 @@
 package team12;
 import java.awt.*;
 import javax.swing.*;
-
-import org.w3c.dom.events.MouseEvent;
-
 import java.awt.event.*;
 
 public class ActionHandlers {
@@ -11,18 +8,6 @@ public class ActionHandlers {
 	public static Component src(ActionEvent event) {
 		return (Component) event.getSource();
 	}
-	
-	// public static class Hover implements MouseListener { 
-
-	// 	public void mouseEntered(MouseEvent e) { 
-	// 		Object[][] vars = UserController.getArticles(); 
-		
-	// 		for (String var: vars) { 
-	// 			String summary = var[2];
-	// 			System.out.println(summary);
-	// 		}
-	// 	}
-	// }
 
 /* ******************************* REPEATED ACTIONS *********************************************** */
 
@@ -65,12 +50,14 @@ public static class logInListener implements ActionListener {
 			JOptionPane.showMessageDialog(src(e).getParent(), "No data provided!", "Empty fields", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
+			String password = new String(passwordField.getPassword());
+			System.out.println(password);
 			System.out.println(usernameField.getText());
-			System.out.println(passwordField.getPassword());
-			if (Controller.validateEmail (usernameField.getText())){ //&& validatePassword(passwordField.getPassword()) ){
+			if (UserController.validateUser (usernameField.getText(), password)){
 				// UserPermissions (usernameField.getText(), passwordField.getPassword()); - who is he???
 				// CHANGE INTERFACE
 				//it should pass username to next interfaces! 
+				JOptionPane.showMessageDialog(src(e).getParent(), "User DOES exist", "No user found",JOptionPane.ERROR_MESSAGE);
 			}
 			else {
 				System.out.println("Invalid data!");
@@ -231,17 +218,16 @@ public static class SubmitNewDetails implements ActionListener {
 		String forename = forenameField.getText();
 		String title = titleField.getText();
 		String affiliation = affiliationField.getText();
-		char [] password = passwordField.getPassword();
+		String password = new String (passwordField.getPassword());
 		if (username.isEmpty() ||  forename.isEmpty() ||  title.isEmpty() ||  
-			surname.isEmpty() || affiliation.isEmpty() ||  password.length==0) {
+			surname.isEmpty() || affiliation.isEmpty() ||  password.isEmpty()) {
 			JOptionPane.showMessageDialog(src(e).getParent(), "No data provided!", "Empty fields", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			if (false) //(Controller.validateEmail(username))
+			if (UserController.validateEmail(username))
 				JOptionPane.showMessageDialog(src(e).getParent(), "Choose different email", "Not unique email",JOptionPane.ERROR_MESSAGE);
 			else {
-				//based on global variable - newUser={0-author,1-editor}
-				//Controller.addUser(username, password, title, forename, surname, affiliation);
+				UserController.addUser(username, password, title, forename, surname, affiliation);
 				JOptionPane.showMessageDialog(src(e).getParent(), "new account!", "Success",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
