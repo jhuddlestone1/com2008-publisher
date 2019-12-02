@@ -71,7 +71,7 @@ public class readerInterface extends JFrame {
 		contentPane.add(btnGoBack);
 		btnGoBack.addActionListener(new ActionHandlers.GoToLogIn());
 		
-		JTextPane articles = new JTextPane();
+		JTextArea articles = new JTextArea();
 		articles.setBounds(25, 249, 451, 346);
 		contentPane.add(articles);
 		
@@ -80,7 +80,7 @@ public class readerInterface extends JFrame {
 		lblResults.setBounds(25, 209, 155, 35);
 		contentPane.add(lblResults);
 		
-		JTextPane abstr = new JTextPane();
+		JTextArea abstr = new JTextArea();
 		abstr.setBounds(511, 249, 448, 346);
 		contentPane.add(abstr);
 

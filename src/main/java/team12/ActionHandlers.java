@@ -111,10 +111,10 @@ public static class FindArticles implements ActionListener {
 	JRadioButton isJournal; 
 	JRadioButton isArticle;
 	JTextField search; 
-	JTextPane results;
-	JTextPane abstracts;
+	JTextArea results;
+	JTextArea abstracts;
 	
-	public FindArticles (JRadioButton j, JRadioButton a, JTextField s, JTextPane r, JTextPane ab) {
+	public FindArticles (JRadioButton j, JRadioButton a, JTextField s, JTextArea r, JTextArea ab) {
 		this.isJournal = j; 
 		this.isArticle = a;
 		this.search = s;  
@@ -123,14 +123,30 @@ public static class FindArticles implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		results.setText("");
+		abstracts.setText("");
+		String text = search.getText();
 		if (!isJournal.isSelected() && !isArticle.isSelected()) {
 			JOptionPane.showMessageDialog(src(e).getParent(), "Please select option", "Empty fields", JOptionPane.ERROR_MESSAGE);
 		}
-		else if (search.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(src(e).getParent(), "You're not looking for anything...", "Empty fields", JOptionPane.ERROR_MESSAGE);			
+		else if (text.isEmpty()) {
+			JOptionPane.showMessageDialog(src(e).getParent(), "Please, write what you are looking for.", "Empty fields", JOptionPane.ERROR_MESSAGE);			
 		}
-		else
-		JOptionPane.showMessageDialog(src(e).getParent(), "You're not looking for anything constructive", "Empty fields", JOptionPane.ERROR_MESSAGE);
+		else {
+			if (isJournal.isSelected()) {
+				String [] journals = {"Journal1", "Journal2"}; // Controller.getJournals(text);
+				for (String journal: journals) {
+					results.append(journal+"\n");
+				}
+			}
+			else {
+				String [] articles = {"Article1", "Article2"}; // Controller.getArticles(text);
+				for (String article: articles) {
+					results.append(article+"\n");
+				}				
+			}
+		}
+		//JOptionPane.showMessageDialog(src(e).getParent(), "You're not looking for anything constructive", "Empty fields", JOptionPane.ERROR_MESSAGE);
 		src(e).getParent().revalidate();
 	}
 }
@@ -213,7 +229,7 @@ public static class SubmitNewDetails implements ActionListener {
 		String surname =  surnameField.getText();
 		String username = usernameField.getText();
 		String forename = forenameField.getText();
-		 String title = titleField.getText();
+		String title = titleField.getText();
 		String affiliation = affiliationField.getText();
 		char [] password = passwordField.getPassword();
 		if (username.isEmpty() ||  forename.isEmpty() ||  title.isEmpty() ||  
@@ -225,7 +241,7 @@ public static class SubmitNewDetails implements ActionListener {
 				JOptionPane.showMessageDialog(src(e).getParent(), "Choose different email", "Not unique email",JOptionPane.ERROR_MESSAGE);
 			else {
 				//based on global variable - newUser={0-author,1-editor}
-				//Controller CreateUser(surname,username,forename,title,affiliation,password)
+				//Controller.addUser(username, password, title, forename, surname, affiliation);
 				JOptionPane.showMessageDialog(src(e).getParent(), "new account!", "Success",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
