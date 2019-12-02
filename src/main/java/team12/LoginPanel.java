@@ -2,8 +2,6 @@ package team12;
 
 import java.awt.*;
 import javax.swing.*;
-import net.miginfocom.swing.*;
-import net.miginfocom.layout.*;
 
 public class LoginPanel extends AppPanel {
 	

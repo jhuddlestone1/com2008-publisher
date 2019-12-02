@@ -9,16 +9,21 @@ public class App extends JFrame {
 	// Set styles here; much more memory efficient than constantly reinstatiating
 	// them inline, and it's easier to update styles for all elements at once.
 	public static Font headerFont = new Font(null, Font.BOLD, 18);
-	public static Border etchedBorder = BorderFactory.createEtchedBorder();
+	public static Border defaultBorder = BorderFactory.createEtchedBorder();
+	public static Border titledBorder(String title) {
+		return new TitledBorder(App.defaultBorder, title);
+	}
 	
 	public CardLayout layout = new CardLayout();
-	public JMenuBar menu = this.getJMenuBar();
+	public JMenuBar menu = new JMenuBar();
 	public Container content = this.getContentPane();
 	
 	public App() {
 		super("Team 12 Academic Publishing");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(layout);
+		menu.add(new AppMenu());
+		this.setJMenuBar(menu);
 		
 		// Add views to be used in the app here, along with their reference names.
 		// The first view added will be shown when the app loads.
@@ -47,7 +52,7 @@ public class App extends JFrame {
 		
 		App frame = new App();
 		
-		//frame.switchView("reader");
+		frame.switchView("reader");
 	}
 
 }
