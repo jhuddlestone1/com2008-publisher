@@ -1,7 +1,6 @@
 package team12;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class LoginPanel extends AppPanel {
@@ -12,11 +11,11 @@ public class LoginPanel extends AppPanel {
 	
 	public LoginPanel() {
 		super("wrap 2");
-		this.add(new JLabel("Username: "));
-		this.add(usernameField);
-		this.add(new JLabel("Password: "));
-		this.add(passwordField);
-		this.add(loginButton, "skip");
+		add(new JLabel("Username: "));
+		add(usernameField);
+		add(new JLabel("Password: "));
+		add(passwordField);
+		add(loginButton, "skip");
 	}
 
 }

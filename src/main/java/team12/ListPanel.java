@@ -1,52 +1,60 @@
 package team12;
 
-import java.util.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import java.util.*;
 
 public class ListPanel extends AppPanel {
 	
-	void empty() {
-		this.removeAll();
+	public void empty() {
+		removeAll();
+		refresh();
+	}
+	
+	public void update(String[] items) {
+		empty();
+		for (String item : items) {
+			add(new JLabel(item));
+		}
+		refresh();
+	}
+	
+	public void update(ArrayList items) {
+		empty();
+		for (Object item : items) {
+			add(new JLabel(item.toString()));
+		}
+		refresh();
 	}
 	
 	public ListPanel() {
 		super("wrap");
-		this.setBorder(App.defaultBorder);
+		setBorder(App.defaultBorder);
 	}
 	
 	public ListPanel(String title) {
 		super("wrap");
-		this.setBorder(App.titledBorder(title));
+		setBorder(App.titledBorder(title));
 	}
 	
 	public ListPanel(String[] items) {
 		this();
-		for (String item : items) {
-			this.add(new JLabel(item));
-		}
-	}
-	
-	public ListPanel(String title, String[] items) {
-		this(title);
-		for (String item : items) {
-			this.add(new JLabel(item));
-		}
+		update(items);
 	}
 	
 	public ListPanel(ArrayList items) {
 		this();
-		for (Object item : items) {
-			this.add(new JLabel(item.toString()));
-		}
+		update(items);
+	}
+	
+	public ListPanel(String title, String[] items) {
+		this(title);
+		update(items);
 	}
 	
 	public ListPanel(String title, ArrayList items) {
 		this(title);
-		for (Object item : items) {
-			this.add(new JLabel(item.toString()));
-		}
+		update(items);
 	}
 	
 }

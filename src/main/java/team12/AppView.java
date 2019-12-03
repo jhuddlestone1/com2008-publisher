@@ -23,4 +23,9 @@ public abstract class AppView extends JPanel {
 		super(new MigLayout());
 	}
 	
+	public void refresh() {
+		repaint();
+		validate();
+	}
+	
 }

@@ -1,9 +1,8 @@
 package team12;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
-import net.miginfocom.swing.*;
-import net.miginfocom.layout.*;
 
 public class WelcomeView extends AppView {
 	
@@ -14,16 +13,19 @@ public class WelcomeView extends AppView {
 	
 	public WelcomeView(App app) {
 		super("wrap", "grow, align center", "grow");
+		add(new JLabel("Team 12 Academic Publishing"));
+		add(new JLabel("Welcome")).setFont(App.headerFont);
+		add(loginPanel);
+		add(browseButton, "split 3");
+		add(articleButton);
+		add(journalButton);
 		
-		loginPanel.loginButton.addActionListener(new ActionHandlers.logInListener(loginPanel.usernameField, loginPanel.passwordField));
+		loginPanel.loginButton.addActionListener(
+			new ActionHandlers.logInListener(loginPanel.usernameField, loginPanel.passwordField)
+		);
 		browseButton.addActionListener(e -> app.switchView("reader"));
-		
-		this.add(new JLabel("Team 12 Academic Publishing"));
-		this.add(new JLabel("Welcome")).setFont(App.headerFont);
-		this.add(loginPanel);
-		this.add(browseButton, "split 3");
-		this.add(articleButton);
-		this.add(journalButton);
+		articleButton.addActionListener(e -> app.switchView("submit"));
+		journalButton.addActionListener(e -> app.switchView("register"));
 	}
 	
 }

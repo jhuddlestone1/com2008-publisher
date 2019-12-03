@@ -23,4 +23,9 @@ public abstract class AppPanel extends JPanel {
 		super(new MigLayout());
 	}
 	
+	public void refresh() {
+		repaint();
+		validate();
+	}
+	
 }

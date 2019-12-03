@@ -25,3 +25,6 @@
 /.nb-gradle/
 
 bin/
+compile
+run
+.gitignore

@@ -20,19 +20,19 @@ public class App extends JFrame {
 	
 	public App() {
 		super("Team 12 Academic Publishing");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(layout);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(layout);
 		menu.add(new AppMenu());
-		this.setJMenuBar(menu);
+		setJMenuBar(menu);
 		
 		// Add views to be used in the app here, along with their reference names.
 		// The first view added will be shown when the app loads.
 		content.add(new WelcomeView(this), "welcome");
 		content.add(new ReaderView(this), "reader");
 		
-		this.pack();                      // resizes app to contain all elements
-		this.setLocationRelativeTo(null); // centers app on screen
-		this.setVisible(true);
+		pack();                      // resizes app to contain all elements
+		setLocationRelativeTo(null); // centers app on screen
+		setVisible(true);
 	}
 	
 	// Switches between views; pass the view's reference name as defined above.

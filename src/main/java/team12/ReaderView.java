@@ -13,15 +13,13 @@ public class ReaderView extends AppView {
 	public ReaderView(App app) {
 		super("wrap 2", "grow", "[][grow]");
 		
-		searchPanel.searchButton.addActionListener(e -> updateResultsPanel());
+		add(searchPanel, "span 2, growx");
+		add(resultsPanel, "grow");
+		add(abstractPanel, "grow");
 		
-		this.add(searchPanel, "span 2, growx");
-		this.add(resultsPanel, "grow");
-		this.add(abstractPanel, "grow");
+		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testArray));
 	}
 	
-	void updateResultsPanel() {
-		JOptionPane.showMessageDialog(null, "Meow!");
-	}
+	String[] testArray = {"one", "two", "three"};
 	
 }

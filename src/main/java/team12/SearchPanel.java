@@ -1,7 +1,6 @@
 package team12;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class SearchPanel extends AppPanel {
@@ -14,14 +13,16 @@ public class SearchPanel extends AppPanel {
 	
 	public SearchPanel() {
 		super("", "[][][grow][]");
+		setBorder(App.titledBorder("Search"));
+		
 		searchType.add(searchArticle);
 		searchType.add(searchJournal);
 		searchArticle.setSelected(true);
-		this.add(searchArticle);
-		this.add(searchJournal);
-		this.add(searchField, "grow");
-		this.add(searchButton);
-		this.setBorder(App.titledBorder("Search"));
+		
+		add(searchArticle);
+		add(searchJournal);
+		add(searchField, "grow");
+		add(searchButton);
 	}
 	
 }
