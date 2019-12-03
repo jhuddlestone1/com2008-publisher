@@ -62,8 +62,6 @@ public class ChiefEditorInterface extends JFrame {
 		lblChooseJournal.setBounds(377, 27, 160, 20);
 		contentPane.add(lblChooseJournal);
 		
-		String actions[] = {"Publish","Retire","Register","Pass role","See roles"};
-		
 		JPanel panel = new JPanel();
 		panel.setBounds(15, 155, 832, 342);
 		contentPane.add(panel);
@@ -73,10 +71,16 @@ public class ChiefEditorInterface extends JFrame {
 		textField.setBounds(15, 52, 802, 290);
 		panel.add(textField);
 		textField.setColumns(10);
+
+		String actions[] = {"Publish","Retire","Register","Pass role","See roles"};
 		JComboBox comboBox_1 = new JComboBox(actions);
 		comboBox_1.setBounds(337, 0, 185, 38);
 		panel.add(comboBox_1);
-		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));		
+		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));	
+		//Needs to pass the name of the article! 
+		String journal = "journal1";
+		comboBox_1.addActionListener(new ActionHandlers.chooseChiefEditorAction(comboBox_1, journal));
+
 		
 		JButton btnGoBack = new JButton("Go back");
 		btnGoBack.setBounds(735, 27, 115, 29);

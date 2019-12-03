@@ -139,6 +139,96 @@ public static class FindArticles implements ActionListener {
 }
 
 
+/* ********************************** EDITOR INTERFACE ****************************************** */
+public static class chooseEditorAction implements ActionListener {
+	
+	JComboBox actions;
+	String journal;
+	
+	public chooseEditorAction(JComboBox c, String j) {
+		this.actions = c;
+		this.journal=j;
+	} 
+	
+	public void actionPerformed(ActionEvent e) {
+		switch ((String) actions.getSelectedItem()){
+			case "See articles":
+				// String [] articles =EditorController.getArticles(String journal);
+				/*add articles to the textarea 
+				//when editor clicks on the article, he can read them and 
+				make a final decision about it
+				*/
+				break;
+
+			case "Retire":
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int dialogResult = JOptionPane.showConfirmDialog (src(e).getParent(),
+					"Do you want to retire from the board for the "+ journal + "?",
+															"Retire",dialogButton);
+				if (dialogResult==0){
+					//EditorController.deleteEditor(username);
+					JOptionPane.showMessageDialog(src(e).getParent(), "Yes", "Empty fields", JOptionPane.ERROR_MESSAGE);
+					// close that tab panel and remove that journal from the list of
+					//available journals 
+				}
+			break;
+		}
+		src(e).getParent().revalidate();
+	}
+}	
+
+/* *************************** CHIEF EDITOR INTERFACE ******************************************* */
+public static class chooseChiefEditorAction implements ActionListener {
+	
+	JComboBox actions;
+	String journal;
+	
+	public chooseChiefEditorAction(JComboBox c, String j) {
+		this.actions = c;
+		this.journal = j;
+	} 
+	
+	public void actionPerformed(ActionEvent e) {
+		String action = (String) actions.getSelectedItem();
+		//int ISNN = getISNN(String journal);
+
+		//String actions[] = {"Publish","Retire","Register","Pass role","See roles"};
+		switch (action){
+			case "Publish":
+				//
+				break;
+			case "Register other editor":
+				//changes interface to register interface
+				break;
+			case "Pass role":
+				//Object [][] editors = EditorController.getEditors(ISNN);
+				break; 
+			case "See roles":
+				//Object [][] editors = EditorController.getEditors(ISNN);
+				break;
+			case "Retire":
+			int dialogButton = JOptionPane.YES_NO_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog (src(e).getParent(),
+				"Do you want to retire from the board for the "+ journal + "?",
+														"Retire",dialogButton);
+			if (dialogResult==0){
+				//int ISNN = getISNN(String journal);
+				if (false){//EditorController.deleteChiefEditor(username);
+					JOptionPane.showMessageDialog(src(e).getParent(), "Yes", "Empty fields", JOptionPane.ERROR_MESSAGE);
+					// close that tab panel and remove that journal from the list of
+					//available journals
+				}
+				else{
+					JOptionPane.showMessageDialog(src(e).getParent(), 
+					"You cannot retire, you're the only editor", "Message", JOptionPane.ERROR_MESSAGE);
+				} 
+			}
+			break;
+		}
+		src(e).getParent().revalidate();
+	}
+}
+
 /* ********************************** LOG IN PAGE *********************************************** */	
 public static class LogOut implements ActionListener {
 	

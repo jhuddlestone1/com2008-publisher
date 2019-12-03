@@ -53,10 +53,13 @@ public class EditorInterface extends JFrame {
 		contentPane.add(btnChangeDetails);
 		btnChangeDetails.addActionListener(new ActionHandlers.ChangeDetails());
 		
+		// needs to call EditorController.getJournal method to replace content of it:
 		String journals[] = {"Journal1","Journal2","Journal3"};
 		JComboBox comboBox = new JComboBox(journals);
 		comboBox.setBounds(377, 53, 160, 52);
 		contentPane.add(comboBox);
+		// that changes tab panel 
+		//comboBox.addActionListener(new ActionHandlers.chooseEditorJournal(comboBox));
 		
 		JLabel lblChooseJournal = new JLabel("Choose journal:");
 		lblChooseJournal.setBounds(377, 27, 160, 20);
@@ -70,7 +73,6 @@ public class EditorInterface extends JFrame {
 		tabbedPane.addTab("New tab", null, panel, null);
 		panel.setLayout(null);
 		
-		String actions[] = {"See articles","Retire"};
 		
 		txtArticle = new JTextField();
 		txtArticle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -78,10 +80,15 @@ public class EditorInterface extends JFrame {
 		txtArticle.setBounds(63, 143, 692, 26);
 		panel.add(txtArticle);
 		txtArticle.setColumns(10);
+
+		String actions[] = {"See articles","Retire"};
 		JComboBox comboBox_1 = new JComboBox(actions);
 		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		comboBox_1.setBounds(307, 27, 185, 38);
 		panel.add(comboBox_1);
+		//Needs to pass the name of the article! 
+		String journal = "journal1";
+		comboBox_1.addActionListener(new ActionHandlers.chooseEditorAction(comboBox_1, journal));
 		
 		textField = new JTextField();
 		textField.setBounds(28, 100, 759, 235);
