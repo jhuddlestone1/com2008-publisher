@@ -8,11 +8,11 @@ public class TextPanel extends AppPanel {
 	JTextArea textArea = new JTextArea();
 	
 	public void empty() {
-		setText(null);
+		textArea.setText(null);
 	}
 	
 	public void update(String text) {
-		setText(text);
+		textArea.setText(text);
 	}
 		
 	public TextPanel() {
