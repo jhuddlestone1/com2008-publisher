@@ -29,6 +29,7 @@ public class App extends JFrame {
 		// The first view added will be shown when the app loads.
 		content.add(new WelcomeView(this), "welcome");
 		content.add(new ReaderView(this), "reader");
+		content.add(new EditorView(this), "editor");
 		
 		pack();                      // resizes app to contain all elements
 		setLocationRelativeTo(null); // centers app on screen
@@ -52,7 +53,7 @@ public class App extends JFrame {
 		
 		App frame = new App();
 		
-		//frame.switchView("reader");
+		//frame.switchView("editor");
 	}
 
 }

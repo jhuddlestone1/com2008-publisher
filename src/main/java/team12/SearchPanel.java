@@ -13,8 +13,7 @@ public class SearchPanel extends AppPanel {
 	
 	public SearchPanel() {
 		super("", "[][][grow][]");
-		setBorder(App.titledBorder("Search"));
-		
+				
 		searchType.add(searchArticle);
 		searchType.add(searchJournal);
 		searchArticle.setSelected(true);

@@ -11,8 +11,8 @@ public class ListPanel extends AppPanel {
 		refresh();
 	}
 	
-	public void update(String[] items) {
-		empty();
+	public void update(String... items) {
+		removeAll();
 		for (String item : items) {
 			add(new JLabel(item));
 		}
@@ -20,7 +20,7 @@ public class ListPanel extends AppPanel {
 	}
 	
 	public void update(ArrayList items) {
-		empty();
+		removeAll();
 		for (Object item : items) {
 			add(new JLabel(item.toString()));
 		}
@@ -29,31 +29,19 @@ public class ListPanel extends AppPanel {
 	
 	public ListPanel() {
 		super("wrap");
-		setBorder(App.defaultBorder);
 	}
 	
 	public ListPanel(String title) {
 		super("wrap");
-		setBorder(App.titledBorder(title));
 	}
 	
-	public ListPanel(String[] items) {
+	public ListPanel(String... items) {
 		this();
 		update(items);
 	}
 	
 	public ListPanel(ArrayList items) {
 		this();
-		update(items);
-	}
-	
-	public ListPanel(String title, String[] items) {
-		this(title);
-		update(items);
-	}
-	
-	public ListPanel(String title, ArrayList items) {
-		this(title);
 		update(items);
 	}
 	

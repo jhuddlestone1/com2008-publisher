@@ -17,20 +17,11 @@ public class TextPanel extends AppPanel {
 		
 	public TextPanel() {
 		super("", "grow", "grow");
-		setBorder(App.defaultBorder);
 		add(textArea, "grow");
 	}
 	
-	public TextPanel(String title) {
-		super("", "grow", "grow");
-		setBorder(App.titledBorder(title));
-		add(textArea, "grow");
-	}
-	
-	public TextPanel(String title, String text) {
-		super("", "grow", "grow");
-		setBorder(App.titledBorder(title));
-		add(textArea, "grow");
+	public TextPanel(String text) {
+		this();
 		update(text);
 	}
 	
