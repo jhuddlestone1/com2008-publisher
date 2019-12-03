@@ -12,7 +12,6 @@ public class ReaderView extends AppView {
 	
 	public ReaderView(App app) {
 		super("wrap 2", "grow", "[][grow]");
-		
 		add(searchPanel, "span 2, growx");
 		add(resultsPanel, "grow");
 		add(abstractPanel, "grow");
