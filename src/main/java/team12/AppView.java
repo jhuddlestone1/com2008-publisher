@@ -24,8 +24,8 @@ public abstract class AppView extends JPanel {
 	}
 	
 	public void refresh() {
-		repaint();
 		validate();
+		repaint();
 	}
 	
 }
