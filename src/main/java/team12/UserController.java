@@ -65,27 +65,6 @@ public class UserController {
         return userID;
     }
 
-    //change user authorisation with different roles
-    //assuming user already exists
-    public static void authUser(String email, boolean authEditor, boolean authAuthor, boolean authReviewer){
-        String query = "UPDATE UserDetails SET authEditor=?,authAuthor=?,authReviewer=? WHERE email=?";
-        Object[] vars = {authEditor,authAuthor,authReviewer,email};
-        Query.execute(query,vars);
-    }
-
-    //return user authorisation
-    //output: [authEditor, authAuthor, authReviewer]
-    public static boolean[] userAuth (String email){
-        String query = "SELECT authEditor,authAuthor,authReviewer FROM UserDetails WHERE email=?";
-        Object[] vars = {email};
-        Object[][] table = Query.formTable(query,vars);
-        boolean[] result = new boolean[3];
-        for (int x=0; x<3; x++){
-            result[x] = (boolean) table[0][x];
-        }
-        return result;
-    }
-
     //delete user from tables UserLogin and UserDetails
     public static void deleteUser(String email){
         String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";
