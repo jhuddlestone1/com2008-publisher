@@ -25,7 +25,7 @@
 /.nb-gradle/
 
 /bin/
-clean*
-compile*
-run*
-list*
+/clean
+/compile
+/run
+/list
