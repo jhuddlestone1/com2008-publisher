@@ -16,10 +16,10 @@ public class MainView extends AppView {
 		super("wrap", "grow, align center", "grow");
 		add(new JLabel("Team 12 Academic Publishing"));
 		add(new JLabel("Main menu")).setFont(App.headerFont);
-		add(authorButton, "growx");
-		add(reviewerButton, "growx");
-		add(editorButton, "growx");
-		add(registerButton, "growx");
+		add(authorButton, "grow");
+		add(reviewerButton, "grow");
+		add(editorButton, "grow");
+		add(registerButton, "grow");
 		
 		authorButton.addActionListener(e -> app.switchView("author"));
 		reviewerButton.addActionListener(e -> app.switchView("reviewer"));
