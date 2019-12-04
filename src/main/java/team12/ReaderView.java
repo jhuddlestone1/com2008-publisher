@@ -7,22 +7,24 @@ import javax.swing.*;
 public class ReaderView extends AppView {
 	
 	SearchPanel searchPanel = new SearchPanel();
-	ListPanel resultsPanel = new ListPanel("Results");
-	ListPanel abstractPanel = new ListPanel("Abstract");
+	TablePanel resultsPanel = new TablePanel();
+	TextPanel abstractPanel = new TextPanel();
 	
 	public ReaderView(App app) {
-		super("wrap 2", "grow", "[][grow]");
+		super("wrap", "grow", "[][grow]");
 		
 		resultsPanel.setBorder(App.titledBorder("Results"));
 		abstractPanel.setBorder(App.titledBorder("Abstract"));
 		
-		add(searchPanel, "span 2, growx");
+		add(searchPanel, "growx");
 		add(resultsPanel, "grow");
 		add(abstractPanel, "grow");
 		
-		//searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testArray));
+		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testObject, testArray));
+		//resultsPanel.addActionListener(e => abstractPanel.update(e.getSource().getValue()));
 	}
 	
-	//String[] testArray = {"one", "two", "three"};
+	Object[][] testObject = {{1,2,3},{4,5,6}};
+	Object[] testArray = {"one", "two", "three"};
 	
 }

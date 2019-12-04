@@ -31,10 +31,6 @@ public class ListPanel extends AppPanel {
 		super("wrap");
 	}
 	
-	public ListPanel(String title) {
-		super("wrap");
-	}
-	
 	public ListPanel(String... items) {
 		this();
 		update(items);
