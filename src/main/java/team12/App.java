@@ -37,6 +37,7 @@ public class App extends JFrame {
 		content.removeAll();
 		content.add(new WelcomeView(this), "welcome");
 		content.add(new ReaderView(this), "reader");
+		content.add(new UserView(this), "user");
 		pack();                      // resizes app to contain all elements
 		setLocationRelativeTo(null); // centers app on screen
 	}
@@ -54,7 +55,8 @@ public class App extends JFrame {
 		content.add(new AuthorView(this), "author");
 		content.add(new ReviewerView(this), "reviewer");
 		content.add(new EditorView(this), "editor");
-		content.add(new RegisterView(this), "register");
+		content.add(new JournalView(this), "journal");
+		content.add(new UserView(this), "user");
 		
 		pack();                      // resizes app to contain all elements
 		setLocationRelativeTo(null); // centers app on screen
