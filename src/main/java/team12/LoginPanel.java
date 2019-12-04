@@ -5,17 +5,17 @@ import javax.swing.*;
 
 public class LoginPanel extends AppPanel {
 	
-	JTextField emailField = new JTextField(16);
-	JPasswordField passwordField = new JPasswordField(16);
+	JTextField email = new JTextField(16);
+	JPasswordField password = new JPasswordField(16);
 	JButton loginButton = new JButton("Log in");
 	JButton signupButton = new JButton("Sign up");
 	
 	public LoginPanel() {
 		super("wrap 2");
 		add(new JLabel("Email address: "));
-		add(emailField);
+		add(email);
 		add(new JLabel("Password: "));
-		add(passwordField);
+		add(password);
 		add(loginButton, "skip, split 2");
 		add(signupButton);
 	}

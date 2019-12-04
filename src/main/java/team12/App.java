@@ -36,8 +36,16 @@ public class App extends JFrame {
 		userID = 0;
 		content.removeAll();
 		content.add(new WelcomeView(this), "welcome");
-		content.add(new ReaderView(this), "reader");
 		content.add(new UserView(this), "user");
+		pack();                      // resizes app to contain all elements
+		setLocationRelativeTo(null); // centers app on screen
+	}
+	
+	// Set app to allow users to browse articles without logging in
+	public void browse() {
+		userID = 0;
+		content.removeAll();
+		content.add(new ReaderView(this), "reader");
 		pack();                      // resizes app to contain all elements
 		setLocationRelativeTo(null); // centers app on screen
 	}
@@ -63,11 +71,13 @@ public class App extends JFrame {
 	}
 	
 	public void logout() {
-		initialise();
+		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?", "Log out", JOptionPane.YES_NO_OPTION)==0)
+			initialise();
 	}
 	
 	public void quit() {
-		System.exit(0);
+		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Quit program", JOptionPane.YES_NO_OPTION)==0)
+			System.exit(0);
 	}
 	
 	// Switches between views; pass the view's reference name as defined above.

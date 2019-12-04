@@ -6,15 +6,17 @@ import javax.swing.*;
 
 public class UserView extends AppView {
 	
-	JButton submitButton = new JButton("Submit details");
+	JLabel headerLabel = new JLabel("Add user details");
+	DetailsPanel detailsPanel = new DetailsPanel();
 	
 	public UserView(App app) {
-		super("wrap", "grow, align center", "grow");
-		add(new JLabel("Add user details")).setFont(App.headerFont);
-		// TODO: form fields here
-		add(submitButton);
+		super("wrap, align center", "align center", "grow");
+		add(new JLabel("Team 12 Academic Publishing"));
+		headerLabel.setFont(App.headerFont);
+		add(headerLabel);
+		add(detailsPanel);
 		
-		submitButton.addActionListener(e -> app.switchView("main"));
+		detailsPanel.submitButton.addActionListener(e -> app.switchView("main"));
 	}
 	
 }

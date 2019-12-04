@@ -12,7 +12,7 @@ public class AppMenu extends JMenu {
 	
 	public AppMenu(App app) {
 		super("Actions");
-		setMnemonic(KeyEvent.VK_U);
+		setMnemonic(KeyEvent.VK_A);
 		add(mainMenu).setMnemonic(KeyEvent.VK_M);
 		add(logOut).setMnemonic(KeyEvent.VK_L);
 		addSeparator();
