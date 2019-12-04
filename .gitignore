@@ -24,7 +24,8 @@
 /nbdist/
 /.nb-gradle/
 
-bin/
-compile
-run
-.gitignore
+
+/clean
+/compile
+/run
+/list
