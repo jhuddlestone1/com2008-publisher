@@ -24,8 +24,8 @@
 /nbdist/
 /.nb-gradle/
 
-
-/clean
-/compile
-/run
-/list
+/bin/
+clean*
+compile*
+run*
+list*
