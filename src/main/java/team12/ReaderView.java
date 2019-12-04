@@ -20,7 +20,7 @@ public class ReaderView extends AppView {
 		add(resultsPanel, "grow");
 		add(abstractPanel, "grow");
 		
-		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testArray));
+		//searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testArray));
 	}
 	
 	//String[] testArray = {"one", "two", "three"};

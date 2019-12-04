@@ -14,26 +14,58 @@ public class App extends JFrame {
 		return new TitledBorder(App.defaultBorder, title);
 	}
 	
+	// If this field is greater than zero, we know a user is logged in, and which one!
+	public int userID;
+	
 	public CardLayout layout = new CardLayout();
-	public JMenuBar menu = new JMenuBar();
+	public JMenuBar menubar = new JMenuBar();
 	public Container content = this.getContentPane();
 	
 	public App() {
 		super("Team 12 Academic Publishing");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(layout);
-		menu.add(new AppMenu());
-		setJMenuBar(menu);
-		
-		// Add views to be used in the app here, along with their reference names.
-		// The first view added will be shown when the app loads.
+		menubar.add(new AppMenu(this));
+		setJMenuBar(menubar);
+		initialise(); // Set app to defalt state; see below
+		setVisible(true);
+	}	
+	
+	// Set app to default state
+	public void initialise() {
+		userID = 0;
+		content.removeAll();
 		content.add(new WelcomeView(this), "welcome");
 		content.add(new ReaderView(this), "reader");
+		pack();                      // resizes app to contain all elements
+		setLocationRelativeTo(null); // centers app on screen
+	}
+		
+	// Add views accessible to authorised user and define their reference names.
+	// The first view added will be shown when the app loads.
+	public void login(int id) {
+		userID = id;
+		content.removeAll();
+		
+		// TODO: add decision logic for user permissions
+		// Add views here
+		content.add(new MainView(this), "main");
+		content.add(new ReaderView(this), "reader");
+		content.add(new AuthorView(this), "author");
+		content.add(new ReviewerView(this), "reviewer");
 		content.add(new EditorView(this), "editor");
+		content.add(new RegisterView(this), "register");
 		
 		pack();                      // resizes app to contain all elements
 		setLocationRelativeTo(null); // centers app on screen
-		setVisible(true);
+	}
+	
+	public void logout() {
+		initialise();
+	}
+	
+	public void quit() {
+		System.exit(0);
 	}
 	
 	// Switches between views; pass the view's reference name as defined above.
@@ -57,4 +89,3 @@ public class App extends JFrame {
 	}
 
 }
-

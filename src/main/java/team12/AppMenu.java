@@ -6,17 +6,21 @@ import javax.swing.*;
 
 public class AppMenu extends JMenu {
 	
-	JMenuItem changeRole = new JMenuItem("Change role...");
+	JMenuItem mainMenu = new JMenuItem("Main menu");
 	JMenuItem logOut = new JMenuItem("Log out");
 	JMenuItem quitProgram = new JMenuItem("Quit program");
 	
-	public AppMenu() {
-		super("User");
-		this.setMnemonic(KeyEvent.VK_U);
-		this.add(changeRole).setMnemonic(KeyEvent.VK_C);
-		this.add(logOut).setMnemonic(KeyEvent.VK_L);
-		this.addSeparator();
-		this.add(quitProgram).setMnemonic(KeyEvent.VK_Q);
+	public AppMenu(App app) {
+		super("Actions");
+		setMnemonic(KeyEvent.VK_U);
+		add(mainMenu).setMnemonic(KeyEvent.VK_M);
+		add(logOut).setMnemonic(KeyEvent.VK_L);
+		addSeparator();
+		add(quitProgram).setMnemonic(KeyEvent.VK_Q);
+		
+		mainMenu.addActionListener(e -> app.switchView("main"));
+		logOut.addActionListener(e -> app.logout());
+		quitProgram.addActionListener(e -> app.quit());
 	}
 	
 }

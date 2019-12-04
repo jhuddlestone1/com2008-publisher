@@ -7,25 +7,26 @@ import javax.swing.*;
 public class WelcomeView extends AppView {
 	
 	LoginPanel loginPanel = new LoginPanel();
-	JButton browseButton = new JButton("Browse articles");
-	JButton articleButton = new JButton("Submit article");
-	JButton journalButton = new JButton("Register journal");
+	JButton readerButton = new JButton("Read articles");
+	//JButton authorButton = new JButton("Submit article");
+	//JButton registerButton = new JButton("Register journal");
 	
 	public WelcomeView(App app) {
 		super("wrap", "grow, align center", "grow");
 		add(new JLabel("Team 12 Academic Publishing"));
 		add(new JLabel("Welcome")).setFont(App.headerFont);
 		add(loginPanel);
-		add(browseButton, "split 3");
-		add(articleButton);
-		add(journalButton);
+		add(readerButton);
+		//add(authorButton);
+		//add(registerButton);
 		
-		loginPanel.loginButton.addActionListener(
-			new ActionHandlers.logInListener(loginPanel.usernameField, loginPanel.passwordField)
-		);
-		browseButton.addActionListener(e -> app.switchView("reader"));
-		articleButton.addActionListener(e -> app.switchView("submit"));
-		journalButton.addActionListener(e -> app.switchView("register"));
+		//loginPanel.loginButton.addActionListener(
+			//new ActionHandlers.logInListener(loginPanel.emailField, loginPanel.passwordField)
+		//);
+		loginPanel.loginButton.addActionListener(e -> app.login(1));
+		readerButton.addActionListener(e -> app.switchView("reader"));
+		//authorButton.addActionListener(e -> app.switchView("author"));
+		//registerButton.addActionListener(e -> app.switchView("register"));
 	}
 	
 }
