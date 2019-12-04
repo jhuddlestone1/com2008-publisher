@@ -8,18 +8,18 @@ public class App extends JFrame {
 	
 	// Set styles here; much more memory efficient than constantly reinstatiating
 	// them inline, and it's easier to update styles for all elements at once.
-	public static Font headerFont = new Font(null, Font.BOLD, 18);
-	public static Border defaultBorder = BorderFactory.createEtchedBorder();
-	public static Border titledBorder(String title) {
+	static Font headerFont = new Font(null, Font.BOLD, 18);
+	static Border defaultBorder = BorderFactory.createEtchedBorder();
+	static Border titledBorder(String title) {
 		return new TitledBorder(App.defaultBorder, title);
 	}
 	
 	// If this field is greater than zero, we know a user is logged in, and which one!
-	public int userID;
+	int userID;
 	
-	public CardLayout layout = new CardLayout();
-	public JMenuBar menubar = new JMenuBar();
-	public Container content = this.getContentPane();
+	CardLayout layout = new CardLayout();
+	JMenuBar menubar = new JMenuBar();
+	Container content = this.getContentPane();
 	
 	public App() {
 		super("Team 12 Academic Publishing");
@@ -29,10 +29,17 @@ public class App extends JFrame {
 		setJMenuBar(menubar);
 		initialise(); // Set app to defalt state; see below
 		setVisible(true);
-	}	
+	}
+	
+	// Switches between views; pass the view's reference name as defined above.
+	// Returns a reference back to the app instance to allow method chaining.
+	App switchView(String viewName) {
+		layout.show(content, viewName);
+		return this;
+	}
 	
 	// Set app to default state
-	public void initialise() {
+	void initialise() {
 		userID = 0;
 		content.removeAll();
 		content.add(new WelcomeView(this), "welcome");
@@ -42,7 +49,7 @@ public class App extends JFrame {
 	}
 	
 	// Set app to allow users to browse articles without logging in
-	public void browse() {
+	void browse() {
 		userID = 0;
 		content.removeAll();
 		content.add(new ReaderView(this), "reader");
@@ -52,7 +59,7 @@ public class App extends JFrame {
 		
 	// Add views accessible to authorised user and define their reference names.
 	// The first view added will be shown when the app loads.
-	public void login(int id) {
+	void login(int id) {
 		userID = id;
 		content.removeAll();
 		
@@ -78,13 +85,6 @@ public class App extends JFrame {
 	public void quit() {
 		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Quit program", JOptionPane.YES_NO_OPTION)==0)
 			System.exit(0);
-	}
-	
-	// Switches between views; pass the view's reference name as defined above.
-	// Returns a reference back to the app instance to allow method chaining.
-	public App switchView(String viewName) {
-		layout.show(content, viewName);
-		return this;
 	}
 
 	public static void main(String[] args) {

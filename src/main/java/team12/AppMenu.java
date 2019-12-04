@@ -18,7 +18,13 @@ public class AppMenu extends JMenu {
 		addSeparator();
 		add(quitProgram).setMnemonic(KeyEvent.VK_Q);
 		
-		mainMenu.addActionListener(e -> app.switchView("main"));
+		mainMenu.addActionListener(e -> {
+			if (app.userID > 0) {
+				app.switchView("main");
+			} else {
+				JOptionPane.showMessageDialog(app, "The main menu is not available.", "Main menu", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		logOut.addActionListener(e -> app.logout());
 		quitProgram.addActionListener(e -> app.quit());
 	}
