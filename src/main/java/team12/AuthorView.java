@@ -33,7 +33,7 @@ public class AuthorView extends AppView {
 		add(updateButton);
 		
 		submitButton.addActionListener(e -> app.switchView("submit"));
-		updateButton.addActionListener(e -> update(app.userID)); // TODO: grab current list of articles
+		updateButton.addActionListener(e -> update(app.userID));
 	}
 	
 }
