@@ -34,6 +34,13 @@ public class EditorController {
         return result;
     }
 
+    public static int getJournals(String journal){
+        String query = "SELECT ISSN FROM Journal WHERE journalTitle =?";
+        Object[] vars = {journal};
+        int result = (Integer)(Query.formTable(query,vars)[0][0]); 
+        return result;
+    }
+
     //enable editors to add volume to a journal
     //date format as string "yyyy-MM-dd" e.g. "2019-11-28"
     //try-catch block needed for date formating
