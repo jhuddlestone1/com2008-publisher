@@ -21,7 +21,7 @@ public class UserView extends AppView {
 			String firstNames = detailsPanel.firstNames.getText();
 			String lastName = detailsPanel.lastName.getText();
 			String university = detailsPanel.university.getText();
-			boolean allValid = detailsPanel.valid(email, password, title, firstNames, lastName, university);
+			boolean allValid = detailsPanel.validate(email, password, title, firstNames, lastName, university);
 			boolean emailExists = UserController.validateEmail(email);
 			if (allValid) {
 				if (!emailExists) {

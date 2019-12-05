@@ -13,7 +13,7 @@ public class DetailsPanel extends AppPanel {
 	JPasswordField password = new JPasswordField(16);
 	JButton submitButton = new JButton("Submit details");
 	
-	public boolean valid(String... fields) {
+	public boolean validate(String... fields) {
 		for (String field : fields) {
 			if (field == null || field.trim().isEmpty()) return false;
 		}
