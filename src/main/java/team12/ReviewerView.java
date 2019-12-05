@@ -3,21 +3,26 @@ package team12;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.*;
+import java.io.*;
 
 public class ReviewerView extends AppView {
 	
-	SearchPanel searchPanel = new SearchPanel();
-	TabPanel tabPanel = new TabPanel();
-	
-	public ReviewerView(App app) {
-		super("wrap", "grow", "[][grow]");
-		add(searchPanel, "growx");
-		add(tabPanel, "grow");
+	TabPanel articleTabs = new TabPanel();
+	JButton submitButton = new JButton("Submit review");
+	JButton updateButton = new JButton("Update list");
 		
-		//searchPanel.searchButton.addActionListener(e -> tabPanel.update(testArray));
+	public ReviewerView(App app) {
+		super("wrap, align center");
+		
+		// TODO: update each tab panel with a table of articles
+		
+		add(articleTabs);
+		add(submitButton, "split 2");
+		add(updateButton);
+		
+		submitButton.addActionListener(e -> articleTabs.update());
+		updateButton.addActionListener(e -> articleTabs.update()); // TODO: grab current list of articles
 	}
-	
-	//String[] names = {"tab1", "tab2", "tab3"};
-	//JPanel[] panels = {new JPanel(), new ListPanel(), new TextPanel()};
 	
 }

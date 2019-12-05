@@ -6,18 +6,21 @@ import javax.swing.*;
 
 public class EditorView extends AppView {
 	
-	SearchPanel searchPanel = new SearchPanel();
-	TabPanel tabPanel = new TabPanel();
-	
-	public EditorView(App app) {
-		super("wrap", "grow", "[][grow]");
-		add(searchPanel, "growx");
-		add(tabPanel, "grow");
+	TabPanel journalTabs = new TabPanel();
+	JButton addButton = new JButton("Add journal");
+	JButton updateButton = new JButton("Update list");
 		
-		//searchPanel.searchButton.addActionListener(e -> tabPanel.update(testArray));
+	public EditorView(App app) {
+		super("wrap, align center");
+		
+		// TODO: update each tab panel with a table of editors
+		
+		add(journalTabs);
+		add(addButton, "split 2");
+		add(updateButton);
+		
+		addButton.addActionListener(e -> app.switchView("journal"));
+		updateButton.addActionListener(e -> journalTabs.update()); // TODO: grab current list of articles
 	}
-	
-	//String[] names = {"tab1", "tab2", "tab3"};
-	//JPanel[] panels = {new JPanel(), new ListPanel(), new TextPanel()};
 	
 }

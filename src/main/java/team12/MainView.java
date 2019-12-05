@@ -9,8 +9,8 @@ public class MainView extends AppView {
 	JButton readerButton = new JButton("Read articles");
 	JButton authorButton = new JButton("Submit article");
 	JButton reviewerButton = new JButton("Review submissions");
-	JButton editorButton = new JButton("Edit/publish journals");
-	JButton journalButton = new JButton("Register new journal");
+	JButton editorButton = new JButton("Add/manage journals");
+	//JButton journalButton = new JButton("Register new journal");
 	
 	public MainView(App app) {
 		super("wrap", "grow, align center", "grow");
@@ -20,13 +20,13 @@ public class MainView extends AppView {
 		add(authorButton, "grow");
 		add(reviewerButton, "grow");
 		add(editorButton, "grow");
-		add(journalButton, "grow");
+		//add(journalButton, "grow");
 		
 		readerButton.addActionListener(e -> app.switchView("reader"));
 		authorButton.addActionListener(e -> app.switchView("author"));
 		reviewerButton.addActionListener(e -> app.switchView("reviewer"));
 		editorButton.addActionListener(e -> app.switchView("editor"));
-		journalButton.addActionListener(e -> app.switchView("journal"));
+		//journalButton.addActionListener(e -> app.switchView("journal"));
 	}
 	
 }

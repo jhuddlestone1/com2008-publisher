@@ -7,7 +7,7 @@ import javax.swing.*;
 public class WelcomeView extends AppView {
 	
 	LoginPanel loginPanel = new LoginPanel();
-	JButton readerButton = new JButton("Read articles");
+	JButton readerButton = new JButton("Read articles as guest");
 	
 	public WelcomeView(App app) {
 		super("wrap, align center", "align center", "grow");

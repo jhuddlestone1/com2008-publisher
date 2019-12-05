@@ -9,12 +9,14 @@ public class JournalView extends AppView {
 	JButton submitButton = new JButton("Submit details");
 	
 	public JournalView(App app) {
-		super("wrap", "grow, align center", "grow");
+		super("wrap, align center", "align center", "grow");
 		add(new JLabel("Add journal details")).setFont(App.headerFont);
-		// TODO: form fields here
+		
+		// TODO: add form fields here
+		
 		add(submitButton);
 		
-		submitButton.addActionListener(e -> app.switchView("main"));
+		submitButton.addActionListener(e -> app.switchView("editor")); // TODO: re-instantiate this
 	}
 	
 }

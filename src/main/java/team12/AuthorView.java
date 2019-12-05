@@ -9,17 +9,20 @@ import java.io.*;
 public class AuthorView extends AppView {
 	
 	TabPanel articleTabs = new TabPanel();
-	JButton updateButton = new JButton("Update list");
 	JButton submitButton = new JButton("Submit new article");
+	JButton updateButton = new JButton("Update list");
 		
 	public AuthorView(App app) {
 		super("wrap, align center");
-		add(articleTabs);
-		add(updateButton, "split 2");
-		add(submitButton);
 		
-		updateButton.addActionListener(e -> articleTabs.update()); // TODO: grab current list of articles
+		// TODO: update each tab panel with a table of articles
+		
+		add(articleTabs);
+		add(submitButton, "split 2");
+		add(updateButton);
+		
 		submitButton.addActionListener(e -> app.switchView("submit"));
+		updateButton.addActionListener(e -> articleTabs.update()); // TODO: grab current list of articles
 	}
 	
 }
