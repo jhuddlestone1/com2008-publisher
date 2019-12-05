@@ -48,11 +48,13 @@ public class UserController {
     }
 
     //change user's password
-    //input (email,new password)
-    public static void updatePassword(String email, String password){
-        String query = "UPDATE UserLogin SET password=? WHERE email=?";
-        Object[] vars = {password, email};
-        Query.execute(query,vars);
+    //input (email, old password, new password)
+    public static void updatePassword(String email, String oldPassword, String newPassword){
+        if (validateUser(email,oldPassword)==true){
+            String query = "UPDATE UserLogin SET password=? WHERE userID=?";
+            Object[] vars = {newPassword, email};
+            Query.execute(query,vars);
+        }
     }
     
     //return userID with given email
