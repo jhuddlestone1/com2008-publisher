@@ -8,25 +8,27 @@ import java.io.*;
 
 public class SubmitView extends AppView {
 	
-	File file;
-	JFileChooser fileChooser;
-	TablePanel authorTable;
+	TablePanel authorTable = new TablePanel();
 	JButton uploadButton = new JButton("Upload article (PDF)");
 	JButton backButton = new JButton("Back to list");
 	JButton submitButton = new JButton("Submit article");
+	JFileChooser fileChooser = new JFileChooser();
+	File file;
 	
-	void initialise(App app) {
-		removeAll();
+	void initialise() {
 		// TODO: populate the first line of this table with the details of the current user
-		authorTable = new TablePanel(
+		authorTable.update(
 			new Object[1][5],
 			new String[] {"Title", "First name(s)", "Last name", "University", "Email address"}
 		);
-		authorTable.setBorder(App.titledBorder("Authors"));
 		file = null;
-		fileChooser = new JFileChooser();
+	}
+	
+	public SubmitView(App app) {
+		super("wrap, align center", "align center", "grow");
+		initialise();
 		fileChooser.setFileFilter(new FileNameExtensionFilter("PDF file", "pdf"));
-		
+		authorTable.setBorder(App.titledBorder("Authors"));
 		add(new JLabel("Team 12 Academic Publishing"));
 		add(new JLabel("Add article details")).setFont(App.headerFont);
 		add(uploadButton);
@@ -45,14 +47,9 @@ public class SubmitView extends AppView {
 		backButton.addActionListener(e -> app.switchView("author"));
 		submitButton.addActionListener(e -> {
 			// TODO: send PDF file to database
-			initialise(app);
+			initialise();
 			app.switchView("author");
 		});
-	}
-	
-	public SubmitView(App app) {
-		super("wrap, align center", "align center", "grow");
-		initialise(app);
 	}
 	
 }
