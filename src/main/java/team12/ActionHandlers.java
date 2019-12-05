@@ -116,16 +116,10 @@ public static class FindArticles implements ActionListener {
 		}
 		else {
 			if (isJournal.isSelected()) {
-				String [] journals = {"Journal1", "Journal2"}; // Controller.getJournals(text);
-				for (String journal: journals) {
-					results.append(journal+"\n");
-				}
+				Object [][] journals = UserController.getJournals(text);
 			}
 			else {
-				String [] articles = {"Article1", "Article2"}; // Controller.getArticles(text);
-				for (String article: articles) {
-					results.append(article+"\n");
-				}				
+				Object [][] articles = UserController.getArticles(text);				
 			}
 		}
 		//JOptionPane.showMessageDialog(src(e).getParent(), "You're not looking for anything constructive", "Empty fields", JOptionPane.ERROR_MESSAGE);
@@ -148,7 +142,7 @@ public static class chooseEditorAction implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch ((String) actions.getSelectedItem()){
 			case "See articles":
-				// String [] articles =EditorController.getArticles(String journal);
+				Object[][] articles =EditorController.getSubmissions(journal);
 				/*add articles to the textarea 
 				//when editor clicks on the article, he can read them and 
 				make a final decision about it
@@ -199,7 +193,7 @@ public static class chooseChiefEditorAction implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String action = (String) actions.getSelectedItem();
-		int ISNN = 0; // getISNN(String journal);
+		int ISNN = EditorController.getISSN(journal);
 		switch (action){
 			case "Publish":
 				//EditorController.addEdition();
@@ -209,6 +203,7 @@ public static class chooseChiefEditorAction implements ActionListener {
 				break;
 			case "Pass role":
 				String [][] editors = seeEditors(ISNN);
+				// later:  transferChief(ISSN, usernameofnewchief)
 				break; 
 			case "See roles":
 				String [][] editorss = seeEditors(ISNN);
