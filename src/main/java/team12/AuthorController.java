@@ -4,8 +4,12 @@ public class AuthorController {
 
 
     //add new submission to database
-    public static void addSubmission(String title, String summary, String pdfFilename, int mainAuthorID){
-        String query = "INSERT INTO Submission(title,abstract,pdfFilename,mainAuthorID) VALUES(?,?,?,?)";
+    public static void addSubmission(String title, String summary, int mainAuthorID){
+        String queryA = "SELECT AUTO_INCREMENT FROM information.schema.TABLES WHERE TABLE_SCHEMA=team012 AND TABLE_NAME=Submission";
+        Object[] varsA = new Object[0];
+        int currentID = (Integer) Query.formTable(queryA, varsA)[0][0];
+        String pdfFilename = currentID + ".pdf";
+        String query = "INSERT INTO Submission(title,summary,pdfFilename,mainAuthorID) VALUES(?,?,?,?)";
         Object[] vars = {title,summary,pdfFilename,mainAuthorID};
         Query.execute(query,vars);
     }
