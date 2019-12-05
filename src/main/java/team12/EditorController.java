@@ -109,7 +109,7 @@ public class EditorController {
     }
 
     public static Object[][] getArticles(String title){
-        String query = "SELECT * FROM Article INNER JOIN Submission ON Article.submissionID = Submission.submissionID WHERE title=? AND Submission.isApproved=1";
+        String query = "SELECT * FROM Article INNER JOIN Submission ON Article.submissionID = Submission.submissionID WHERE Submission.title=? AND Submission.isApproved=1";
         Object[] vars = {title};
         Object[][] result = Query.formTable(query,vars);
         return result;
