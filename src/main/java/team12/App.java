@@ -34,7 +34,7 @@ public class App extends JFrame {
 	
 	// Set app to default state
 	void initialise() {
-		userID = 0;
+		userID = 0; // IMPORTANT: set to 0 in production!
 		content.removeAll();
 		content.add(new WelcomeView(this), "welcome");
 		content.add(new UserView(this), "user");
@@ -44,7 +44,6 @@ public class App extends JFrame {
 	
 	// Set app to allow users to browse articles without logging in
 	void browse() {
-		userID = 0;
 		content.removeAll();
 		content.add(new ReaderView(this), "reader");
 		pack();                      // resizes app to contain all elements

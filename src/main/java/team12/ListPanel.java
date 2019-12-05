@@ -11,10 +11,10 @@ public class ListPanel extends AppPanel {
 		refresh();
 	}
 	
-	public void update(String... items) {
+	public void update(Object... items) {
 		removeAll();
-		for (String item : items) {
-			add(new JLabel(item));
+		for (Object item : items) {
+			add(new JLabel(item.toString()));
 		}
 		refresh();
 	}
@@ -31,7 +31,7 @@ public class ListPanel extends AppPanel {
 		super("wrap");
 	}
 	
-	public ListPanel(String... items) {
+	public ListPanel(Object... items) {
 		this();
 		update(items);
 	}
