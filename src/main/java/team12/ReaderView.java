@@ -3,12 +3,16 @@ package team12;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.*;
+import java.io.*;
 
 public class ReaderView extends AppView {
 	
 	SearchPanel searchPanel = new SearchPanel();
 	TablePanel resultsPanel = new TablePanel();
 	TextPanel abstractPanel = new TextPanel();
+	JButton downloadButton = new JButton("Download PDF");
+	File file;
 	
 	public ReaderView(App app) {
 		super("wrap", "grow", "[][grow]");
@@ -19,9 +23,12 @@ public class ReaderView extends AppView {
 		add(searchPanel, "growx");
 		add(resultsPanel, "grow");
 		add(abstractPanel, "grow");
+		add(downloadButton);
 		
+		// TODO: filter search
 		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testObject, testArray));
 		resultsPanel.model.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
+		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
 	}
 	
 	Object[][] testObject = {{1,2,3},{4,5,6}};
