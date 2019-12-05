@@ -5,9 +5,10 @@ public class ReviewerController {
     //get list of all submissions with less than 3 reviews 
     //return list in a 2d array
     //[[submissionID | title | abstract | pdfFilename | mainAuthorID]]
-    public static Object[][] getSubmission(){
-        String query = "SELECT * FROM Submission WHERE reviewNumber<=2";
-        Object[] vars = new Object[0];
+    public static Object[][] getSubmission(int reviewerID){
+        String reviewerStatus = UserController.getUserStatus(reviewerID);
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE uniAffiliation!=? AND reviewNumber<3";
+        Object[] vars = {reviewerStatus};
         Object[][] table = Query.formTable(query,vars);
         return table;
     }

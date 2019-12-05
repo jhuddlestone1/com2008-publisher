@@ -48,11 +48,13 @@ public class UserController {
     }
 
     //change user's password
-    //input (email,new password)
-    public static void updatePassword(String email, String password){
-        String query = "UPDATE UserLogin SET password=? WHERE email=?";
-        Object[] vars = {password, email};
-        Query.execute(query,vars);
+    //input (email, old password, new password)
+    public static void updatePassword(String email, String oldPassword, String newPassword){
+        if (validateUser(email,oldPassword)==true){
+            String query = "UPDATE UserLogin SET password=? WHERE userID=?";
+            Object[] vars = {newPassword, email};
+            Query.execute(query,vars);
+        }
     }
     
     //return userID with given email
@@ -75,6 +77,12 @@ public class UserController {
         return userDetails;
     }
 
+    public static String getUserStatus(int userID){
+        String query = "SELECT uniAffiliation FROM UserDetails WHERE userID=?";
+        Object[] vars = {userID};
+        String result = (String) Query.formTable(query,vars)[0][0];
+        return result;
+    }
     //delete user from tables UserLogin and UserDetails
     public static void deleteUser(String email){
         String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";
@@ -82,6 +90,20 @@ public class UserController {
         Query.execute(query,vars);
     }
 
+    //title provided by user for searching journal
+    public static Object[][] getJournals(String title){
+        String query = "SELECT * FROM Journal WHERE title=?";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+
+    public static Object[][] getArticles(String title){
+        String query = "SELECT * FROM Article WHERE title=?";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
     public static void main(String[]args){
     }
 } 

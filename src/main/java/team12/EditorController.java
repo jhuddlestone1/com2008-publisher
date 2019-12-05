@@ -2,9 +2,11 @@ package team12;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class EditorController {
+
+    //Journal section
 
     //add new journal to database in table Journal
     public static void addJournal(int ISSN, String journalTitle, int chiefEditorID){
@@ -34,9 +36,10 @@ public class EditorController {
         return result;
     }
 
-    public static int getJournals(String journal){
+
+    public static int getISSN(String journalTitle){
         String query = "SELECT ISSN FROM Journal WHERE journalTitle =?";
-        Object[] vars = {journal};
+        Object[] vars = {journalTitle};
         int result = (Integer)(Query.formTable(query,vars)[0][0]); 
         return result;
     }
@@ -58,7 +61,7 @@ public class EditorController {
         }
     }
 
-    //display list of volumes of a journal
+    //display list of volumes of one journal
     //[[volumeID | ISSN | volume(e.g. "vol.1") | date(e.g. "2019-11-28")]]
     public static Object[][] getVolumes(int ISSN){
         String query = "SELECT * FROM Volume WHERE ISSN=?";
@@ -96,6 +99,37 @@ public class EditorController {
         Object[][] result = Query.formTable(query,vars);
         return result;
     }
+
+    public static Object[][] getSubmissions(String journalTitle){
+        int ISSN = getISSN(journalTitle);
+        String query = "SELECT * FROM Submission INNER JOIN Approval ON Submission.submissionID = Approval.submissionID WHERE ISSN=? AND isApproved=0";
+        Object[] vars = {ISSN};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+
+    public static String[] getVerdicts(int submissionID){
+        String query = "SELECT verdict FROM Review WHERE submissionID=?";
+        Object[] vars = {submissionID};
+        Object[][] table = Query.formTable(query,vars);
+        String[] result = new String[table.length];
+        for (int x=0; x<table.length; x++){
+            result[x] = (String) table[x][0];
+        }
+        return result;
+    }
+    public static void addArticles(int submissionID, int page, int editionID){
+        String query1 = "UPDATE Approval SET isApproved = 1 WHERE submissionID=?";
+        Object[] vars1 = {submissionID};
+        Query.execute(query1,vars1);
+        String query2 = "INSERT INTO Article(submissionID,pageRange,editionID) VALUES(?,?,?)";
+        Object[] vars2 = {submissionID,page,editionID};
+        Query.execute(query2, vars2);
+    }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+    //Editor section
 
     //add an array of new editors to a journal in the table JournalEditors
     public static void addEditors(int ISSN, String[] emails){
@@ -142,17 +176,18 @@ public class EditorController {
     }
 
     //transfer the chief editor role to another editor operating the journal
-    public static void transferChief(int ISSN, int editorID){
+    public static void transferChief(int ISSN, String email){
         //check if editor is on the board of editor of the journal
-        String query1 = "SELECT * FROM JournalEditors WHERE ISSN=? AND editorID=?";
-        Object[] vars1 = {ISSN,editorID};
+        int userID = UserController.getUserID(email);
+        String query1 = "SELECT * FROM JournalEditors WHERE ISSN=? AND userID=?";
+        Object[] vars1 = {ISSN,userID};
         if (!Query.execute(query1,vars1).isEmpty()){
             String query2 = "UPDATE Journal SET chiefEditorID=? WHERE ISSN=?";
-            Object[] vars2 = {editorID,ISSN};
+            Object[] vars2 = {userID,ISSN};
             Query.execute(query2,vars2);
         }
         else {
-            System.out.println("Editor don't have authorisation to this journal");
+            System.out.println("Editor is not on the board");
         }
     }
     public static void main(String[]args) {}

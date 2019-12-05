@@ -2,10 +2,11 @@ package team12;
 
 public class AuthorController {
 
+
     //add new submission to database
-    public static void addSubmission(String title, String summary, String pdf, int mainAuthorID){
+    public static void addSubmission(String title, String summary, String pdfFilename, int mainAuthorID){
         String query = "INSERT INTO Submission(title,abstract,pdfFilename,mainAuthorID) VALUES(?,?,?,?)";
-        Object[] vars = {title,summary,pdf,mainAuthorID};
+        Object[] vars = {title,summary,pdfFilename,mainAuthorID};
         Query.execute(query,vars);
     }
 
