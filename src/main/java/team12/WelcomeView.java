@@ -16,10 +16,15 @@ public class WelcomeView extends AppView {
 		add(loginPanel);
 		add(readerButton);
 		
-		//loginPanel.loginButton.addActionListener(
-			//new ActionHandlers.logInListener(loginPanel.email, loginPanel.password)
-		//);
-		loginPanel.loginButton.addActionListener(e -> app.login(1));
+		loginPanel.loginButton.addActionListener(e -> {
+			String email = loginPanel.email.getText();
+			String password = loginPanel.password.getText();
+			if (UserController.validateEmail(email) && UserController.validateUser(email, password)) {
+				app.login(UserController.getUserID(email));
+			} else {
+				JOptionPane.showMessageDialog(app, "Login unsuccessful.", "Log in", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 		loginPanel.signupButton.addActionListener(e -> app.switchView("user"));
 		readerButton.addActionListener(e -> app.browse());
 	}

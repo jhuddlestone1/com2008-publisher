@@ -19,10 +19,11 @@ public class AppMenu extends JMenu {
 		add(quitProgram).setMnemonic(KeyEvent.VK_Q);
 		
 		mainMenu.addActionListener(e -> {
-			if (app.userID > 0) {
+			if (app.isLoggedIn()) {
 				app.switchView("main");
 			} else {
-				JOptionPane.showMessageDialog(app, "The main menu is not available.", "Main menu", JOptionPane.INFORMATION_MESSAGE);
+				app.logout();
+				//JOptionPane.showMessageDialog(app, "The main menu is not available.", "Main menu", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		logOut.addActionListener(e -> app.logout());

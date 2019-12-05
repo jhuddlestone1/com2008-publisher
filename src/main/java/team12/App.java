@@ -78,6 +78,10 @@ public class App extends JFrame {
 		layout.show(content, viewName);
 	}
 	
+	public boolean isLoggedIn() {
+		return userID > 0;
+	}
+	
 	public void logout() {
 		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?", "Log out", JOptionPane.YES_NO_OPTION)==0)
 			initialise();
