@@ -16,23 +16,22 @@ public class UserView extends AppView {
 		
 		detailsPanel.submitButton.addActionListener(e -> {
 			String email = detailsPanel.email.getText();
+			String password = detailsPanel.password.getText();
+			String title = detailsPanel.title.getSelectedItem().toString();
+			String firstNames = detailsPanel.firstNames.getText();
+			String lastName = detailsPanel.lastName.getText();
+			String university = detailsPanel.university.getText();
+			boolean allValid = detailsPanel.valid(email, password, title, firstNames, lastName, university);
 			boolean emailExists = UserController.validateEmail(email);
-			if (!emailExists) {
-				UserController.addUser(
-					email,
-					detailsPanel.password.getText(),
-					detailsPanel.title.getSelectedItem().toString(),
-					detailsPanel.firstNames.getText(),
-					detailsPanel.lastName.getText(),
-					detailsPanel.university.getText()
-				);
-				JOptionPane.showMessageDialog(app, "Account created.", "Add user", JOptionPane.INFORMATION_MESSAGE);
-				if (!app.isLoggedIn()) {
-					app.login(UserController.getUserID(email));
-				}
-			} else {
-				JOptionPane.showMessageDialog(app, "Account already exists.", "Add user", JOptionPane.WARNING_MESSAGE);
-			}
+			if (allValid) {
+				if (!emailExists) {
+					UserController.addUser(email, password, title, firstNames, lastName, university);
+					JOptionPane.showMessageDialog(app, "Account created.", "Add user", JOptionPane.INFORMATION_MESSAGE);
+					if (!app.isLoggedIn()) {
+						app.login(UserController.getUserID(email));
+					}
+				} else JOptionPane.showMessageDialog(app, "Account already exists.", "Add user", JOptionPane.WARNING_MESSAGE);
+			} else JOptionPane.showMessageDialog(app, "All details must be provided.", "Add user", JOptionPane.WARNING_MESSAGE);
 		});
 	}
 	
