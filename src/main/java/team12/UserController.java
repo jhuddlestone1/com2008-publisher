@@ -1,6 +1,39 @@
 package team12;
 
+import java.nio.charset.StandardCharsets;
+import java.security.*;
+
 public class UserController {
+
+    //Hashing the password methods
+	public static String getSalt() {
+		SecureRandom random = new SecureRandom();
+		byte[] salt = new byte[16];
+		random.nextBytes(salt);
+		StringBuilder result = new StringBuilder();
+		for(int i=0; i< salt.length; i++){
+			result.append(Integer.toString((salt[i] & 0xff) + 0x100, 16).substring(1));
+		}
+
+		return result.toString();
+	}
+
+	public static String getSecurePassword(String passwordToHash, String salt){
+		String generatedPassword = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			md.update(salt.getBytes(StandardCharsets.UTF_8));
+			byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for(int i=0; i< bytes.length ;i++){
+				sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+			}
+			generatedPassword = sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return generatedPassword;
+	} 
 
     //check if email exists - return "invalid email"
     public static Boolean validateEmail(String email){
@@ -16,15 +49,15 @@ public class UserController {
 
     //check if email and password is valid - return "incorrect password"
     public static Boolean validateUser(String email, String password){
-        String query = "SELECT password FROM UserLogin WHERE email=?";
+        String query = "SELECT password,salt FROM UserLogin WHERE email=?";
         Object[] vars = {email};
-        String password2 = (String) Query.formTable(query,vars)[0][0];
+        String hashedPassword = (String) Query.formTable(query,vars)[0][0];
+        String salt = (String) Query.formTable(query,vars)[0][1];
         if (validateEmail(email)){
-            if (password2.equals(password)) {
+            if (hashedPassword.equals(getSecurePassword(password,salt))) {
                 return true;
             }
             else {
-                System.out.println("incorrect password");
                 return false;
             }
         }
@@ -42,8 +75,10 @@ public class UserController {
         Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
 
         //insert user's login details into table UserLogin
-        String query2 = "INSERT INTO UserLogin(email,password,userID) VALUES(?,?,(SELECT userID FROM UserDetails WHERE email=?))";
-        Object[] vars2 = {email,password,email};
+        String salt = getSalt();
+        String hashedPassword = getSecurePassword(password,salt);
+        String query2 = "INSERT INTO UserLogin(email,password,salt,userID) VALUES(?,?,?,(SELECT userID FROM UserDetails WHERE email=?))";
+        Object[] vars2 = {email,hashedPassword,salt,email};
         Query.execute(query2, vars2);
     }
 
@@ -51,8 +86,10 @@ public class UserController {
     //input (email, old password, new password)
     public static void updatePassword(String email, String oldPassword, String newPassword){
         if (validateUser(email,oldPassword)==true){
-            String query = "UPDATE UserLogin SET password=? WHERE userID=?";
-            Object[] vars = {newPassword, email};
+            String salt = getSalt();
+            String hashedPassword = getSecurePassword(newPassword,salt);            
+            String query = "UPDATE UserLogin SET password=?, salt=? WHERE userID=?";
+            Object[] vars = {hashedPassword, salt, email};
             Query.execute(query,vars);
         }
     }
@@ -95,5 +132,6 @@ public class UserController {
         return result;
     }
     public static void main(String[]args){
-    }
-} 
+        validateUser("awkulbaka1@sheffield.ac.uk", "ola");
+    } 
+}
