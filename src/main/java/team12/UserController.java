@@ -65,6 +65,12 @@ public class UserController {
         return userID;
     }
 
+    public static String getUserStatus(int userID){
+        String query = "SELECT uniAffiliation FROM UserDetails WHERE userID=?";
+        Object[] vars = {userID};
+        String result = (String) Query.formTable(query,vars)[0][0];
+        return result;
+    }
     //delete user from tables UserLogin and UserDetails
     public static void deleteUser(String email){
         String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";

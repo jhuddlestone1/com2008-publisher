@@ -98,12 +98,13 @@ public class EditorController {
         return result;
     }
 
-    // public static Object[][] getSubmissions(String journalTitle){
-    //     int ISSN = getISSN(journalTitle);
-    //     String query = "SELECT * FROM Submission WHERE ISSN=? AND "
-    //     Object[] vars = {ISSN};
-
-    // }
+    public static Object[][] getSubmissions(String journalTitle){
+        int ISSN = getISSN(journalTitle);
+        String query = "SELECT * FROM Submission INNER JOIN Approval ON Submission.submissionID = Approval.submissionID WHERE ISSN=? AND isApproved=0";
+        Object[] vars = {ISSN};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
 
     public static void addArticles(int submissionID, int page, int editionID){
         String query1 = "UPDATE Approval SET isApproved = 1 WHERE submissionID=?";
