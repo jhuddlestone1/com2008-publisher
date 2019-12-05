@@ -1,4 +1,4 @@
 #!/bin/bash
 mkdir bin &> /dev/null
 cd "src/main/java"
-javac -d "../../../bin" -classpath ".;mysql-connector-java-8.0.18.jar" $1
+javac -d "../../../bin" -classpath ".:mysql-connector-java-8.0.18.jar" $1

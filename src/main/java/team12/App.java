@@ -64,6 +64,7 @@ public class App extends JFrame {
 		content.add(new AuthorView(this), "author");
 		content.add(new SubmitView(this), "submit");
 		content.add(new ReviewerView(this), "reviewer");
+		content.add(new SubmissionsView(this), "submissions");
 		content.add(new EditorView(this), "editor");
 		content.add(new JournalView(this), "journal");
 		content.add(new UserView(this), "user");
