@@ -12,7 +12,7 @@ public class AuthorView extends AppView {
 	JButton submitButton = new JButton("Submit new article");
 	JButton updateButton = new JButton("Update list");
 	
-	void update(userID) {
+	void update(int userID) {
 		Object[][] submissions = AuthorController.getSubmissions(userID);
 		String[] articles = new String[submissions.length];
 		AppPanel[] tabs = new AppPanel[submissions.length];

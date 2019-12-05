@@ -8,23 +8,37 @@ public class TablePanel extends JScrollPane {
 	JTable table = new JTable();
 	ListSelectionModel model = table.getSelectionModel();
 	
-	public void refresh() {
+	void refresh() {
 		validate();
 		repaint();
 	}
 	
-	public void empty() {
+	void empty() {
 		table = new JTable();
+		model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.setSelectionModel(model);
 		setViewportView(table);
 		refresh();
 	}
 	
-	public void update(Object[][] data, Object[] cols) {
+	void update(Object[][] data, Object[] cols) {
 		table = new JTable(data, cols);
 		model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setSelectionModel(model);
 		setViewportView(table);
 		refresh();
+	}
+	
+	Object[][] extract() {
+		int rows = table.getRowCount();
+		int cols = table.getColumnCount();
+		Object[][] data = new String[rows][cols];
+		for (int i=0; i < rows; i++) {
+			for (int j=0; i < cols; j++) {
+				data[i][j] = table.getValueAt(i,j);
+			}
+		}
+		return data;
 	}
 	
 	public TablePanel() {
