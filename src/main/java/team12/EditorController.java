@@ -2,7 +2,7 @@ package team12;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class EditorController {
 
@@ -34,9 +34,10 @@ public class EditorController {
         return result;
     }
 
-    public static int getJournals(String journal){
+
+    public static int getISSN(String journalTitle){
         String query = "SELECT ISSN FROM Journal WHERE journalTitle =?";
-        Object[] vars = {journal};
+        Object[] vars = {journalTitle};
         int result = (Integer)(Query.formTable(query,vars)[0][0]); 
         return result;
     }
@@ -58,7 +59,7 @@ public class EditorController {
         }
     }
 
-    //display list of volumes of a journal
+    //display list of volumes of one journal
     //[[volumeID | ISSN | volume(e.g. "vol.1") | date(e.g. "2019-11-28")]]
     public static Object[][] getVolumes(int ISSN){
         String query = "SELECT * FROM Volume WHERE ISSN=?";
@@ -95,6 +96,22 @@ public class EditorController {
         Object[] vars = {volumeID};
         Object[][] result = Query.formTable(query,vars);
         return result;
+    }
+
+    // public static Object[][] getSubmissions(String journalTitle){
+    //     int ISSN = getISSN(journalTitle);
+    //     String query = "SELECT * FROM Submission WHERE ISSN=? AND "
+    //     Object[] vars = {ISSN};
+
+    // }
+
+    public static void addArticles(int submissionID, int page, int editionID){
+        String query1 = "UPDATE Approval SET isApproved = 1 WHERE submissionID=?";
+        Object[] vars1 = {submissionID};
+        Query.execute(query1,vars1);
+        String query2 = "INSERT INTO Article(submissionID,pageRange,editionID) VALUES(?,?,?)";
+        Object[] vars2 = {submissionID,page};
+        Query.execute(query2, vars2);
     }
 
     //add an array of new editors to a journal in the table JournalEditors

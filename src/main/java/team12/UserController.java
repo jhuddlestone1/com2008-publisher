@@ -72,6 +72,20 @@ public class UserController {
         Query.execute(query,vars);
     }
 
+    //title provided by user for searching journal
+    public static Object[][] getJournals(String title){
+        String query = "SELECT * FROM Journal WHERE title=?";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+
+    public static Object[][] getArticles(String title){
+        String query = "SELECT * FROM Article WHERE title=?";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
     public static void main(String[]args){
     }
 } 
