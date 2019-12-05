@@ -3,21 +3,38 @@ package team12;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.*;
+import java.io.*;
 
 public class AuthorView extends AppView {
 	
-	SearchPanel searchPanel = new SearchPanel();
-	TabPanel tabPanel = new TabPanel();
+	TabPanel articleTabs = new TabPanel();
+	JButton updateButton = new JButton("Update list");
+	JButton submitButton = new JButton("Submit new article");
 	
-	public AuthorView(App app) {
-		super("wrap", "grow", "[][grow]");
-		add(searchPanel, "growx");
-		add(tabPanel, "grow");
+	void initialise(App app) {
+		removeAll();
+		/*
+		// TODO: get current articles and put them here
+		for (Object article : articles) {
+			// format articles
+		}
+		articleTabs.update(
+			// add articles to tabs
+		);
+		*/
+		add(articleTabs);
+		add(updateButton, "split 2");
+		add(submitButton);
+		refresh();
 		
-		//searchPanel.searchButton.addActionListener(e -> tabPanel.update(testArray));
+		updateButton.addActionListener(e -> initialise(app));
+		submitButton.addActionListener(e -> app.switchView("submit"));
 	}
 	
-	//String[] names = {"tab1", "tab2", "tab3"};
-	//JPanel[] panels = {new JPanel(), new ListPanel(), new TextPanel()};
+	public AuthorView(App app) {
+		super("wrap, align center");
+		initialise(app);
+	}
 	
 }

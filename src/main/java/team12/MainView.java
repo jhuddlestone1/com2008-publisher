@@ -7,8 +7,8 @@ import javax.swing.*;
 public class MainView extends AppView {
 	
 	JButton readerButton = new JButton("Read articles");
-	JButton authorButton = new JButton("Submit articles");
-	JButton reviewerButton = new JButton("Review articles");
+	JButton authorButton = new JButton("Submit article");
+	JButton reviewerButton = new JButton("Review submissions");
 	JButton editorButton = new JButton("Edit/publish journals");
 	JButton journalButton = new JButton("Register new journal");
 	

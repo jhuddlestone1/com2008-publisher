@@ -6,16 +6,15 @@ import javax.swing.*;
 
 public class UserView extends AppView {
 	
-	JLabel headerLabel = new JLabel("Add user details");
 	DetailsPanel detailsPanel = new DetailsPanel();
 	
 	public UserView(App app) {
 		super("wrap, align center", "align center", "grow");
 		add(new JLabel("Team 12 Academic Publishing"));
-		headerLabel.setFont(App.headerFont);
-		add(headerLabel);
+		add(new JLabel("Add user details")).setFont(App.headerFont);
 		add(detailsPanel);
 		
+		// TODO: add user create/update code
 		detailsPanel.submitButton.addActionListener(e -> app.switchView("main"));
 	}
 	

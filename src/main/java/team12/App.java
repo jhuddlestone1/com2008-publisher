@@ -31,13 +31,6 @@ public class App extends JFrame {
 		setVisible(true);
 	}
 	
-	// Switches between views; pass the view's reference name as defined above.
-	// Returns a reference back to the app instance to allow method chaining.
-	App switchView(String viewName) {
-		layout.show(content, viewName);
-		return this;
-	}
-	
 	// Set app to default state
 	void initialise() {
 		userID = 0;
@@ -69,6 +62,7 @@ public class App extends JFrame {
 		content.add(new MainView(this), "main");
 		content.add(new ReaderView(this), "reader");
 		content.add(new AuthorView(this), "author");
+		content.add(new SubmitView(this), "submit");
 		content.add(new ReviewerView(this), "reviewer");
 		content.add(new EditorView(this), "editor");
 		content.add(new JournalView(this), "journal");
@@ -76,6 +70,11 @@ public class App extends JFrame {
 		
 		pack();                      // resizes app to contain all elements
 		setLocationRelativeTo(null); // centers app on screen
+	}
+	
+	// Switches between views; pass the view's reference name as defined above.
+	void switchView(String viewName) {
+		layout.show(content, viewName);
 	}
 	
 	public void logout() {
