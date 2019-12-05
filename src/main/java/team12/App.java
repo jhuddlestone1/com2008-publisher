@@ -9,6 +9,7 @@ public class App extends JFrame {
 	// Set styles here; much more memory efficient than constantly reinstatiating
 	// them inline, and it's easier to update styles for all elements at once.
 	static Font headerFont = new Font(null, Font.BOLD, 18);
+	static Font italicFont = new Font(null, Font.ITALIC, 14);
 	static Border defaultBorder = BorderFactory.createEtchedBorder();
 	static Border titledBorder(String title) {
 		return new TitledBorder(App.defaultBorder, title);

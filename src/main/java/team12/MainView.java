@@ -14,7 +14,12 @@ public class MainView extends AppView {
 	
 	public MainView(App app) {
 		super("wrap", "grow, align center", "grow");
+		
+		Object[] userDetails = UserController.getUserDetails(app.userID);
+		String userName = userDetails[1].toString() +' '+ userDetails[2].toString() +' '+ userDetails[3].toString();
+		
 		add(new JLabel("Team 12 Academic Publishing"));
+		add(new JLabel("Welcome, "+ userName)).setFont(App.italicFont);
 		add(new JLabel("Main menu")).setFont(App.headerFont);
 		add(readerButton, "grow");
 		add(authorButton, "grow");

@@ -59,10 +59,20 @@ public class UserController {
     //to be store as global variable - userID
     //userID needed to get list of journals/submissions/review when logged in as different role
     public static int getUserID(String email){
-        String query = "SELECT userID FROM UserDetails WHERE email=?";
+        String query = "SELECT userID FROM UserLogin WHERE email=?";
         Object[] vars = {email};
         int userID = (Integer) Query.formTable(query,vars)[0][0];
         return userID;
+    }
+    
+    //return userID with given email
+    //to be store as global variable - userID
+    //userID needed to get list of journals/submissions/review when logged in as different role
+    public static Object[] getUserDetails(int userID){
+        String query = "SELECT userID, title, forename, surname, uniAffiliation, email FROM UserDetails WHERE userID=?";
+        Object[] vars = {userID};
+        Object[] userDetails = Query.formTable(query,vars)[0];
+        return userDetails;
     }
 
     //delete user from tables UserLogin and UserDetails
