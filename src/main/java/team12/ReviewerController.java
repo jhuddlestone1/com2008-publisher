@@ -9,9 +9,10 @@ public class ReviewerController {
         String reviewerStatus = UserController.getUserStatus(reviewerID);
         String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE uniAffiliation!=? AND reviewNumber<3";
         Object[] vars = {reviewerStatus};
-        Object[][] table = Query.formTable(query,vars);
-        return table;
+        Object[][] result = Query.formTable(query,vars);
+        return result;
     }
+
 
     //add review to a submission
     public static void addReview(String title, String summary, String typoList, String[] criticisms, String iniVerdict, int submissionID, int reviewerID){
