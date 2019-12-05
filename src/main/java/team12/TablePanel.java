@@ -5,7 +5,8 @@ import javax.swing.*;
 
 public class TablePanel extends JScrollPane {
 	
-	JTable table;
+	JTable table = new JTable();
+	ListSelectionModel model = table.getSelectionModel();
 	
 	public void refresh() {
 		validate();
@@ -20,6 +21,8 @@ public class TablePanel extends JScrollPane {
 	
 	public void update(Object[][] data, Object[] cols) {
 		table = new JTable(data, cols);
+		model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.setSelectionModel(model);
 		setViewportView(table);
 		refresh();
 	}

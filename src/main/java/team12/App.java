@@ -63,7 +63,8 @@ public class App extends JFrame {
 		userID = id;
 		content.removeAll();
 		
-		// TODO: add decision logic for user permissions
+		// TODO: add decision logic for user permissions;
+		// maybe add menu items based on array of permissions corresponding to view names?
 		// Add views here
 		content.add(new MainView(this), "main");
 		content.add(new ReaderView(this), "reader");

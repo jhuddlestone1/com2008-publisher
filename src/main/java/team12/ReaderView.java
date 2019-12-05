@@ -21,10 +21,11 @@ public class ReaderView extends AppView {
 		add(abstractPanel, "grow");
 		
 		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testObject, testArray));
-		//resultsPanel.addActionListener(e => abstractPanel.update(e.getSource().getValue()));
+		resultsPanel.model.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
 	}
 	
 	Object[][] testObject = {{1,2,3},{4,5,6}};
 	Object[] testArray = {"one", "two", "three"};
+	String testAbstract = "This is an abstract.";
 	
 }

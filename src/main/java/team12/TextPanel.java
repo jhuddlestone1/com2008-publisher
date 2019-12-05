@@ -9,10 +9,12 @@ public class TextPanel extends AppPanel {
 	
 	public void empty() {
 		textArea.setText(null);
+		refresh();
 	}
 	
-	public void update(String text) {
-		textArea.setText(text);
+	public void update(Object text) {
+		textArea.setText(text.toString());
+		refresh();
 	}
 		
 	public TextPanel() {
@@ -20,7 +22,7 @@ public class TextPanel extends AppPanel {
 		add(textArea, "grow");
 	}
 	
-	public TextPanel(String text) {
+	public TextPanel(Object text) {
 		this();
 		update(text);
 	}
