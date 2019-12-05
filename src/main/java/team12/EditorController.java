@@ -102,11 +102,19 @@ public class EditorController {
 
     public static Object[][] getSubmissions(String journalTitle){
         int ISSN = getISSN(journalTitle);
-        String query = "SELECT * FROM Submission INNER JOIN Approval ON Submission.submissionID = Approval.submissionID WHERE ISSN=? AND isApproved=0";
+        String query = "SELECT * FROM Submission WHERE ISSN=? AND isApproved=0";
         Object[] vars = {ISSN};
         Object[][] result = Query.formTable(query,vars);
         return result;
     }
+
+    public static Object[][] getArticles(String title){
+        String query = "SELECT * FROM Article INNER JOIN Submission ON Article.submissionID = Submission.submissionID WHERE Submission.title=? AND Submission.isApproved=1";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+
 
     public static String[] getVerdicts(int submissionID){
         String query = "SELECT verdict FROM Review WHERE submissionID=?";
@@ -119,7 +127,7 @@ public class EditorController {
         return result;
     }
     public static void addArticles(int submissionID, int page, int editionID){
-        String query1 = "UPDATE Approval SET isApproved = 1 WHERE submissionID=?";
+        String query1 = "UPDATE Submission SET isApproved = 1 WHERE submissionID=?";
         Object[] vars1 = {submissionID};
         Query.execute(query1,vars1);
         String query2 = "INSERT INTO Article(submissionID,pageRange,editionID) VALUES(?,?,?)";
