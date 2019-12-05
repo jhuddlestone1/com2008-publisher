@@ -22,7 +22,7 @@ public class AppMenu extends JMenu {
 			if (app.isLoggedIn()) {
 				app.switchView("main");
 			} else {
-				app.logout();
+				app.initialise();
 				//JOptionPane.showMessageDialog(app, "The main menu is not available.", "Main menu", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
