@@ -29,6 +29,7 @@ public class SubmitView extends AppView {
 		initialise();
 		fileChooser.setFileFilter(new FileNameExtensionFilter("PDF file", "pdf"));
 		authorTable.setBorder(App.titledBorder("Authors"));
+		
 		add(new JLabel("Team 12 Academic Publishing"));
 		add(new JLabel("Add article details")).setFont(App.headerFont);
 		add(uploadButton);
@@ -36,7 +37,6 @@ public class SubmitView extends AppView {
 		add(backButton, "split 2");
 		//add(new JLabel("Note: a default password will be sent seperately to new authors."));
 		add(submitButton);
-		refresh();
 		
 		// TODO: add article create/update code
 		uploadButton.addActionListener(e -> {
