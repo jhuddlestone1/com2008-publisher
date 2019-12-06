@@ -15,6 +15,14 @@ public class App extends JFrame {
 		return new TitledBorder(App.defaultBorder, title);
 	}
 	
+	// Utility to check that items are not null
+	static boolean validate(Object... items) {
+		for (Object item : items) {
+			if (item == null || item.toString().trim().isEmpty()) return false;
+		}
+		return true;
+	}
+	
 	// If this field is greater than zero, we know a user is logged in, and which one!
 	int userID;
 	

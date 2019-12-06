@@ -13,13 +13,6 @@ public class DetailsPanel extends AppPanel {
 	JPasswordField password = new JPasswordField(16);
 	JButton submitButton = new JButton("Submit details");
 	
-	public boolean validate(String... fields) {
-		for (String field : fields) {
-			if (field == null || field.trim().isEmpty()) return false;
-		}
-		return true;
-	}
-	
 	public DetailsPanel() {
 		super("wrap 2");
 		add(new JLabel("Title: "));

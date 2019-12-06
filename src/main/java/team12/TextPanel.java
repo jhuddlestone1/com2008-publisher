@@ -7,14 +7,26 @@ public class TextPanel extends AppPanel {
 	
 	JTextArea textArea = new JTextArea();
 	
-	public void empty() {
+	void empty() {
 		textArea.setText(null);
 		refresh();
 	}
 	
-	public void update(Object text) {
+	void setText(Object text) {
 		textArea.setText(text.toString());
 		refresh();
+	}
+	
+	void update(Object text) {
+		setText(text);
+	}
+	
+	String getText() {
+		return textArea.getText();
+	}
+	
+	String extract() {
+		return getText();
 	}
 		
 	public TextPanel() {
@@ -24,7 +36,7 @@ public class TextPanel extends AppPanel {
 	
 	public TextPanel(Object text) {
 		this();
-		update(text);
+		setText(text);
 	}
 	
 }

@@ -9,7 +9,9 @@ import java.io.*;
 public class SubmitView extends AppView {
 	
 	TablePanel authorTable = new TablePanel();
+	JTextField articleTitle = new JTextField(32);
 	JButton uploadButton = new JButton("Upload article (PDF)");
+	TextPanel abstractPanel = new TextPanel();
 	JButton addButton = new JButton("Add author");
 	JButton removeButton = new JButton("Remove author");
 	JButton backButton = new JButton("Back to list");
@@ -26,18 +28,20 @@ public class SubmitView extends AppView {
 	}
 	
 	public SubmitView(App app) {
-		super("wrap", "align center, grow", "[][][][grow][]");
+		super("wrap", "align center, grow", "[][grow][][grow][][]");
 		initialise(app.userID);
 		fileChooser.setFileFilter(new FileNameExtensionFilter("PDF file", "pdf"));
+		abstractPanel.setBorder(App.titledBorder("Abstract"));
 		authorTable.setBorder(App.titledBorder("Authors"));
 		
-		add(new JLabel("Team 12 Academic Publishing"));
-		add(new JLabel("Add article details")).setFont(App.headerFont);
-		add(uploadButton, "split 3");
-		add(addButton);
+		add(new JLabel("Title:"), "split 3");
+		add(articleTitle, "growx");
+		add(uploadButton);
+		add(abstractPanel, "grow");
+		add(addButton, "split 2");
 		add(removeButton);
 		add(authorTable, "grow");
-		//add(new JLabel("Note: a default password will be sent seperately to new authors."));
+		add(new JLabel("Note: you will be prompted to set a default account password for each new author."));
 		add(backButton, "split 2");
 		add(submitButton);
 		
@@ -50,23 +54,36 @@ public class SubmitView extends AppView {
 		removeButton.addActionListener(e -> authorTable.removeRow());
 		backButton.addActionListener(e -> app.switchView("author"));
 		submitButton.addActionListener(e -> {
-			if (file != null) {
+			if (file != null && App.validate(articleTitle.getText(), abstractPanel.getText())) {
 				Object[][] data = authorTable.extract();
-				for (Object[] row : data) {
-					String title = row[0].toString();
-					String firstNames = row[1].toString();
-					String lastName = row[2].toString();
-					String university = row[3].toString();
-					String email = row[4].toString();
-					String password = row[5].toString();
-					UserController.addUser(email, password, title, firstNames, lastName, university);
-					// TODO: add to authors in daatabase
-					// TODO: send PDF file to database
-					JOptionPane.showMessageDialog(app, "Article submitted.", "Submit article", JOptionPane.INFORMATION_MESSAGE);
+				String[] authorEmails = new String[data.length];
+				for (int i=0; i < data.length; i++) {
+					String title = data[i][0].toString();
+					String firstNames = data[i][1].toString();
+					String lastName = data[i][2].toString();
+					String university = data[i][3].toString();
+					String email = data[i][4].toString();
+					String fullName = title +' '+ firstNames +' '+ lastName;
+					String password = JOptionPane.showInputDialog("Enter password for "+ fullName +":");
+					if (App.validate(email, password, title, firstNames, lastName, university)) {
+						if (!UserController.validateEmail(email)) {
+							UserController.addUser(email, password, title, firstNames, lastName, university);
+						}
+						authorEmails[i] = email;
+					}
+					else {
+						JOptionPane.showMessageDialog(app, "Author details missing.", "Submit article", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 				}
+				// TODO: add authors to submission and send PDF file to database
+				//AuthorController.addSubmission(articleTitle.getText(), abstractPanel.getText(), file, app.userID);
+				//AuthorController.addAuthors(submissionID, authorEmails);
+				JOptionPane.showMessageDialog(app, "Article submitted.", "Submit article", JOptionPane.INFORMATION_MESSAGE);
 				initialise(app.userID);
 				app.switchView("author");
-			} else JOptionPane.showMessageDialog(app, "No file uploaded.", "Submit article", JOptionPane.WARNING_MESSAGE);
+			}
+			else JOptionPane.showMessageDialog(app, "Article details / PDF file missing.", "Submit article", JOptionPane.WARNING_MESSAGE);
 		});
 	}
 	
