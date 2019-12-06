@@ -199,23 +199,6 @@ public class EditorController {
         }
     }
     public static void main(String[]args) {
-        // addJournal(2008,"Journal of Software Engineering",1);
-        // addJournal(2009,"Journal of Computer Science",1);
-        // addJournal(2010,"Journal of Artificial Intelligence",1);
-        // for (int x=1;x<5;x++){
-            // addEdition("1st","2019-07-30",9);
-        // }
-        // Object[][] es = getEditors(2008);
-        // for (Object[] e : es){
-        //     System.out.println(Arrays.toString(e));
-        // }
-        // System.out.println(getISSN("Journal of Software Engineering"));
-        // String[] emails = {"dami@gmail.com","jamie@gmail.com","aleksandra@gmail.com"};
-        // addEditors(2008,emails);
-        transferChief(2008,"eddie@gmail.com");
-
-
-
         //deleteEditor one more parameter - ISSN
     }
 }

@@ -1,7 +1,6 @@
 package team12;
 
 import java.sql.Blob;
-import java.util.Arrays;
 
 public class AuthorController {
 
@@ -63,13 +62,6 @@ public class AuthorController {
     }
     
     public static void main(String[]args) {
-        //can't test addSubmission from java
-        // Object[][] es = getReviews(1);
-        // for (Object[] e : es){
-        //     System.out.println(Arrays.toString(e));
-        // }
-        // String[] emails = {"dami@gmail.com"};
-        // addAuthors(1,emails);
-        addAnswer("walao",1);
+        //can't test addSubmission from java main
     }
 }

@@ -54,7 +54,7 @@ public class ReviewerController {
     }
 
     public static void main(String[] args){
-        //getSubmission return values changed
+        //getSubmission return values changed -- listed on top of function
         //Review tables "title" column removed
         //addReview parameters changed -- title(?) removed
     }

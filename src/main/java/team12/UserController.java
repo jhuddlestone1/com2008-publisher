@@ -120,7 +120,7 @@ public class UserController {
     }
 
     //journal title provided by user for searching
-    public static Object[] getJournal(String title){
+    public static Object[] getJournals(String title){
         String query = "SELECT * FROM Journal WHERE journalTitle=?";
         Object[] vars = {title};
         Object[] result = Query.formTable(query,vars)[0];
@@ -128,7 +128,7 @@ public class UserController {
     }
 
     //article title provided by user for searching
-    public static Object[] getArticle(String title){
+    public static Object[] getArticles(String title){
         String query = "SELECT * FROM Article INNER JOIN Submission ON Article.submissionID = Submission.submissionID WHERE Submission.title=?";
         Object[] vars = {title};
         Object[] result = Query.formTable(query,vars)[0];
@@ -140,16 +140,7 @@ public class UserController {
         // addUser("jamie@gmail.com","jamie1","Mr","Jamie","Huddlestone","Uni_of_Manchester");
         // addUser("aleksandra@gmail.com","aleksandra-2","Ms","Aleksandra","Kulbaka","Uni of Leeds");
         // addUser("random@gmail.com","r.u","Dr","Random","User","Uni-of-Liverpool");
-        // updatePassword("eddie@gmail.com","9876","0711");
-        // System.out.println();
-        // deleteUser("random@gmail.com");
-        // Object[] es = getJournal("Journal of Software Engineering");
-        // for (Object[] e : es){
-        //     System.out.println(Arrays.toString(e));
-        // }
-        // System.out.println(Arrays.toString(es));
 
-        //uni not standardised
-        //getJournals to getJournal
+        //uniAffiliation not standardised
     } 
 }
