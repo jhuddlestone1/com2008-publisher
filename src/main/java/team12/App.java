@@ -70,7 +70,7 @@ public class App extends JFrame {
 		content.add(new MainView(this), "main");
 		content.add(new ReaderView(this), "reader");
 		content.add(new ReviewerView(this), "reviewer");
-		content.add(new SubmissionsView(this), "submissions");
+		content.add(new SubmissionView(this), "submission");
 		content.add(new AuthorView(this), "author");
 		content.add(new SubmitView(this), "submit");
 		content.add(new EditorView(this), "editor");

@@ -51,7 +51,7 @@ public class ReviewerView extends AppView {
 		
 		update(app.userID);
 		
-		createButton.addActionListener(e -> app.switchView("submissions"));
+		createButton.addActionListener(e -> app.switchView("submission"));
 		updateButton.addActionListener(e -> update(app.userID));
 		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
 	}

@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 import java.io.*;
 
-public class SubmissionsView extends AppView {
+public class SubmissionView extends AppView {
 	
 	JRadioButton strongReject = new JRadioButton("Strong reject");
 	JRadioButton weakReject = new JRadioButton("Weak reject");
@@ -21,7 +21,7 @@ public class SubmissionsView extends AppView {
 	JButton submitButton = new JButton("Submit review");
 	File file;
 	
-	public SubmissionsView(App app) {
+	public SubmissionView(App app) {
 		super("wrap", "align center, grow", "[grow][grow][grow][][]");
 		summaryPanel.setBorder(App.titledBorder("Summary"));
 		errorsPanel.setBorder(App.titledBorder("Proofing errors"));
