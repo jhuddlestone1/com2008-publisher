@@ -15,7 +15,7 @@ public class ReaderView extends AppView {
 	File file;
 	
 	public ReaderView(App app) {
-		super("wrap, align center", "grow", "[][grow]");
+		super("wrap", "align center, grow", "[][grow][grow][]");
 		
 		resultsPanel.setBorder(App.titledBorder("Results"));
 		abstractPanel.setBorder(App.titledBorder("Abstract"));
@@ -27,7 +27,7 @@ public class ReaderView extends AppView {
 		
 		// TODO: filter search
 		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testObject, testArray));
-		resultsPanel.model.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
+		resultsPanel.selector.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
 		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
 	}
 	

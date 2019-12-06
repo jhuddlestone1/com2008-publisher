@@ -24,13 +24,15 @@ public class AuthorView extends AppView {
 	}
 		
 	public AuthorView(App app) {
-		super("wrap, align center");
+		super("wrap", "align center, grow", "[][][][grow]");
 		
 		update(app.userID);
 		
-		add(articleTabs);
+		add(new JLabel("Team 12 Academic Publishing"));
+		add(new JLabel("Add/manage articles")).setFont(App.headerFont);
 		add(submitButton, "split 2");
 		add(updateButton);
+		add(articleTabs, "grow");
 		
 		submitButton.addActionListener(e -> app.switchView("submit"));
 		updateButton.addActionListener(e -> update(app.userID));

@@ -2,31 +2,45 @@ package team12;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.*;
+import java.util.*;
 
 public class TablePanel extends JScrollPane {
 	
 	JTable table = new JTable();
-	ListSelectionModel model = table.getSelectionModel();
+	DefaultTableModel model;
+	DefaultListSelectionModel selector;
 	
-	void refresh() {
-		validate();
-		repaint();
+	void initialise() {
+		model = (DefaultTableModel) table.getModel();
+    table.setModel(model);
+		selector = (DefaultListSelectionModel) table.getSelectionModel();
+		selector.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.setSelectionModel(selector);
+		setViewportView(table);
+	}
+	
+	void addRow() {
+		model.addRow(new Object[table.getColumnCount()]);
+	}
+	
+	void addRow(Object[] data) {
+		model.addRow(data);
+	}
+	
+	void removeRow() {
+		if (!selector.isSelectionEmpty() && table.getRowCount() > 1) {
+			model.removeRow(table.getSelectedRow());
+		}
 	}
 	
 	void empty() {
-		table = new JTable();
-		model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.setSelectionModel(model);
-		setViewportView(table);
-		refresh();
+		model.setRowCount(0);
+		addRow();
 	}
 	
 	void update(Object[][] data, Object[] cols) {
-		table = new JTable(data, cols);
-		model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.setSelectionModel(model);
-		setViewportView(table);
-		refresh();
+		model.setDataVector(data, cols);
 	}
 	
 	Object[][] extract() {
@@ -42,10 +56,11 @@ public class TablePanel extends JScrollPane {
 	}
 	
 	public TablePanel() {
-		empty();
+		initialise();
 	}
 	
 	public TablePanel(Object[][] data, Object[] cols) {
+		initialise();
 		update(data, cols);
 	}
 	

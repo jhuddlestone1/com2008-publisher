@@ -7,29 +7,29 @@ import javax.swing.*;
 public class MainView extends AppView {
 	
 	JButton readerButton = new JButton("Read articles");
-	JButton authorButton = new JButton("Submit article");
 	JButton reviewerButton = new JButton("Review submissions");
+	JButton authorButton = new JButton("Add/manage articles");
 	JButton editorButton = new JButton("Add/manage journals");
 	//JButton journalButton = new JButton("Register new journal");
 	
 	public MainView(App app) {
-		super("wrap", "grow, align center", "grow");
+		super("wrap", "align center, grow", "grow");
 		
 		Object[] userDetails = UserController.getUserDetails(app.userID);
-		String userName = userDetails[1].toString() +' '+ userDetails[2].toString() +' '+ userDetails[3].toString();
+		String userName = userDetails[0].toString() +' '+ userDetails[1].toString() +' '+ userDetails[2].toString();
 		
 		add(new JLabel("Team 12 Academic Publishing"));
-		add(new JLabel("Welcome, "+ userName)).setFont(App.italicFont);
+		add(new JLabel("Welcome, "+ userName)).setFont(App.subheaderFont);
 		add(new JLabel("Main menu")).setFont(App.headerFont);
 		add(readerButton, "grow");
-		add(authorButton, "grow");
 		add(reviewerButton, "grow");
+		add(authorButton, "grow");
 		add(editorButton, "grow");
 		//add(journalButton, "grow");
 		
 		readerButton.addActionListener(e -> app.switchView("reader"));
-		authorButton.addActionListener(e -> app.switchView("author"));
 		reviewerButton.addActionListener(e -> app.switchView("reviewer"));
+		authorButton.addActionListener(e -> app.switchView("author"));
 		editorButton.addActionListener(e -> app.switchView("editor"));
 		//journalButton.addActionListener(e -> app.switchView("journal"));
 	}

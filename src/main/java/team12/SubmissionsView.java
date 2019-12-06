@@ -28,7 +28,7 @@ public class SubmissionsView extends AppView {
 		add(reviewButton);
 		
 		// TODO: filter search
-		resultsPanel.model.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
+		resultsPanel.selector.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
 		backButton.addActionListener(e -> app.switchView("reviewer"));
 		reviewButton.addActionListener(e -> file = null); // TODO: add article to user's review list
 	}
