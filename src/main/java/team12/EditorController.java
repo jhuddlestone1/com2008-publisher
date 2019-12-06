@@ -216,6 +216,6 @@ public class EditorController {
 
 
 
-        //deleteEditor one more parameter
+        //deleteEditor one more parameter - ISSN
     }
 }

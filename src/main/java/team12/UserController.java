@@ -150,5 +150,6 @@ public class UserController {
         // System.out.println(Arrays.toString(es));
 
         //uni not standardised
+        //getJournals to getJournal
     } 
 }

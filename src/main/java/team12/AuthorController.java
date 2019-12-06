@@ -1,6 +1,7 @@
 package team12;
 
 import java.sql.Blob;
+import java.util.Arrays;
 
 public class AuthorController {
 
@@ -10,9 +11,12 @@ public class AuthorController {
         Object[] varsA = new Object[0];
         int currentID = (Integer) Query.formTable(queryA, varsA)[0][0];
         String pdfFilename = currentID + ".pdf";
-        String query = "INSERT INTO Submission(title,summary,pdfFilename, pdfFile, mainAuthorID) VALUES(?,?,?,?,?)";
-        Object[] vars = {title,summary,pdfFilename,pdfFile,mainAuthorID};
-        Query.execute(query,vars);
+        String query1 = "INSERT INTO Submission(title,summary,pdfFilename, pdfFile, mainAuthorID) VALUES(?,?,?,?,?)";
+        Object[] vars1 = {title,summary,pdfFilename,pdfFile,mainAuthorID};
+        Query.execute(query1,vars1);
+        String query2 = "INSERT INTO SubmissionAuthors(submissionID,authorID) VALUES(?,?)";
+        Object[] vars2 = {currentID,mainAuthorID};
+        Query.execute(query2,vars2);
     }
 
     //return only the list of submission that an author has access to
@@ -59,6 +63,13 @@ public class AuthorController {
     }
     
     public static void main(String[]args) {
-
+        //can't test addSubmission from java
+        // Object[][] es = getReviews(1);
+        // for (Object[] e : es){
+        //     System.out.println(Arrays.toString(e));
+        // }
+        // String[] emails = {"dami@gmail.com"};
+        // addAuthors(1,emails);
+        addAnswer("walao",1);
     }
 }
