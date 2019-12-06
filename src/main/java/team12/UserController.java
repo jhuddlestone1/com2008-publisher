@@ -6,21 +6,6 @@ import java.util.Arrays;
 
 public class UserController {
 
-    //add new user into database in tables UserLogin and UserDetails
-    public static void addUser(String email, String password, String title, String forename, String surname, String uniAffiliation){
-        //insert user's personal information into table UserDetails
-        String query1 = "INSERT INTO UserDetails(title,forename,surname,uniAffiliation,email) VALUES(?,?,?,?,?)";
-        Object[] vars1 = {title,forename,surname,uniAffiliation,email};
-        Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
-
-        //insert user's login details into table UserLogin
-        String salt = getSalt();
-        String hashedPassword = getSecurePassword(password,salt);
-        String query2 = "INSERT INTO UserLogin(email,password,salt,userID) VALUES(?,?,?,(SELECT userID FROM UserDetails WHERE email=?))";
-        Object[] vars2 = {email,hashedPassword,salt,email};
-        Query.execute(query2, vars2);
-    }
-
     //Hashing the password methods
 	public static String getSalt() {
 		SecureRandom random = new SecureRandom();
@@ -49,6 +34,23 @@ public class UserController {
 		}
 		return generatedPassword;
 	} 
+    //add new user into database in tables UserLogin and UserDetails
+    public static void addUser(String email, String password, String title, String forename, String surname, String uniAffiliation){
+        //insert user's personal information into table UserDetails
+        String query1 = "INSERT INTO UserDetails(title,forename,surname,uniAffiliation,email) VALUES(?,?,?,?,?)";
+        Object[] vars1 = {title,forename,surname,uniAffiliation,email};
+        Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
+
+        //insert user's login details into table UserLogin
+        String salt = getSalt();
+        String hashedPassword = getSecurePassword(password,salt);
+        System.out.println(salt);
+        System.out.println(hashedPassword);
+        String query2 = "INSERT INTO UserLogin(email,password,salt,userID) VALUES(?,?,?,(SELECT userID FROM UserDetails WHERE email=?))";
+        Object[] vars2 = {email,hashedPassword,salt,email};
+        Query.execute(query2, vars2);
+    }
+
 
     //check if email exists - return "invalid email"
     public static Boolean validateEmail(String email){
@@ -64,10 +66,13 @@ public class UserController {
 
     //check if email and password is valid - return "incorrect password"
     public static Boolean validateUser(String email, String password){
+        System.out.println("Work!");
         String query = "SELECT password,salt FROM UserLogin WHERE email=?";
         Object[] vars = {email};
         String hashedPassword = (String) Query.formTable(query,vars)[0][0];
         String salt = (String) Query.formTable(query,vars)[0][1];
+        System.out.println(salt);
+        System.out.println(hashedPassword);
         if (validateEmail(email)){
             if (hashedPassword.equals(getSecurePassword(password,salt))) {
                 return true;
@@ -150,7 +155,8 @@ public class UserController {
         // addUser("dami@gmail.com","dami","Ms","Dami","Adeleye","University of Adeleye");
         // addUser("jamie@gmail.com","jamie1","Mr","Jamie","Huddlestone","Uni_of_Manchester");
         // addUser("aleksandra@gmail.com","aleksandra-2","Ms","Aleksandra","Kulbaka","Uni of Leeds");
-        // addUser("random@gmail.com","r.u","Dr","Random","User","Uni-of-Liverpool");
+        // addUser("random1@gmail.com","r.u","Dr","Random","User","Uni-of-Liverpool");
+         validateUser("random1@gmail.com","r.u");
 
         //uniAffiliation not standardised
     } 

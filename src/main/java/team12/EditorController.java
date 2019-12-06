@@ -44,6 +44,15 @@ public class EditorController {
         return result;
     }
 
+    //returns chief editor of the given journal
+    public static int getChiefEditorID(String journalTitle){
+        String query = "SELECT chiefEditorID FROM Journal WHERE journalTitle =?";
+        Object[] vars = {journalTitle};
+        int result = (Integer)(Query.formTable(query,vars)[0][0]); 
+        return result;
+    }    
+
+
     //enable editors to add volume to a journal
     //date format as string "yyyy-MM-dd" e.g. "2019-11-28"
     //try-catch block needed for date formating
