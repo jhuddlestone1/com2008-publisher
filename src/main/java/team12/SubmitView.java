@@ -77,8 +77,11 @@ public class SubmitView extends AppView {
 					}
 				}
 				// TODO: add authors to submission and send PDF file to database
-				//AuthorController.addSubmission(articleTitle.getText(), abstractPanel.getText(), file, app.userID);
-				//AuthorController.addAuthors(submissionID, authorEmails);
+				try {
+					AuthorController.addSubmission(
+						articleTitle.getText(), abstractPanel.getText(), App.fileToBlob(file), app.userID, authorEmails
+					);
+				} catch (Exception error) { error.printStackTrace(); }
 				JOptionPane.showMessageDialog(app, "Article submitted.", "Submit article", JOptionPane.INFORMATION_MESSAGE);
 				initialise(app.userID);
 				app.switchView("author");

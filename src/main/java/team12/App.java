@@ -3,6 +3,7 @@ package team12;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.*;
 
 public class App extends JFrame {
 	
@@ -14,6 +15,23 @@ public class App extends JFrame {
 	static Border titledBorder(String title) {
 		return new TitledBorder(App.defaultBorder, title);
 	}
+	
+	static byte[] fileToBlob(File file) throws IOException {
+		byte[] content = new byte[(int) file.length()];
+		FileInputStream stream = null;
+		try {
+			stream = new FileInputStream(file);
+			stream.read(content);
+		}
+		finally {
+			stream.close();
+		}
+		return content;
+	}
+	
+	//static File blobToFile() {
+		//return 
+	//}
 	
 	// Utility to check that items are not null
 	static boolean validate(Object... items) {

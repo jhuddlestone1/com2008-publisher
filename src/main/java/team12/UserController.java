@@ -138,7 +138,7 @@ public class UserController {
     }
 
     public static Object[][] getPublishedArticles(String title){
-        String query = "SELECT * FROM Submission INNER JOIN Article ON Submission.submissionID = Article.submissionID WHERE Submission.isApproved=1 AND Submission.title LIKE ?";
+        String query = "SELECT * FROM Submission INNER JOIN Article ON Submission.submissionID = Article.submissionID WHERE Submission.isApproved=1 AND Submission.title LIKE CONCAT('%', ?, '%')";
         Object[] vars = {title};
         Object[][] result = Query.formTable(query,vars);
         return result;

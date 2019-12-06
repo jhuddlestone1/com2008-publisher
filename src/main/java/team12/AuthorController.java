@@ -5,16 +5,17 @@ import java.sql.Blob;
 public class AuthorController {
 
     //add new submission to database
-    public static void addSubmission(String title, String summary, Blob pdfFile, int mainAuthorID){
-        String queryA = "SELECT AUTO_INCREMENT FROM information.schema.TABLES WHERE TABLE_SCHEMA=team012 AND TABLE_NAME=Submission";
+    public static void addSubmission(String title, String summary, byte[] pdfFile, int mainAuthorID, String[] emails){
+        String queryA = "SELECT `AUTO_INCREMENT` FROM information_schema.TABLES WHERE TABLE_SCHEMA='team012' AND TABLE_NAME='Submission'";
         Object[] varsA = new Object[0];
-        int currentID = (Integer) Query.formTable(queryA, varsA)[0][0];
+        Integer currentID = (Integer) Query.formTable(queryA, varsA)[0][0];
         String pdfFilename = currentID + ".pdf";
         String query1 = "INSERT INTO Submission(title,summary,pdfFilename, pdfFile, mainAuthorID) VALUES(?,?,?,?,?)";
         Object[] vars1 = {title,summary,pdfFilename,pdfFile,mainAuthorID};
         Query.execute(query1,vars1);
         String query2 = "INSERT INTO SubmissionAuthors(submissionID,authorID) VALUES(?,?)";
         Object[] vars2 = {currentID,mainAuthorID};
+        addAuthors(currentID, emails);
         Query.execute(query2,vars2);
     }
 
