@@ -9,30 +9,45 @@ import java.io.*;
 public class ReaderView extends AppView {
 	
 	SearchPanel searchPanel = new SearchPanel();
-	TablePanel resultsPanel = new TablePanel();
+	TablePanel articlePanel = new TablePanel();
 	TextPanel abstractPanel = new TextPanel();
-	JButton downloadButton = new JButton("Download PDF");
+	JButton downloadButton = new JButton("Download article (PDF)");
+	Object[][] data;
 	File file;
+	
+	void search(String query) {
+		if (App.validate(query)) {
+			data = UserController.getPublishedArticles(query);
+			String[] columns = new String[] {"Title", "Lead author", "Reviews"};
+			Object[][] results = new Object[data.length][columns.length];
+			for (int i=0; i < data.length; i++) {
+				results[i][0] = data[i][1];
+				results[i][1] = data[i][7];
+				results[i][2] = data[i][5];
+			}
+			articlePanel.update(results, columns);
+			file = null;
+		}
+		else JOptionPane.showMessageDialog(this, "No search term provided.", "Search", JOptionPane.WARNING_MESSAGE);
+	}
 	
 	public ReaderView(App app) {
 		super("wrap", "align center, grow", "[][grow][grow][]");
-		
-		resultsPanel.setBorder(App.titledBorder("Results"));
+		articlePanel.setBorder(App.titledBorder("Results"));
 		abstractPanel.setBorder(App.titledBorder("Abstract"));
 		
 		add(searchPanel, "growx");
-		add(resultsPanel, "grow");
+		add(articlePanel, "grow");
 		add(abstractPanel, "grow");
-		add(downloadButton, "split 2");
+		add(downloadButton);
 		
 		// TODO: filter search
-		searchPanel.searchButton.addActionListener(e -> resultsPanel.update(testObject, testArray));
-		resultsPanel.selector.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
+		searchPanel.searchButton.addActionListener(e -> search(searchPanel.searchField.getText()));
+		articlePanel.selector.addListSelectionListener(e -> {
+			abstractPanel.update(data[articlePanel.getRow()][2]);
+			//file = ; // TODO: prepare PDF for download
+		});
 		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
 	}
-	
-	Object[][] testObject = {{1,2,3},{4,5,6}};
-	Object[] testArray = {"one", "two", "three"};
-	String testAbstract = "This is an abstract.";
 	
 }

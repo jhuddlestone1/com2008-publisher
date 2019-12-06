@@ -5,7 +5,7 @@ public class ReviewerController {
     //get list of all submissions with less than 3 reviews 
     //return list in a 2d array
     //[[submissionID | title | abstract | pdfFilename | mainAuthorID]]
-    public static Object[][] getSubmission(int reviewerID){
+    public static Object[][] getSubmissions(int reviewerID){
         String reviewerStatus = UserController.getUserStatus(reviewerID);
         String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE uniAffiliation!=? AND reviewNumber<3";
         Object[] vars = {reviewerStatus};
@@ -14,7 +14,7 @@ public class ReviewerController {
     }
 
     //add review to a submission
-    public static void addReview(String title, String summary, String typoList, String[] criticisms, String iniVerdict, int submissionID, int reviewerID){
+    public static boolean addReview(String title, String summary, String typoList, String[] criticisms, String iniVerdict, int submissionID, int reviewerID){
         //check if submission already has 3 reviews
         String queryS = "SELECT reviewNumber FROM Submission WHERE submissionID=?";
         Object[] varsS = {submissionID};  
@@ -27,7 +27,7 @@ public class ReviewerController {
             Query.execute(query1,vars1);
 
             //add criticism of a review to the table Criticism
-            String queryR = "SELECT reviewID FROM Review WHERE summay=?";
+            String queryR = "SELECT reviewID FROM Review WHERE summary=?";
             Object[] varsR = {summary};
             int reviewID = (Integer) Query.formTable(queryR,varsR)[0][0];
             String query2 = "INSERT INTO Criticism(criticism,reviewID) VALUES(?,?)";
@@ -40,9 +40,11 @@ public class ReviewerController {
             String query3 = "UPDATE Submission SET reviewNumber = reviewNumber + 1 WHERE submissionID=?";
             Object[] vars3 = {submissionID};
             Query.execute(query3,vars3);
+            return true;
         }
         else {
             System.out.println("Submission already has 3 reviews");
+            return false;
         }
     }
 

@@ -20,6 +20,10 @@ public class TablePanel extends JScrollPane {
 		setViewportView(table);
 	}
 	
+	int getRow() {
+		return table.getSelectedRow();
+	}
+	
 	void addRow() {
 		model.addRow(new Object[table.getColumnCount()]);
 	}

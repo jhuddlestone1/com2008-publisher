@@ -83,6 +83,7 @@ public class UserController {
         String result = (String) Query.formTable(query,vars)[0][0];
         return result;
     }
+    
     //delete user from tables UserLogin and UserDetails
     public static void deleteUser(String email){
         String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";
@@ -98,12 +99,13 @@ public class UserController {
         return result;
     }
 
-    public static Object[][] getArticles(String title){
-        String query = "SELECT * FROM Article WHERE title=?";
+    public static Object[][] getPublishedArticles(String title){
+        String query = "SELECT * FROM Submission INNER JOIN Article ON Submission.submissionID = Article.submissionID WHERE Submission.isApproved=1 AND Submission.title LIKE ?";
         Object[] vars = {title};
         Object[][] result = Query.formTable(query,vars);
         return result;
     }
+    
     public static void main(String[]args){
     }
 } 

@@ -8,33 +8,43 @@ import java.io.*;
 
 public class SubmissionsView extends AppView {
 	
-	TablePanel resultsPanel = new TablePanel();
-	TextPanel abstractPanel = new TextPanel();
+	JRadioButton strongReject = new JRadioButton("Strong reject");
+	JRadioButton weakReject = new JRadioButton("Weak reject");
+	JRadioButton weakAccept = new JRadioButton("Weak accept");
+	JRadioButton strongAccept = new JRadioButton("Strong accept");
+	ButtonGroup ratingButtons = new ButtonGroup();
+	
+	TextPanel summaryPanel = new TextPanel();
+	TextPanel errorsPanel = new TextPanel();
+	TextPanel questionsPanel = new TextPanel();
 	JButton backButton = new JButton("Back to list");
-	JButton reviewButton = new JButton("Add to review list");
+	JButton submitButton = new JButton("Submit review");
 	File file;
 	
 	public SubmissionsView(App app) {
-		super("wrap, align center", "grow", "[][grow]");
+		super("wrap", "align center, grow", "[grow][grow][grow][][]");
+		summaryPanel.setBorder(App.titledBorder("Summary"));
+		errorsPanel.setBorder(App.titledBorder("Proofing errors"));
+		questionsPanel.setBorder(App.titledBorder("Questions"));
+		ratingButtons.add(strongReject);
+		ratingButtons.add(weakReject);
+		ratingButtons.add(weakAccept);
+		ratingButtons.add(strongAccept);
 		
-		// TODO: instantiate with review queue
+		// TODO: link this page to the previous one!
 		
-		resultsPanel.setBorder(App.titledBorder("Submissions"));
-		abstractPanel.setBorder(App.titledBorder("Abstract"));
-		
-		add(resultsPanel, "grow");
-		add(abstractPanel, "grow");
+		add(summaryPanel, "grow");
+		add(errorsPanel, "grow");
+		add(questionsPanel, "grow");
+		add(strongReject, "split 4");
+		add(weakReject);
+		add(weakAccept);
+		add(strongAccept);
 		add(backButton, "split 2");
-		add(reviewButton);
+		add(submitButton);
 		
-		// TODO: filter search
-		resultsPanel.selector.addListSelectionListener(e -> abstractPanel.update(e.getSource()));
 		backButton.addActionListener(e -> app.switchView("reviewer"));
-		reviewButton.addActionListener(e -> file = null); // TODO: add article to user's review list
+		submitButton.addActionListener(e -> file = null); // TODO: submit review
 	}
-	
-	Object[][] testObject = {{1,2,3},{4,5,6}};
-	Object[] testArray = {"one", "two", "three"};
-	String testAbstract = "This is an abstract.";
 	
 }

@@ -2,6 +2,8 @@ package team12;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.filechooser.*;
+import java.io.*;
 import java.util.*;
 
 public class ArticlePanel extends AppPanel {
