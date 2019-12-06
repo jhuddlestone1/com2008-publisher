@@ -2,8 +2,24 @@ package team12;
 
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.Arrays;
 
 public class UserController {
+
+    //add new user into database in tables UserLogin and UserDetails
+    public static void addUser(String email, String password, String title, String forename, String surname, String uniAffiliation){
+        //insert user's personal information into table UserDetails
+        String query1 = "INSERT INTO UserDetails(title,forename,surname,uniAffiliation,email) VALUES(?,?,?,?,?)";
+        Object[] vars1 = {title,forename,surname,uniAffiliation,email};
+        Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
+
+        //insert user's login details into table UserLogin
+        String salt = getSalt();
+        String hashedPassword = getSecurePassword(password,salt);
+        String query2 = "INSERT INTO UserLogin(email,password,salt,userID) VALUES(?,?,?,(SELECT userID FROM UserDetails WHERE email=?))";
+        Object[] vars2 = {email,hashedPassword,salt,email};
+        Query.execute(query2, vars2);
+    }
 
     //Hashing the password methods
 	public static String getSalt() {
@@ -14,7 +30,6 @@ public class UserController {
 		for(int i=0; i< salt.length; i++){
 			result.append(Integer.toString((salt[i] & 0xff) + 0x100, 16).substring(1));
 		}
-
 		return result.toString();
 	}
 
@@ -67,28 +82,13 @@ public class UserController {
         }
     }
 
-    //add new user into database in tables UserLogin and UserDetails
-    public static void addUser(String email, String password, String title, String forename, String surname, String uniAffiliation){
-        //insert user's personal information into table UserDetails
-        String query1 = "INSERT INTO UserDetails(title,forename,surname,uniAffiliation,email) VALUES(?,?,?,?,?)";
-        Object[] vars1 = {title,forename,surname,uniAffiliation,email};
-        Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
-
-        //insert user's login details into table UserLogin
-        String salt = getSalt();
-        String hashedPassword = getSecurePassword(password,salt);
-        String query2 = "INSERT INTO UserLogin(email,password,salt,userID) VALUES(?,?,?,(SELECT userID FROM UserDetails WHERE email=?))";
-        Object[] vars2 = {email,hashedPassword,salt,email};
-        Query.execute(query2, vars2);
-    }
-
     //change user's password
     //input (email, old password, new password)
     public static void updatePassword(String email, String oldPassword, String newPassword){
         if (validateUser(email,oldPassword)==true){
             String salt = getSalt();
             String hashedPassword = getSecurePassword(newPassword,salt);            
-            String query = "UPDATE UserLogin SET password=?, salt=? WHERE userID=?";
+            String query = "UPDATE UserLogin SET password=?, salt=? WHERE email=?";
             Object[] vars = {hashedPassword, salt, email};
             Query.execute(query,vars);
         }
@@ -104,12 +104,14 @@ public class UserController {
         return userID;
     }
 
+    //return uni affiliation of user to avoid conflict of interest
     public static String getUserStatus(int userID){
         String query = "SELECT uniAffiliation FROM UserDetails WHERE userID=?";
         Object[] vars = {userID};
         String result = (String) Query.formTable(query,vars)[0][0];
         return result;
     }
+
     //delete user from tables UserLogin and UserDetails
     public static void deleteUser(String email){
         String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";
@@ -117,21 +119,36 @@ public class UserController {
         Query.execute(query,vars);
     }
 
-    //title provided by user for searching journal
-    public static Object[][] getJournals(String title){
-        String query = "SELECT * FROM Journal WHERE title=?";
+    //journal title provided by user for searching
+    public static Object[] getJournal(String title){
+        String query = "SELECT * FROM Journal WHERE journalTitle=?";
         Object[] vars = {title};
-        Object[][] result = Query.formTable(query,vars);
+        Object[] result = Query.formTable(query,vars)[0];
         return result;
     }
 
-    public static Object[][] getArticles(String title){
-        String query = "SELECT * FROM Article WHERE title=?";
+    //article title provided by user for searching
+    public static Object[] getArticle(String title){
+        String query = "SELECT * FROM Article INNER JOIN Submission ON Article.submissionID = Submission.submissionID WHERE Submission.title=?";
         Object[] vars = {title};
-        Object[][] result = Query.formTable(query,vars);
+        Object[] result = Query.formTable(query,vars)[0];
         return result;
     }
     public static void main(String[]args){
-        validateUser("awkulbaka1@sheffield.ac.uk", "ola");
+        // addUser("eddie@gmail.com","0711","Mr","Eddie","Chieng","Uni of Sheffield");
+        // addUser("dami@gmail.com","dami","Ms","Dami","Adeleye","University of Adeleye");
+        // addUser("jamie@gmail.com","jamie1","Mr","Jamie","Huddlestone","Uni_of_Manchester");
+        // addUser("aleksandra@gmail.com","aleksandra-2","Ms","Aleksandra","Kulbaka","Uni of Leeds");
+        // addUser("random@gmail.com","r.u","Dr","Random","User","Uni-of-Liverpool");
+        // updatePassword("eddie@gmail.com","9876","0711");
+        // System.out.println();
+        // deleteUser("random@gmail.com");
+        // Object[] es = getJournal("Journal of Software Engineering");
+        // for (Object[] e : es){
+        //     System.out.println(Arrays.toString(e));
+        // }
+        // System.out.println(Arrays.toString(es));
+
+        //uni not standardised
     } 
 }

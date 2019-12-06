@@ -36,7 +36,7 @@ public class EditorController {
         return result;
     }
 
-
+    //return ISSN of a journal given journal title
     public static int getISSN(String journalTitle){
         String query = "SELECT ISSN FROM Journal WHERE journalTitle =?";
         Object[] vars = {journalTitle};
@@ -53,7 +53,7 @@ public class EditorController {
         try {
             Date date2 = format.parse(date);    
             String query = "INSERT INTO Volume(volume,date,ISSN) VALUES(?,?,?)";
-            String volume2 = "vol. " + Integer.toString(volume);
+            String volume2 = "vol." + volume;
             Object[] vars = {volume2,date2,ISSN};
             Query.execute(query,vars);
         } catch (ParseException e)  {
@@ -83,7 +83,7 @@ public class EditorController {
         try {
             Date date2 = format.parse(date);           
             String query = "INSERT INTO Edition(edition,date,volumeID) VALUES(?,?,?)";
-            String edition2 = volume + ", no. " + edition;
+            String edition2 = volume + ",no." + edition;
             Object[] vars = {edition2,date2,volumeID};
             Query.execute(query,vars);
         } catch (ParseException e)  {
@@ -92,7 +92,7 @@ public class EditorController {
     }
 
     //display list of editions of a volume
-    //[[editionID | volumeID | edition(e.g. "vol. X, no. 1") | date ]]
+    //[[editionID | volumeID | edition(e.g. "vol.X,no.1") | date ]]
     public static Object[][] getEditions(int volumeID){
         String query = "SELECT * FROM Edition WHERE volumeID=?";
         Object[] vars = {volumeID};
@@ -159,9 +159,9 @@ public class EditorController {
     
     //retire editor from a journal
     //does not remove editor as an user 
-    public static void deleteEditor(int userID){
-        String query = "DELETE FROM JournalEditors WHERE editorID=?";
-        Object[] vars = {userID};
+    public static void deleteEditor(int userID,int ISSN){
+        String query = "DELETE FROM JournalEditors WHERE editorID=? AND ISSN=?";
+        Object[] vars = {userID,ISSN};
         Query.execute(query,vars);
     }
 
@@ -173,7 +173,7 @@ public class EditorController {
         Object[][] editors = Query.formTable(queryE,varsE);
         if (editors.length>1){
             //remove chiefEditor from the journal
-            deleteEditor((Integer) editors[0][0]);
+            deleteEditor((Integer) editors[0][0], ISSN);
             //apppoint second editor in database to be new chief editor
             String query = "UPDATE Journal SET chiefEditorID = ? WHERE ISSN = ?";
             Object[] vars = {editors[1][0],ISSN};
@@ -187,7 +187,7 @@ public class EditorController {
     public static void transferChief(int ISSN, String email){
         //check if editor is on the board of editor of the journal
         int userID = UserController.getUserID(email);
-        String query1 = "SELECT * FROM JournalEditors WHERE ISSN=? AND userID=?";
+        String query1 = "SELECT * FROM JournalEditors WHERE ISSN=? AND editorID=?";
         Object[] vars1 = {ISSN,userID};
         if (!Query.execute(query1,vars1).isEmpty()){
             String query2 = "UPDATE Journal SET chiefEditorID=? WHERE ISSN=?";
@@ -198,5 +198,24 @@ public class EditorController {
             System.out.println("Editor is not on the board");
         }
     }
-    public static void main(String[]args) {}
+    public static void main(String[]args) {
+        // addJournal(2008,"Journal of Software Engineering",1);
+        // addJournal(2009,"Journal of Computer Science",1);
+        // addJournal(2010,"Journal of Artificial Intelligence",1);
+        // for (int x=1;x<5;x++){
+            // addEdition("1st","2019-07-30",9);
+        // }
+        // Object[][] es = getEditors(2008);
+        // for (Object[] e : es){
+        //     System.out.println(Arrays.toString(e));
+        // }
+        // System.out.println(getISSN("Journal of Software Engineering"));
+        // String[] emails = {"dami@gmail.com","jamie@gmail.com","aleksandra@gmail.com"};
+        // addEditors(2008,emails);
+        transferChief(2008,"eddie@gmail.com");
+
+
+
+        //deleteEditor one more parameter
+    }
 }
