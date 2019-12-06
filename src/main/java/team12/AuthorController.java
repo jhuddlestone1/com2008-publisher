@@ -1,13 +1,21 @@
 package team12;
 
+import java.sql.Blob;
+
 public class AuthorController {
 
-
     //add new submission to database
-    public static void addSubmission(String title, String summary, String pdfFilename, int mainAuthorID){
-        String query = "INSERT INTO Submission(title,abstract,pdfFilename,mainAuthorID) VALUES(?,?,?,?)";
-        Object[] vars = {title,summary,pdfFilename,mainAuthorID};
-        Query.execute(query,vars);
+    public static void addSubmission(String title, String summary, Blob pdfFile, int mainAuthorID){
+        String queryA = "SELECT AUTO_INCREMENT FROM information.schema.TABLES WHERE TABLE_SCHEMA=team012 AND TABLE_NAME=Submission";
+        Object[] varsA = new Object[0];
+        int currentID = (Integer) Query.formTable(queryA, varsA)[0][0];
+        String pdfFilename = currentID + ".pdf";
+        String query1 = "INSERT INTO Submission(title,summary,pdfFilename, pdfFile, mainAuthorID) VALUES(?,?,?,?,?)";
+        Object[] vars1 = {title,summary,pdfFilename,pdfFile,mainAuthorID};
+        Query.execute(query1,vars1);
+        String query2 = "INSERT INTO SubmissionAuthors(submissionID,authorID) VALUES(?,?)";
+        Object[] vars2 = {currentID,mainAuthorID};
+        Query.execute(query2,vars2);
     }
 
     //return only the list of submission that an author has access to
@@ -54,6 +62,6 @@ public class AuthorController {
     }
     
     public static void main(String[]args) {
-
+        //can't test addSubmission from java main
     }
 }

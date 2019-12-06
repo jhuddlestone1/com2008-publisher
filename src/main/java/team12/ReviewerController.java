@@ -4,26 +4,26 @@ public class ReviewerController {
 
     //get list of all submissions with less than 3 reviews 
     //return list in a 2d array
-    //[[submissionID | title | abstract | pdfFilename | mainAuthorID]]
+    //[[submissionID | title | abstract | pdfFilename | pdfFile | reviewNumber | mainAuthorID | title | forename | surname | uniAffiliation | email]]
     public static Object[][] getSubmissions(int reviewerID){
         String reviewerStatus = UserController.getUserStatus(reviewerID);
         String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE uniAffiliation!=? AND reviewNumber<3";
         Object[] vars = {reviewerStatus};
-        Object[][] table = Query.formTable(query,vars);
-        return table;
+        Object[][] result = Query.formTable(query,vars);
+        return result;
     }
 
     //add review to a submission
-    public static boolean addReview(String title, String summary, String typoList, String[] criticisms, String iniVerdict, int submissionID, int reviewerID){
+    public static boolean addReview(String summary, String typoList, String[] criticisms, String iniVerdict, int submissionID, int reviewerID){
         //check if submission already has 3 reviews
         String queryS = "SELECT reviewNumber FROM Submission WHERE submissionID=?";
         Object[] varsS = {submissionID};  
-        Object[][] reviews = Query.formTable(queryS,varsS);
+        int reviews = (Integer) Query.formTable(queryS,varsS)[0][0];
 
-        if ((Integer) reviews[0][0] < 3){
+        if (reviews < 3){
             //add review to table Review
-            String query1 = "INSERT INTO Review(title,summary,typoList,iniVerdict,submissionID,reviewerID) VALUES(?,?,?,?,?,?)";
-            Object[] vars1 = {title,summary,typoList,iniVerdict,submissionID,reviewerID};
+            String query1 = "INSERT INTO Review(summary,typoList,iniVerdict,submissionID,reviewerID) VALUES(?,?,?,?,?)";
+            Object[] vars1 = {summary,typoList,iniVerdict,submissionID,reviewerID};
             Query.execute(query1,vars1);
 
             //add criticism of a review to the table Criticism
@@ -55,4 +55,9 @@ public class ReviewerController {
         Query.execute(query, vars);
     }
 
+    public static void main(String[] args){
+        //getSubmission return values changed -- listed on top of function
+        //Review tables "title" column removed
+        //addReview parameters changed -- title(?) removed
+    }
 } 
