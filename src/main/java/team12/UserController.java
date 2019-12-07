@@ -64,7 +64,7 @@ public class UserController {
 
     //check if email and password is valid - return "incorrect password"
     public static Boolean validateUser(String email, String password){
-        String query = "SELECT password,salt FROM UserLogin WHERE email=?";
+        String query = "SELECT password, salt FROM UserLogin WHERE email=?";
         Object[] vars = {email};
         String hashedPassword = (String) Query.formTable(query,vars)[0][0];
         String salt = (String) Query.formTable(query,vars)[0][1];
@@ -108,7 +108,7 @@ public class UserController {
     //to be store as global variable - userID
     //userID needed to get list of journals/submissions/review when logged in as different role
     public static Object[] getUserDetails(int userID){
-        String query = "SELECT title, forename, surname, uniAffiliation, email FROM UserDetails WHERE userID=?";
+        String query = "SELECT * FROM UserDetails WHERE userID=?";
         Object[] vars = {userID};
         Object[] userDetails = Query.formTable(query,vars)[0];
         return userDetails;

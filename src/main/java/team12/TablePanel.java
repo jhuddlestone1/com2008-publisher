@@ -34,7 +34,7 @@ public class TablePanel extends JScrollPane {
 	
 	void removeRow() {
 		if (!selector.isSelectionEmpty() && table.getRowCount() > 1) {
-			model.removeRow(table.getSelectedRow());
+			model.removeRow(getRow());
 		}
 	}
 	
@@ -47,7 +47,17 @@ public class TablePanel extends JScrollPane {
 		model.setDataVector(data, cols);
 	}
 	
-	Object[][] extract() {
+	Object[] extractRow() {
+		int row = getRow();
+		int cols = table.getColumnCount();
+		Object[] data = new String[cols];
+		for (int i=0; i < cols; i++) {
+			data[i] = table.getValueAt(row, i);
+		}
+		return data;
+	}
+	
+	Object[][] extractAll() {
 		int rows = table.getRowCount();
 		int cols = table.getColumnCount();
 		Object[][] data = new String[rows][cols];
@@ -55,16 +65,6 @@ public class TablePanel extends JScrollPane {
 			for (int j=0; j < cols; j++) {
 				data[i][j] = table.getValueAt(i,j);
 			}
-		}
-		return data;
-	}
-	
-	Object[] getSelected() {
-		int number = getRow();
-		int cols = table.getColumnCount();
-		Object[] data = new String[cols];
-		for (int j=0; j < cols; j++) {
-			data[j] = table.getValueAt(number,j);
 		}
 		return data;
 	}

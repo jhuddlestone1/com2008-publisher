@@ -8,7 +8,7 @@ import java.io.*;
 
 public class SubmitView extends AppView {
 	
-	TablePanel authorTable = new TablePanel();
+	UserTable authorTable = new UserTable();
 	JTextField articleTitle = new JTextField(32);
 	JButton uploadButton = new JButton("Upload article (PDF)");
 	TextPanel abstractPanel = new TextPanel();
@@ -20,10 +20,8 @@ public class SubmitView extends AppView {
 	File file;
 	
 	void initialise(int userID) {
-		authorTable.update(
-			new Object[][] {UserController.getUserDetails(userID)},
-			new String[] {"Title", "First name(s)", "Last name", "University", "Email address"}
-		);
+		Object[][] data = {UserController.getUserDetails(userID)};
+		authorTable.update(data);
 		file = null;
 	}
 	
@@ -55,7 +53,7 @@ public class SubmitView extends AppView {
 		backButton.addActionListener(e -> app.switchView("author"));
 		submitButton.addActionListener(e -> {
 			if (file != null && App.validate(articleTitle.getText(), abstractPanel.getText())) {
-				Object[][] data = authorTable.extract();
+				Object[][] data = authorTable.extractAll();
 				String[] authorEmails = new String[data.length];
 				for (int i=0; i < data.length; i++) {
 					String title = data[i][0].toString();
@@ -64,9 +62,12 @@ public class SubmitView extends AppView {
 					String university = data[i][3].toString();
 					String email = data[i][4].toString();
 					String fullName = title +' '+ firstNames +' '+ lastName;
-					String password = JOptionPane.showInputDialog("Enter password for "+ fullName +":");
-					if (App.validate(email, password, title, firstNames, lastName, university)) {
+					if (App.validate(email, title, firstNames, lastName, university)) {
 						if (!UserController.validateEmail(email)) {
+							String password = null;
+							while (!App.validate(password)) {
+								JOptionPane.showInputDialog("Enter password for "+ fullName +":");
+							}
 							UserController.addUser(email, password, title, firstNames, lastName, university);
 						}
 						authorEmails[i] = email;

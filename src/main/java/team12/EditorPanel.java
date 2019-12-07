@@ -6,12 +6,12 @@ import javax.swing.filechooser.*;
 import java.io.*;
 import java.util.*;
 
-public class ArticlePanel extends AppPanel {
+public class EditorPanel extends AppPanel {
 
 	TablePanel articleTable = new TablePanel();
-	JButton addButton;
-	JButton submitButton;
-	JButton passRoleButton;
+	JButton addButton = new JButton("Add editor");
+	JButton submitButton = new JButton("Submit");
+	JButton passRoleButton = new JButton("Pass role");
 
 	public void empty() {
 		removeAll();
@@ -33,74 +33,73 @@ public class ArticlePanel extends AppPanel {
 		}
 		refresh();
 	}
-	
-	public ArticlePanel() {
-		//
-		super("wrap");
+	/*
+	void initialise(int userID) {
+		authorTable.update(
+			new Object[][] {UserController.getUserDetails(userID)},
+			new String[] {"Title", "First name(s)", "Last name", "University", "Email address"}
+		);
+		file = null;
+	}
+	*/
+	public EditorPanel() {
+		super("wrap", "grow");
 	}
 	
-	public ArticlePanel(Object... items) {
+	public EditorPanel(Object... items) {
 		this();
-		removeAll();
-		int ISNN = Integer.parseInt(items[0].toString());
+		int issn = Integer.parseInt(items[0].toString());
 		String title = items[1].toString();
 		int userID = Integer.parseInt(items[2].toString());
 		JComboBox actions = new JComboBox(getActionsArray (title));
 		add(actions);
-		add(articleTable);
+		add(articleTable, "grow");
 
-		addButton = new JButton("Add editor");
-		submitButton = new JButton("Submit");
-		passRoleButton = new JButton("Pass role");
 		addButton.addActionListener(e -> articleTable.addRow());
 
 		passRoleButton.addActionListener(e -> {
-			Object[] data = articleTable.getSelected();				
-			String newtitle = data[0].toString();
+			Object[] data = articleTable.extractRow();				
+			String userTitle = data[0].toString();
 			String firstNames = data[1].toString();
 			String lastName = data[2].toString();
 			String university = data[3].toString();
 			String email = data[4].toString();
-			String fullName = newtitle +' '+ firstNames +' '+ lastName;
-			int dialogButton = JOptionPane.YES_NO_OPTION;
+			String fullName = userTitle +' '+ firstNames +' '+ lastName;
 			int dialogResult = JOptionPane.showConfirmDialog (this,
 				"Do you want to make "+ fullName + " new chief editor?",
-												 "Retire",dialogButton);
-			if (dialogResult==0){
-				EditorController.transferChief(ISNN, email);
+												 "Retire", JOptionPane.YES_NO_OPTION);
+			if (dialogResult == 0) {
+				EditorController.transferChief(issn, email);
 				JOptionPane.showMessageDialog(this, "You're no longer chief editor of this journal",
 															   "", JOptionPane.INFORMATION_MESSAGE);
 			}				
 		});
 
 		submitButton.addActionListener(e -> {
-			Object[][] data = articleTable.extract();
+			Object[][] data = articleTable.extractAll();
 			String[] editorsEmails = new String[data.length];
-			String newtitle = "";
+			String userTitle = "";
 			String firstNames = "";
 			String lastName ="";
 			String university = "";
 			String email = "";
 			String fullName = "";				
 			for (int i=0; i < data.length; i++) {
-				if (notNull(data[i][0],data[i][1],data[i][2],data[i][3],data[i][4])){	
-					newtitle = data[i][0].toString();
+				if (App.validate(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4])) {	
+					userTitle = data[i][0].toString();
 					firstNames = data[i][1].toString();
 					lastName = data[i][2].toString();
 					university = data[i][3].toString();
 					email = data[i][4].toString();
 					editorsEmails[i] = email;
-					fullName = newtitle +' '+ firstNames +' '+ lastName;
-					if (App.validate(newtitle,firstNames,lastName,university,email)) {
+					fullName = userTitle +' '+ firstNames +' '+ lastName;
+					if (App.validate(userTitle, firstNames, lastName, university, email)) {
 						if (!UserController.validateEmail(email)) {
-							String password = JOptionPane.showInputDialog("Enter password for "+ fullName +":");
-							if (App.validate(password)){
-								UserController.addUser(email, password, newtitle, firstNames, lastName, university);
+							String password = null;
+							while (!App.validate(password)) {
+								JOptionPane.showInputDialog("Enter password for "+ fullName +":");
 							}
-							else {
-								JOptionPane.showMessageDialog(this, "Privide correct password.", "Add editors", JOptionPane.WARNING_MESSAGE);
-								return;
-							}
+							UserController.addUser(email, password, userTitle, firstNames, lastName, university);
 						}
 					}
 					else {
@@ -113,10 +112,10 @@ public class ArticlePanel extends AppPanel {
 					return;
 				}
 			}
-			Object [][] results = EditorController.getEditors(ISNN);
+			Object [][] results = EditorController.getEditors(issn);
 			String [] currentEditors = new String [results.length]; 
 			for (int i=0; i < results.length; i++){
-				currentEditors[i] = (String) results [i][5];
+				currentEditors[i] = (String) results[i][5];
 			}
 			boolean isEditor = false;
 			for (int o=0; o < editorsEmails.length; o++){
@@ -126,7 +125,7 @@ public class ArticlePanel extends AppPanel {
 					}
 				}
 				if (!isEditor){
-					EditorController.addEditor(ISNN, editorsEmails[o]);
+					EditorController.addEditor(issn, editorsEmails[o]);
 				}
 				isEditor=false;
 			}								
@@ -134,41 +133,36 @@ public class ArticlePanel extends AppPanel {
 		});		
 
 		actions.addActionListener(e -> {
+			clean();
 			String action = (String) actions.getSelectedItem();
 			
 			switch (action){
 				case "Publish journal":
-					clean();
 					//DO SOMETHING
 					break;
 				case "See articles":
-					clean();
-					getArticles(ISNN, title);
+					getArticles(title);
 					break;					
 				case "Register other editor":
-					clean();
-					getEditors(ISNN);
+					getEditors(issn);
 					add(addButton);
 					add(submitButton);
 					break;
 				case "Pass role":
-					clean();
-					getEditors(ISNN);
+					getEditors(issn);
 					add(passRoleButton);
 					break; 
 				case "See roles":
-					clean();
-					getEditors(ISNN);
+					getEditors(issn);
 					break;
 				case "Retire":
-					clean();
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog (this,
 						"Do you want to retire from the board for the "+ title + "?",
 															"Retire",dialogButton);
-				if (dialogResult==0){
-					if (App.userID==EditorController.getChiefEditorID(title)){
-						if (EditorController.deleteChiefEditor(ISNN)){
+				if (dialogResult == 0){
+					if (App.userID == EditorController.getChiefEditorID(title)){
+						if (EditorController.deleteChiefEditor(issn)){
 							JOptionPane.showMessageDialog(this, "You're no longer editor of this journal",
 																	 "", JOptionPane.INFORMATION_MESSAGE);
 							update();
@@ -179,7 +173,7 @@ public class ArticlePanel extends AppPanel {
 						} 
 					}
 					else {
-						EditorController.deleteEditor(App.userID, ISNN);
+						EditorController.deleteEditor(App.userID, issn);
 						JOptionPane.showMessageDialog(this, "You're no longer editor of this journal",
 																 "", JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -190,13 +184,13 @@ public class ArticlePanel extends AppPanel {
 		});
 	}
 	
-	public ArticlePanel(ArrayList items) {
+	public EditorPanel(ArrayList items) {
 		this();
 		update(items);
 	}
 
 	public String [] getActionsArray (String title){
-		if (App.userID==EditorController.getChiefEditorID(title)){
+		if (App.userID == EditorController.getChiefEditorID(title)){
 			String [] actionsArray = {"See articles","Publish journal","Retire","Register other editor","Pass role","See roles"};
 			return actionsArray;
 		}
@@ -206,39 +200,18 @@ public class ArticlePanel extends AppPanel {
 		}			
 	}
 
-	void getEditors(int ISNN) {
-		Object [][] results = EditorController.getEditors(ISNN);
-		Object [][] editors = new Object [results.length] [5]; 
-		for (int i=0; i < results.length; i++){
-			editors[i][0] = results [i][1];
-			editors[i][1] = results [i][2];
-			editors[i][2] = results [i][3];
-			editors[i][3] = results [i][4];
-			editors[i][4] = results [i][5];
-		} 
+	void getEditors(int issn) {
 		articleTable.update(
-			editors,
-			new String[] {"Title", "First name(s)", "Last name", "University", "Email address"}
+			UserTable.filter(EditorController.getEditors(issn)),
+			UserTable.columns
 		);
 	}
 
-	void getArticles(int ISNN, String title) {
-		Object [][] data = EditorController.getSubmissions(title);
-		String[] columns = new String[] {"Title", "Lead author", "Reviews"};
-		Object[][] results = new Object[data.length][columns.length];
-			for (int i=0; i < data.length; i++) {
-				results[i][0] = data[i][1];
-				results[i][1] = data[i][7];
-				results[i][2] = data[i][5];
-			}
-			articleTable.update(results, columns);
-	}
-
-	boolean notNull(Object... items) {
-		for (Object item : items) {
-			if (item == null) return false;
-		}
-		return true;
+	void getArticles(String title) {
+		articleTable.update(
+			ArticleTable.filter(EditorController.getSubmissions(title)),
+			ArticleTable.columns
+		);
 	}
 
 	void clean(){

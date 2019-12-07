@@ -16,7 +16,7 @@ public class EditorView extends AppView {
 		AppPanel[] tabs = new AppPanel [journals.length];
 		for (int i=0; i < journals.length; i++) {
 			titles[i] = journals[i][1].toString(); // title
-			tabs[i] = new ArticlePanel(journals[i]);
+			tabs[i] = new EditorPanel(journals[i]);
 		}
 		journalTabs.update(titles, tabs);
 	}

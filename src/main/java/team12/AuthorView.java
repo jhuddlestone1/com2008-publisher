@@ -16,7 +16,7 @@ public class AuthorView extends AppView {
 		AppPanel[] tabs = new AppPanel[submissions.length];
 		for (int i=0; i < submissions.length; i++) {
 			titles[i] = submissions[i][1].toString(); // title
-			tabs[i].add(new ArticlePanel(submissions[i]));
+			tabs[i].add(new EditorPanel(submissions[i]));
 		}
 		articleTabs.update(titles, tabs);
 	}

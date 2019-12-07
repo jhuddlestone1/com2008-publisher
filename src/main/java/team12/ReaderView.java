@@ -9,26 +9,16 @@ import java.io.*;
 public class ReaderView extends AppView {
 	
 	SearchPanel searchPanel = new SearchPanel();
-	TablePanel articlePanel = new TablePanel();
+	ArticleTable articlePanel = new ArticleTable();
 	TextPanel abstractPanel = new TextPanel();
 	JButton downloadButton = new JButton("Download article (PDF)");
 	Object[][] data;
 	File file;
 	
 	void search(String query) {
-		if (App.validate(query)) {
-			data = UserController.getPublishedArticles(query);
-			String[] columns = new String[] {"Title", "Lead author", "Reviews"};
-			Object[][] results = new Object[data.length][columns.length];
-			for (int i=0; i < data.length; i++) {
-				results[i][0] = data[i][1];
-				results[i][1] = data[i][7];
-				results[i][2] = data[i][5];
-			}
-			articlePanel.update(results, columns);
-			file = null;
-		}
-		else JOptionPane.showMessageDialog(this, "No search term provided.", "Search", JOptionPane.WARNING_MESSAGE);
+		data = UserController.getPublishedArticles(query);
+		articlePanel.update(data);
+		file = null;
 	}
 	
 	public ReaderView(App app) {
@@ -40,6 +30,8 @@ public class ReaderView extends AppView {
 		add(articlePanel, "grow");
 		add(abstractPanel, "grow");
 		add(downloadButton);
+		
+		search(null);
 		
 		// TODO: filter search
 		searchPanel.searchButton.addActionListener(e -> search(searchPanel.searchField.getText()));
