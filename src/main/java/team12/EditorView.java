@@ -12,8 +12,8 @@ public class EditorView extends AppView {
 	
 	void update(int userID) {
 		Object[][] journals = EditorController.getJournals(userID);
-		String[] titles = new String[journals.length];
-		AppPanel[] tabs = new AppPanel[journals.length];
+		String[] titles = new String [journals.length];
+		AppPanel[] tabs = new AppPanel [journals.length];
 		for (int i=0; i < journals.length; i++) {
 			titles[i] = journals[i][1].toString(); // title
 			tabs[i] = new ArticlePanel(journals[i]);
@@ -31,7 +31,6 @@ public class EditorView extends AppView {
 		add(createButton, "split 2");
 		add(updateButton);
 		add(journalTabs, "grow");
-		
 		createButton.addActionListener(e -> app.switchView("journal"));
 		updateButton.addActionListener(e -> update(app.userID));
 	}

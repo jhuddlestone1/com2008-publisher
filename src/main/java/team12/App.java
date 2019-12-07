@@ -42,7 +42,7 @@ public class App extends JFrame {
 	}
 	
 	// If this field is greater than zero, we know a user is logged in, and which one!
-	int userID;
+	static int userID;
 	
 	CardLayout layout = new CardLayout();
 	JMenuBar menubar = new JMenuBar();
@@ -127,7 +127,6 @@ public class App extends JFrame {
 		catch (Exception e) {} // will automatically fall back to default UI style
 		
 		App frame = new App();
-		
 		//frame.switchView("editor");
 	}
 
