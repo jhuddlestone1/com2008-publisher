@@ -6,8 +6,8 @@ import javax.swing.*;
 
 public class JournalView extends AppView {
 
-	JTextField title = new JTextField(30);
-	JTextField ISNN = new JTextField(16);	
+	JTextField title = new JTextField(32);
+	JTextField issn = new JTextField(16);	
 	JButton submitButton = new JButton("Submit details");
 	
 	public JournalView(App app) {
@@ -15,19 +15,19 @@ public class JournalView extends AppView {
 		add(new JLabel("Add journal details")).setFont(App.headerFont);
 		add(new JLabel("Title: "));
 		add(title);
-		add(new JLabel("ISNN: "));
-		add(ISNN);		
+		add(new JLabel("ISSN: "));
+		add(issn);		
 
 		add(submitButton);
 		
 		submitButton.addActionListener(e -> {
-			if (title.getText().isEmpty() || ISNN.getText().isEmpty()){
-				JOptionPane.showMessageDialog(null, "Please, fill the fields", "Empty fields",JOptionPane.ERROR_MESSAGE);				
+			if (title.getText().isEmpty() || issn.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Please fill in all fields", "Add journal details", JOptionPane.ERROR_MESSAGE);				
 			}
 			else {
-				int isnn = Integer.parseInt(ISNN.getText());
+				int isnn = Integer.parseInt(issn.getText());
 				EditorController.addJournal(isnn, title.getText(), app.userID);
-				JOptionPane.showMessageDialog(null, "Journal added!", "Success",JOptionPane.INFORMATION_MESSAGE);				
+				JOptionPane.showMessageDialog(null, "Journal added!", "Add journal details", JOptionPane.INFORMATION_MESSAGE);				
 				app.switchView("editor");
 			}
 		});

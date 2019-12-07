@@ -42,7 +42,7 @@ public class App extends JFrame {
 	}
 	
 	// If this field is greater than zero, we know a user is logged in, and which one!
-	static int userID;
+	static int userID; // TODO: this should *not* be static!!
 	
 	CardLayout layout = new CardLayout();
 	JMenuBar menubar = new JMenuBar();

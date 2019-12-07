@@ -8,10 +8,12 @@ import java.util.*;
 
 public class EditorPanel extends AppPanel {
 
-	TablePanel articleTable = new TablePanel();
+	JComboBox actions;
+	TablePanel table = new TablePanel();
 	JButton addButton = new JButton("Add editor");
-	JButton submitButton = new JButton("Submit");
+	JButton removeButton = new JButton("Remove editor");
 	JButton passRoleButton = new JButton("Pass role");
+	JButton submitButton = new JButton("Submit");
 
 	public void empty() {
 		removeAll();
@@ -35,11 +37,7 @@ public class EditorPanel extends AppPanel {
 	}
 	/*
 	void initialise(int userID) {
-		authorTable.update(
-			new Object[][] {UserController.getUserDetails(userID)},
-			new String[] {"Title", "First name(s)", "Last name", "University", "Email address"}
-		);
-		file = null;
+		
 	}
 	*/
 	public EditorPanel() {
@@ -49,66 +47,57 @@ public class EditorPanel extends AppPanel {
 	public EditorPanel(Object... items) {
 		this();
 		int issn = Integer.parseInt(items[0].toString());
-		String title = items[1].toString();
+		String journal = items[1].toString();
 		int userID = Integer.parseInt(items[2].toString());
-		JComboBox actions = new JComboBox(getActionsArray (title));
+		
+		actions = new JComboBox(getActionsArray(journal));
 		add(actions);
-		add(articleTable, "grow");
+		add(table, "grow");
 
-		addButton.addActionListener(e -> articleTable.addRow());
-
+		addButton.addActionListener(e -> table.addRow());
+		addButton.addActionListener(e -> table.removeRow());
 		passRoleButton.addActionListener(e -> {
-			Object[] data = articleTable.extractRow();				
+			Object[] data = table.extractRow();				
 			String userTitle = data[0].toString();
 			String firstNames = data[1].toString();
 			String lastName = data[2].toString();
 			String university = data[3].toString();
 			String email = data[4].toString();
 			String fullName = userTitle +' '+ firstNames +' '+ lastName;
-			int dialogResult = JOptionPane.showConfirmDialog (this,
-				"Do you want to make "+ fullName + " new chief editor?",
-												 "Retire", JOptionPane.YES_NO_OPTION);
+			int dialogResult = JOptionPane.showConfirmDialog(this,
+				"Do you want to make "+ fullName + " new chief editor?", "Retire", JOptionPane.YES_NO_OPTION
+			);
 			if (dialogResult == 0) {
 				EditorController.transferChief(issn, email);
-				JOptionPane.showMessageDialog(this, "You're no longer chief editor of this journal",
-															   "", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this,
+					"You are no longer chief editor of this journal.", "", JOptionPane.INFORMATION_MESSAGE
+				);
 			}				
 		});
-
 		submitButton.addActionListener(e -> {
-			Object[][] data = articleTable.extractAll();
+			Object[][] data = table.extractAll();
 			String[] editorsEmails = new String[data.length];
-			String userTitle = "";
-			String firstNames = "";
-			String lastName ="";
-			String university = "";
-			String email = "";
-			String fullName = "";				
 			for (int i=0; i < data.length; i++) {
-				if (App.validate(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4])) {	
-					userTitle = data[i][0].toString();
-					firstNames = data[i][1].toString();
-					lastName = data[i][2].toString();
-					university = data[i][3].toString();
-					email = data[i][4].toString();
+				String userTitle = data[i][0].toString();
+				String firstNames = data[i][1].toString();
+				String lastName = data[i][2].toString();
+				String university = data[i][3].toString();
+				String email = data[i][4].toString();
+				String fullName = userTitle +' '+ firstNames +' '+ lastName;
+				if (App.validate(userTitle, firstNames, lastName, university, email)) {	
 					editorsEmails[i] = email;
-					fullName = userTitle +' '+ firstNames +' '+ lastName;
-					if (App.validate(userTitle, firstNames, lastName, university, email)) {
-						if (!UserController.validateEmail(email)) {
-							String password = null;
-							while (!App.validate(password)) {
-								JOptionPane.showInputDialog("Enter password for "+ fullName +":");
-							}
-							UserController.addUser(email, password, userTitle, firstNames, lastName, university);
+					if (!UserController.validateEmail(email)) {
+						String password = null;
+						while (!App.validate(password)) {
+							JOptionPane.showInputDialog("Enter password for "+ fullName +":");
 						}
-					}
-					else {
-						JOptionPane.showMessageDialog(this, "Editor's details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
-						return;
-					}					
+						UserController.addUser(email, password, userTitle, firstNames, lastName, university);
+					}				
 				}
 				else {
-					JOptionPane.showMessageDialog(this, "Editor's details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(this,
+						"Editor's details missing.", "Add editors", JOptionPane.WARNING_MESSAGE
+					);
 					return;
 				}
 			}
@@ -121,7 +110,7 @@ public class EditorPanel extends AppPanel {
 			for (int o=0; o < editorsEmails.length; o++){
 				for (int i=0; i < currentEditors.length; i++){
 					if (editorsEmails[o].equals(currentEditors[i])){
-						isEditor=true;
+						isEditor = true;
 					}
 				}
 				if (!isEditor){
@@ -136,49 +125,51 @@ public class EditorPanel extends AppPanel {
 			clean();
 			String action = (String) actions.getSelectedItem();
 			
-			switch (action){
+			switch (action) {
 				case "Publish journal":
 					//DO SOMETHING
 					break;
 				case "See articles":
-					getArticles(title);
+					getArticleTable(journal);
 					break;					
 				case "Register other editor":
-					getEditors(issn);
+					getEditorTable(issn);
 					add(addButton);
 					add(submitButton);
 					break;
 				case "Pass role":
-					getEditors(issn);
+					getEditorTable(issn);
 					add(passRoleButton);
 					break; 
 				case "See roles":
-					getEditors(issn);
+					getEditorTable(issn);
 					break;
 				case "Retire":
-					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog (this,
-						"Do you want to retire from the board for the "+ title + "?",
-															"Retire",dialogButton);
-				if (dialogResult == 0){
-					if (App.userID == EditorController.getChiefEditorID(title)){
-						if (EditorController.deleteChiefEditor(issn)){
-							JOptionPane.showMessageDialog(this, "You're no longer editor of this journal",
-																	 "", JOptionPane.INFORMATION_MESSAGE);
-							update();
+						"Do you want to retire from the board for the "+ journal + "?", "Retire", JOptionPane.YES_NO_OPTION
+					);
+					if (dialogResult == 0) {
+						if (App.userID == EditorController.getChiefEditorID(journal)){
+							if (EditorController.deleteChiefEditor(issn)){
+								JOptionPane.showMessageDialog(this,
+									"You're no longer editor of this journal", "", JOptionPane.INFORMATION_MESSAGE
+								);
+								update();
+							}
+							else {
+								JOptionPane.showMessageDialog(this,
+									"You cannot retire, you're the only editor", "Message", JOptionPane.ERROR_MESSAGE
+								);
+							} 
 						}
 						else {
-							JOptionPane.showMessageDialog(this, 
-							"You cannot retire, you're the only editor", "Message", JOptionPane.ERROR_MESSAGE);
-						} 
+							EditorController.deleteEditor(App.userID, issn);
+							JOptionPane.showMessageDialog(this,
+								"You're no longer editor of this journal", "", JOptionPane.INFORMATION_MESSAGE
+							);
+						}
 					}
-					else {
-						EditorController.deleteEditor(App.userID, issn);
-						JOptionPane.showMessageDialog(this, "You're no longer editor of this journal",
-																 "", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-				break;
+					break;
 			}
 			refresh();
 		});
@@ -189,27 +180,27 @@ public class EditorPanel extends AppPanel {
 		update(items);
 	}
 
-	public String [] getActionsArray (String title){
-		if (App.userID == EditorController.getChiefEditorID(title)){
+	public String[] getActionsArray(String journal){
+		if (App.userID == EditorController.getChiefEditorID(journal)){
 			String [] actionsArray = {"See articles","Publish journal","Retire","Register other editor","Pass role","See roles"};
 			return actionsArray;
 		}
 		else {
-			String [] actionsArray = {"See articles","Retire"};
+			String[] actionsArray = {"See articles","Retire"};
 			return actionsArray;
 		}			
 	}
 
-	void getEditors(int issn) {
-		articleTable.update(
+	void getEditorTable(int issn) {
+		table.update(
 			UserTable.filter(EditorController.getEditors(issn)),
 			UserTable.columns
 		);
 	}
 
-	void getArticles(String title) {
-		articleTable.update(
-			ArticleTable.filter(EditorController.getSubmissions(title)),
+	void getArticleTable(String journal) {
+		table.update(
+			ArticleTable.filter(EditorController.getSubmissions(journal)),
 			ArticleTable.columns
 		);
 	}

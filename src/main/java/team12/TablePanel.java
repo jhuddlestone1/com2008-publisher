@@ -74,7 +74,7 @@ public class TablePanel extends JScrollPane {
 	}
 	
 	public TablePanel(Object[][] data, Object[] cols) {
-		initialise();
+		this();
 		update(data, cols);
 	}
 	
