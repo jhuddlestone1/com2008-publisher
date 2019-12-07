@@ -157,6 +157,12 @@ public class EditorController {
         }
     }
 
+    //add a new editor to a journal in the table JournalEditors
+    public static void addEditor(int ISSN, String email){
+        String query = "INSERT INTO JournalEditors(ISSN,editorID) SELECT ISSN,userID FROM Journal,UserDetails WHERE ISSN=? and email=?";
+        Object[] vars = {ISSN, email};
+        Query.execute(query,vars);
+    }
     //return list of editors of a journal in 2d array
     //[[userID | title | forename | surname | uniAffiliation | email | authEditor | authAuthor | authReviewer]]
     public static Object[][] getEditors(int ISSN){

@@ -44,8 +44,6 @@ public class UserController {
         //insert user's login details into table UserLogin
         String salt = getSalt();
         String hashedPassword = getSecurePassword(password,salt);
-        System.out.println(salt);
-        System.out.println(hashedPassword);
         String query2 = "INSERT INTO UserLogin(email,password,salt,userID) VALUES(?,?,?,(SELECT userID FROM UserDetails WHERE email=?))";
         Object[] vars2 = {email,hashedPassword,salt,email};
         Query.execute(query2, vars2);
@@ -66,13 +64,10 @@ public class UserController {
 
     //check if email and password is valid - return "incorrect password"
     public static Boolean validateUser(String email, String password){
-        System.out.println("Work!");
         String query = "SELECT password,salt FROM UserLogin WHERE email=?";
         Object[] vars = {email};
         String hashedPassword = (String) Query.formTable(query,vars)[0][0];
         String salt = (String) Query.formTable(query,vars)[0][1];
-        System.out.println(salt);
-        System.out.println(hashedPassword);
         if (validateEmail(email)){
             if (hashedPassword.equals(getSecurePassword(password,salt))) {
                 return true;

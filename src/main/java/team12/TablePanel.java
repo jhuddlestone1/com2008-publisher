@@ -52,13 +52,23 @@ public class TablePanel extends JScrollPane {
 		int cols = table.getColumnCount();
 		Object[][] data = new String[rows][cols];
 		for (int i=0; i < rows; i++) {
-			for (int j=0; i < cols; j++) {
+			for (int j=0; j < cols; j++) {
 				data[i][j] = table.getValueAt(i,j);
 			}
 		}
 		return data;
 	}
 	
+	Object[] getSelected() {
+		int number = getRow();
+		int cols = table.getColumnCount();
+		Object[] data = new String[cols];
+		for (int j=0; j < cols; j++) {
+			data[j] = table.getValueAt(number,j);
+		}
+		return data;
+	}
+
 	public TablePanel() {
 		initialise();
 	}

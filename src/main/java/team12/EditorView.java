@@ -31,7 +31,6 @@ public class EditorView extends AppView {
 		add(createButton, "split 2");
 		add(updateButton);
 		add(journalTabs, "grow");
-		
 		createButton.addActionListener(e -> app.switchView("journal"));
 		updateButton.addActionListener(e -> update(app.userID));
 	}
