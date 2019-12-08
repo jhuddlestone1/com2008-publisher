@@ -22,7 +22,7 @@ public class WelcomeView extends AppView {
 			if (UserController.validateEmail(email) && UserController.validateUser(email, password)) {
 				app.login(UserController.getUserID(email));
 			} else {
-				JOptionPane.showMessageDialog(app, "Login unsuccessful.", "Log in", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Login unsuccessful.", "Log in", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		loginPanel.signupButton.addActionListener(e -> app.switchView("user"));

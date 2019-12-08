@@ -44,14 +44,21 @@ public class SubmitView extends AppView {
 		add(submitButton);
 		
 		uploadButton.addActionListener(e -> {
-			if (fileChooser.showOpenDialog(app) == JFileChooser.APPROVE_OPTION) {
+			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				file = fileChooser.getSelectedFile();
 			}
 		});
+		
 		addButton.addActionListener(e -> authorTable.addRow());
 		removeButton.addActionListener(e -> authorTable.removeRow());
 		backButton.addActionListener(e -> app.switchView("author"));
+		
 		submitButton.addActionListener(e -> {
+			
+			// TODO: fix this with something not totally arbitrary
+			int issn = 12345678;
+			
+			
 			if (file != null && App.validate(articleTitle.getText(), abstractPanel.getText())) {
 				Object[][] data = authorTable.extractAll();
 				String[] authorEmails = new String[data.length];
@@ -73,21 +80,20 @@ public class SubmitView extends AppView {
 						authorEmails[i] = email;
 					}
 					else {
-						JOptionPane.showMessageDialog(app, "Author details missing.", "Submit article", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Author details missing.", "Submit article", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
 				}
-				// TODO: add authors to submission and send PDF file to database
 				try {
 					AuthorController.addSubmission(
-						articleTitle.getText(), abstractPanel.getText(), App.fileToBlob(file), app.userID, authorEmails
+						articleTitle.getText(), abstractPanel.getText(), App.fileToBlob(file), app.userID, issn, authorEmails
 					);
 				} catch (Exception error) { error.printStackTrace(); }
-				JOptionPane.showMessageDialog(app, "Article submitted.", "Submit article", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Article submitted.", "Submit article", JOptionPane.INFORMATION_MESSAGE);
 				initialise(app.userID);
 				app.switchView("author");
 			}
-			else JOptionPane.showMessageDialog(app, "Article details / PDF file missing.", "Submit article", JOptionPane.WARNING_MESSAGE);
+			else JOptionPane.showMessageDialog(null, "Article details / PDF file missing.", "Submit article", JOptionPane.WARNING_MESSAGE);
 		});
 	}
 	

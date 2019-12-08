@@ -28,11 +28,16 @@ public class App extends JFrame {
 		}
 		return content;
 	}
-	
-	//static File blobToFile() {
-		//return 
-	//}
-	
+	/*
+	static File blobToFile(String filename) {
+		File file = new File();
+		FileOutputStream stream = new FileOutputStream(file);
+		try {
+			
+		}
+		return 
+	}
+	*/
 	// Utility to check that items are not null
 	static boolean validate(Object... items) {
 		for (Object item : items) {
@@ -88,7 +93,6 @@ public class App extends JFrame {
 		content.add(new MainView(this), "main");
 		content.add(new ReaderView(this), "reader");
 		content.add(new ReviewerView(this), "reviewer");
-		content.add(new SubmissionView(this), "submission");
 		content.add(new AuthorView(this), "author");
 		content.add(new SubmitView(this), "submit");
 		content.add(new EditorView(this), "editor");
@@ -109,12 +113,12 @@ public class App extends JFrame {
 	}
 	
 	public void logout() {
-		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?", "Log out", JOptionPane.YES_NO_OPTION)==0)
+		if (JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Log out", JOptionPane.YES_NO_OPTION)==0)
 			initialise();
 	}
 	
 	public void quit() {
-		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Quit program", JOptionPane.YES_NO_OPTION)==0)
+		if (JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Quit program", JOptionPane.YES_NO_OPTION)==0)
 			System.exit(0);
 	}
 

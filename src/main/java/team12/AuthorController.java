@@ -1,29 +1,30 @@
 package team12;
 
-import java.sql.Blob;
+import java.math.BigInteger;
 
 public class AuthorController {
 
     //add new submission to database
-    public static void addSubmission(String title, String summary, byte[] pdfFile, int mainAuthorID, String[] emails){
+    public static void addSubmission(String title, String summary, byte[] pdfFile, int mainAuthorID, int issn, String[] emails){
         String queryA = "SELECT `AUTO_INCREMENT` FROM information_schema.TABLES WHERE TABLE_SCHEMA='team012' AND TABLE_NAME='Submission'";
         Object[] varsA = new Object[0];
-        Integer currentID = (Integer) Query.formTable(queryA, varsA)[0][0];
-        String pdfFilename = currentID + ".pdf";
-        String query1 = "INSERT INTO Submission(title,summary,pdfFilename, pdfFile, mainAuthorID) VALUES(?,?,?,?,?)";
-        Object[] vars1 = {title,summary,pdfFilename,pdfFile,mainAuthorID};
+        int currentID = ((BigInteger) Query.formTable(queryA, varsA)[0][0]).intValue();
+        String query1 = "INSERT INTO Submission(title,summary, pdfFile, mainAuthorID, ISSN) VALUES(?,?,?,?,?)";
+        Object[] vars1 = {title, summary, pdfFile, mainAuthorID, issn};
         Query.execute(query1,vars1);
+        /*
         String query2 = "INSERT INTO SubmissionAuthors(submissionID,authorID) VALUES(?,?)";
         Object[] vars2 = {currentID,mainAuthorID};
-        addAuthors(currentID, emails);
         Query.execute(query2,vars2);
+        */
+        addAuthors(currentID, emails);
     }
 
     //return only the list of submission that an author has access to
     //[[submissionID | title | abstract | pdfFilename | mainAuthorID]]
     //submissionID obtained can be used in getReview(int submissionID)
     public static Object[][] getSubmissions(int authorID){
-        String query = "SELECT * FROM Submission WHERE submissionID IN (SELECT submissionID FROM SubmissionAuthors WHERE authorID=?)";
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE submissionID IN (SELECT submissionID FROM SubmissionAuthors WHERE authorID=?)";
         Object[] vars = {authorID};
         Object[][] result = Query.formTable(query,vars);
         return result;

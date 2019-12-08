@@ -26,12 +26,12 @@ public class UserView extends AppView {
 			if (allValid) {
 				if (!emailExists) {
 					UserController.addUser(email, password, title, firstNames, lastName, university);
-					JOptionPane.showMessageDialog(app, "Account created.", "Add user", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Account created.", "Add user", JOptionPane.INFORMATION_MESSAGE);
 					if (!app.isLoggedIn()) {
 						app.login(UserController.getUserID(email));
 					}
-				} else JOptionPane.showMessageDialog(app, "Account already exists.", "Add user", JOptionPane.WARNING_MESSAGE);
-			} else JOptionPane.showMessageDialog(app, "All details must be provided.", "Add user", JOptionPane.WARNING_MESSAGE);
+				} else JOptionPane.showMessageDialog(null, "Account already exists.", "Add user", JOptionPane.WARNING_MESSAGE);
+			} else JOptionPane.showMessageDialog(null, "All details must be provided.", "Add user", JOptionPane.WARNING_MESSAGE);
 		});
 	}
 	

@@ -4,7 +4,7 @@ public class ReviewerController {
 
     //get list of all submissions with less than 3 reviews 
     //return list in a 2d array
-    //[[submissionID | title | abstract | pdfFilename | pdfFile | reviewNumber | mainAuthorID | title | forename | surname | uniAffiliation | email]]
+    //[[submissionID | title | abstract | pdfFile | reviewNumber | isApproved | mainAuthorID | ISSN | title | forename | surname | uniAffiliation | email]]
     public static Object[][] getSubmissions(int reviewerID){
         String reviewerStatus = UserController.getUserStatus(reviewerID);
         String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE uniAffiliation!=? AND reviewNumber<3";

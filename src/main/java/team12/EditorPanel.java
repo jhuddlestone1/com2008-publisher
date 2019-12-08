@@ -70,18 +70,18 @@ public class EditorPanel extends AppPanel {
 				String university = (String) data[3];
 				String email = (String) data[4];
 				String fullName = userTitle +' '+ firstNames +' '+ lastName;
-				int dialogResult = JOptionPane.showConfirmDialog(this,
+				int dialogResult = JOptionPane.showConfirmDialog(null,
 					"Do you want to make "+ fullName + " new chief editor?", "Retire", JOptionPane.YES_NO_OPTION
 				);
 				if (dialogResult == 0) {
 					EditorController.transferChief(issn, email);
-					JOptionPane.showMessageDialog(this,
+					JOptionPane.showMessageDialog(null,
 						"You are no longer chief editor of this journal.", "", JOptionPane.INFORMATION_MESSAGE
 					);
 				}
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "Editor details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Editor details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
 			}
 		});
 		
@@ -106,7 +106,7 @@ public class EditorPanel extends AppPanel {
 					editorsEmails[i] = email;
 				}
 				else {
-					JOptionPane.showMessageDialog(this, "Editor details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Editor details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 			}
@@ -127,7 +127,7 @@ public class EditorPanel extends AppPanel {
 				}
 				isEditor = false;
 			}								
-			JOptionPane.showMessageDialog(this, "Editors changed.", "Add editors", JOptionPane.INFORMATION_MESSAGE);				
+			JOptionPane.showMessageDialog(null, "Editors changed.", "Add editors", JOptionPane.INFORMATION_MESSAGE);				
 		});		
 
 		actions.addActionListener(e -> {
@@ -154,26 +154,26 @@ public class EditorPanel extends AppPanel {
 					getEditorTable(issn);
 					break;
 				case "Retire":
-					int dialogResult = JOptionPane.showConfirmDialog (this,
+					int dialogResult = JOptionPane.showConfirmDialog(null,
 						"Do you want to retire from the board for the "+ journal + "?", "Retire", JOptionPane.YES_NO_OPTION
 					);
 					if (dialogResult == 0) {
 						if (App.userID == EditorController.getChiefEditorID(journal)){
 							if (EditorController.deleteChiefEditor(issn)){
-								JOptionPane.showMessageDialog(this,
+								JOptionPane.showMessageDialog(null,
 									"You're no longer editor of this journal", "", JOptionPane.INFORMATION_MESSAGE
 								);
 								update();
 							}
 							else {
-								JOptionPane.showMessageDialog(this,
+								JOptionPane.showMessageDialog(null,
 									"You cannot retire, you're the only editor", "Message", JOptionPane.ERROR_MESSAGE
 								);
 							} 
 						}
 						else {
 							EditorController.deleteEditor(App.userID, issn);
-							JOptionPane.showMessageDialog(this,
+							JOptionPane.showMessageDialog(null,
 								"You're no longer editor of this journal", "", JOptionPane.INFORMATION_MESSAGE
 							);
 						}

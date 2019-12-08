@@ -124,9 +124,8 @@ public class EditorController {
         return result;
     }
 
-
-    public static String[] getVerdicts(int submissionID){
-        String query = "SELECT verdict FROM Review WHERE submissionID=?";
+    public static String[] getInitialVerdict(int submissionID){
+        String query = "SELECT iniVerdict FROM Review WHERE submissionID=?";
         Object[] vars = {submissionID};
         Object[][] table = Query.formTable(query,vars);
         String[] result = new String[table.length];
@@ -135,6 +134,18 @@ public class EditorController {
         }
         return result;
     }
+
+    public static String[] getFinalVerdict(int submissionID){
+        String query = "SELECT finVerdict FROM Review WHERE submissionID=?";
+        Object[] vars = {submissionID};
+        Object[][] table = Query.formTable(query,vars);
+        String[] result = new String[table.length];
+        for (int x=0; x<table.length; x++){
+            result[x] = (String) table[x][0];
+        }
+        return result;
+    }
+    
     public static void addArticles(int submissionID, int page, int editionID){
         String query1 = "UPDATE Submission SET isApproved = 1 WHERE submissionID=?";
         Object[] vars1 = {submissionID};

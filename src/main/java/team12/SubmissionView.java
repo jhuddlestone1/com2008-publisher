@@ -3,8 +3,6 @@ package team12;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.filechooser.*;
-import java.io.*;
 
 public class SubmissionView extends AppView {
 	
@@ -13,15 +11,15 @@ public class SubmissionView extends AppView {
 	JRadioButton weakAccept = new JRadioButton("Weak accept");
 	JRadioButton strongAccept = new JRadioButton("Strong accept");
 	ButtonGroup ratingButtons = new ButtonGroup();
+	String verdict;
 	
 	TextPanel summaryPanel = new TextPanel();
 	TextPanel errorsPanel = new TextPanel();
 	TextPanel questionsPanel = new TextPanel();
 	JButton backButton = new JButton("Back to list");
 	JButton submitButton = new JButton("Submit review");
-	File file;
 	
-	public SubmissionView(App app) {
+	public SubmissionView(App app, int submissionID) {
 		super("wrap", "align center, grow", "[grow][grow][grow][][]");
 		summaryPanel.setBorder(App.titledBorder("Summary"));
 		errorsPanel.setBorder(App.titledBorder("Proofing errors"));
@@ -43,8 +41,29 @@ public class SubmissionView extends AppView {
 		add(backButton, "split 2");
 		add(submitButton);
 		
-		backButton.addActionListener(e -> app.switchView("reviewer"));
-		submitButton.addActionListener(e -> file = null); // TODO: submit review
+		strongReject.addActionListener(e -> verdict = "Strong reject");
+		weakReject.addActionListener(e -> verdict = "Weak reject");
+		weakAccept.addActionListener(e -> verdict = "Weak accept");
+		strongAccept.addActionListener(e -> verdict = "Strong accept");
+		
+		backButton.addActionListener(e -> {
+			app.switchView("reviewer");
+			app.content.remove(this);
+		});
+		submitButton.addActionListener(e -> {
+			String summary = summaryPanel.getText();
+			String errors = errorsPanel.getText();
+			String questions = questionsPanel.getText();
+			if (App.validate(summary, errors, questions, verdict)) {
+				ReviewerController.addReview(
+					summary, errors, questions.split("\\n+"), verdict, submissionID, app.userID
+				);
+				JOptionPane.showMessageDialog(null, "Review submitted.", "Submit review", JOptionPane.INFORMATION_MESSAGE);
+				app.switchView("reviewer");
+				app.content.remove(this);
+			}
+			else JOptionPane.showMessageDialog(null, "Some fields missing.", "Submit review", JOptionPane.WARNING_MESSAGE);
+		});
 	}
 	
 }

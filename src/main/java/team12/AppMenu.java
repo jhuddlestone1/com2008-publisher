@@ -23,7 +23,7 @@ public class AppMenu extends JMenu {
 				app.switchView("main");
 			} else {
 				app.initialise();
-				//JOptionPane.showMessageDialog(app, "The main menu is not available.", "Main menu", JOptionPane.INFORMATION_MESSAGE);
+				//JOptionPane.showMessageDialog(null, "The main menu is not available.", "Main menu", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		logOut.addActionListener(e -> app.logout());

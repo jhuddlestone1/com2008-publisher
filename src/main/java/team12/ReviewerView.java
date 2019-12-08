@@ -10,27 +10,19 @@ public class ReviewerView extends AppView {
 	
 	JButton createButton = new JButton("Create new review");
 	JButton updateButton = new JButton("Update list");
-	TablePanel initialPanel = new TablePanel();
-	TablePanel finalPanel = new TablePanel();
+	ArticleTable initialPanel = new ArticleTable();
+	ArticleTable finalPanel = new ArticleTable();
 	TextPanel abstractPanel = new TextPanel();
 	JButton downloadButton = new JButton("Download article (PDF)");
-	Object[][] initialData;
-	Object[][] finalData;
+	Object[][] data;
 	File file;
 	
 	void update(int userID) {
-		String[] columns = new String[] {"Title", "Lead author"};
-		Object[][] data = ReviewerController.getSubmissions(userID);
-		Object[][] initialResults = new Object[data.length][columns.length];
-		Object[][] finalResults = new Object[data.length][columns.length];
-		for (int i=0; i < data.length; i++) {
-			// TODO: send data to initial or final depending on review status
-			initialResults[i][0] = data[i][1];
-			initialResults[i][1] = data[i][7];
-			initialResults[i][2] = data[i][5];
-		}
-		initialPanel.update(initialResults, columns);
-		finalPanel.update(finalResults, columns);
+		data = ReviewerController.getSubmissions(userID);
+		//Object[][] initialResults = new Object[data.length][initialPanel.columns.length];
+		//Object[][] finalResults = new Object[data.length][finalPanel.columns.length];
+		initialPanel.update(data);
+		//finalPanel.update(finalResults);
 		file = null;
 	}
 		
@@ -51,7 +43,16 @@ public class ReviewerView extends AppView {
 		
 		update(app.userID);
 		
-		createButton.addActionListener(e -> app.switchView("submission"));
+		createButton.addActionListener(e -> {
+			int row = initialPanel.getRow();
+			if (row >= 0) {
+			int submissionID = (int) data[row][0];
+				SubmissionView submissionView = new SubmissionView(app, submissionID);
+				app.content.add(submissionView, "submission");
+				app.switchView("submission");
+			}
+			else JOptionPane.showMessageDialog(null, "No row selected.", "Create review", JOptionPane.WARNING_MESSAGE);
+		});
 		updateButton.addActionListener(e -> update(app.userID));
 		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
 	}
