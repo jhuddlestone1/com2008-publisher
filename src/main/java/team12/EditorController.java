@@ -14,11 +14,11 @@ public class EditorController {
         Object[] varsU = {journalTitle};
         if (Query.execute(queryU, varsU).isEmpty()){
             //add journal to table Journal
-            String query1 = "INSERT INTO Journal(issn,journalTitle,chiefEditorID) VALUES(?,?,?)";
+            String query1 = "INSERT INTO Journal(ISSN,journalTitle,chiefEditorID) VALUES(?,?,?)";
             Object[] vars1 = {issn,journalTitle,chiefEditorID};
             Query.execute(query1, vars1);
             //add chiefEditor to table JournalEditors
-            String query2 = "INSERT INTO JournalEditors(issn,editorID) VALUES(?,?)";
+            String query2 = "INSERT INTO JournalEditors(ISSN,editorID) VALUES(?,?)";
             Object[] vars2 = {issn,chiefEditorID};
             Query.execute(query2, vars2);
         }
@@ -28,17 +28,17 @@ public class EditorController {
     }
  
     //display journals an editor has access to
-    //[[ issn | journalTitle | chiefEditorID]]
+    //[[ ISSN | journalTitle | chiefEditorID]]
     public static Object[][] getJournals(int editorID){
-        String query = "SELECT * FROM Journal WHERE issn IN (SELECT issn FROM JournalEditors WHERE editorID=?)";
+        String query = "SELECT * FROM Journal WHERE ISSN IN (SELECT ISSN FROM JournalEditors WHERE editorID=?)";
         Object[] vars = {editorID};
         Object[][] result = Query.formTable(query,vars);
         return result;
     }
 
-    //return issn of a journal given journal title
+    //return ISSN of a journal given journal title
     public static int getISSN(String journalTitle){
-        String query = "SELECT issn FROM Journal WHERE journalTitle =?";
+        String query = "SELECT ISSN FROM Journal WHERE journalTitle =?";
         Object[] vars = {journalTitle};
         int result = (Integer)(Query.formTable(query,vars)[0][0]); 
         return result;
@@ -61,7 +61,7 @@ public class EditorController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date2 = format.parse(date);    
-            String query = "INSERT INTO Volume(volume,date,issn) VALUES(?,?,?)";
+            String query = "INSERT INTO Volume(volume,date,ISSN) VALUES(?,?,?)";
             String volume2 = "vol." + volume;
             Object[] vars = {volume2,date2,issn};
             Query.execute(query,vars);
@@ -71,9 +71,9 @@ public class EditorController {
     }
 
     //display list of volumes of one journal
-    //[[volumeID | issn | volume(e.g. "vol.1") | date(e.g. "2019-11-28")]]
+    //[[volumeID | ISSN | volume(e.g. "vol.1") | date(e.g. "2019-11-28")]]
     public static Object[][] getVolumes(int issn){
-        String query = "SELECT * FROM Volume WHERE issn=?";
+        String query = "SELECT * FROM Volume WHERE ISSN=?";
         Object[] vars = {issn};
         Object[][] result = Query.formTable(query,vars);
         return result;
@@ -111,7 +111,7 @@ public class EditorController {
 
     public static Object[][] getSubmissions(String journalTitle){
         int issn = getISSN(journalTitle);
-        String query = "SELECT * FROM Submission WHERE issn=? AND isApproved=0";
+        String query = "SELECT * FROM Submission WHERE ISSN=? AND isApproved=0";
         Object[] vars = {issn};
         Object[][] result = Query.formTable(query,vars);
         return result;
@@ -150,49 +150,49 @@ public class EditorController {
 
     //add an array of new editors to a journal in the table JournalEditors
     public static void addEditors(int issn, String[] emails){
-        String query = "INSERT INTO JournalEditors(issn,editorID) SELECT issn,userID FROM Journal,UserDetails WHERE issn=? and email=?";
+        String query = "INSERT INTO JournalEditors(ISSN, editorID) SELECT ISSN, userID FROM Journal, UserDetails WHERE ISSN=? and email=?";
         for (String email : emails){
             Object[] vars = {issn, email};
-            Query.execute(query,vars);
+            Query.execute(query, vars);
         }
     }
 
     //add a new editor to a journal in the table JournalEditors
     public static void addEditor(int issn, String email){
-        String query = "INSERT INTO JournalEditors(issn,editorID) SELECT issn,userID FROM Journal,UserDetails WHERE issn=? and email=?";
+        String query = "INSERT INTO JournalEditors(ISSN, editorID) SELECT ISSN, userID FROM Journal, UserDetails WHERE ISSN=? and email=?";
         Object[] vars = {issn, email};
-        Query.execute(query,vars);
+        Query.execute(query, vars);
     }
     //return list of editors of a journal in 2d array
     //[[userID | title | forename | surname | uniAffiliation | email | authEditor | authAuthor | authReviewer]]
     public static Object[][] getEditors(int issn){
-        String query = "SELECT * FROM UserDetails WHERE userID IN (SELECT editorID FROM JournalEditors WHERE issn=?)";
+        String query = "SELECT * FROM UserDetails WHERE userID IN (SELECT editorID FROM JournalEditors WHERE ISSN=?)";
         Object[] vars = {issn};
-        Object[][] result = Query.formTable(query,vars);
+        Object[][] result = Query.formTable(query, vars);
         return result;
     }
     
     //retire editor from a journal
     //does not remove editor as an user 
-    public static void deleteEditor(int userID,int issn){
-        String query = "DELETE FROM JournalEditors WHERE editorID=? AND issn=?";
+    public static void deleteEditor(int userID, int issn){
+        String query = "DELETE FROM JournalEditors WHERE editorID=? AND ISSN=?";
         Object[] vars = {userID,issn};
-        Query.execute(query,vars);
+        Query.execute(query, vars);
     }
 
     //retire chiefEditor from a journal
     public static Boolean deleteChiefEditor(int issn){
         //check if more than one editors operating the journal
-        String queryE = "SELECT editorID FROM JournalEditors WHERE issn=?";       
+        String queryE = "SELECT editorID FROM JournalEditors WHERE ISSN=?";       
         Object[] varsE = {issn};
         Object[][] editors = Query.formTable(queryE,varsE);
         if (editors.length > 1){
             //remove chiefEditor from the journal
             deleteEditor((Integer) editors[0][0], issn);
             //apppoint second editor in database to be new chief editor
-            String query = "UPDATE Journal SET chiefEditorID = ? WHERE issn = ?";
-            Object[] vars = {editors[1][0],issn};
-            Query.execute(query,vars);
+            String query = "UPDATE Journal SET chiefEditorID = ? WHERE ISSN = ?";
+            Object[] vars = {editors[1][0], issn};
+            Query.execute(query, vars);
             return true;
         }
         else {return false;}
@@ -202,12 +202,12 @@ public class EditorController {
     public static void transferChief(int issn, String email){
         //check if editor is on the board of editor of the journal
         int userID = UserController.getUserID(email);
-        String query1 = "SELECT * FROM JournalEditors WHERE issn=? AND editorID=?";
-        Object[] vars1 = {issn,userID};
-        if (!Query.execute(query1,vars1).isEmpty()){
-            String query2 = "UPDATE Journal SET chiefEditorID=? WHERE issn=?";
-            Object[] vars2 = {userID,issn};
-            Query.execute(query2,vars2);
+        String query1 = "SELECT * FROM JournalEditors WHERE ISSN=? AND editorID=?";
+        Object[] vars1 = {issn, userID};
+        if (!Query.execute(query1, vars1).isEmpty()){
+            String query2 = "UPDATE Journal SET chiefEditorID=? WHERE ISSN=?";
+            Object[] vars2 = {userID, issn};
+            Query.execute(query2, vars2);
         }
         else {
             System.out.println("Editor is not on the board");

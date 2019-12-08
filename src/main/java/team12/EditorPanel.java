@@ -55,49 +55,58 @@ public class EditorPanel extends AppPanel {
 		add(table, "grow");
 
 		addButton.addActionListener(e -> table.addRow());
-		addButton.addActionListener(e -> table.removeRow());
-		passRoleButton.addActionListener(e -> {
-			Object[] data = table.extractRow();				
-			String userTitle = data[0].toString();
-			String firstNames = data[1].toString();
-			String lastName = data[2].toString();
-			String university = data[3].toString();
-			String email = data[4].toString();
-			String fullName = userTitle +' '+ firstNames +' '+ lastName;
-			int dialogResult = JOptionPane.showConfirmDialog(this,
-				"Do you want to make "+ fullName + " new chief editor?", "Retire", JOptionPane.YES_NO_OPTION
-			);
-			if (dialogResult == 0) {
-				EditorController.transferChief(issn, email);
-				JOptionPane.showMessageDialog(this,
-					"You are no longer chief editor of this journal.", "", JOptionPane.INFORMATION_MESSAGE
-				);
-			}				
+		removeButton.addActionListener(e -> {
+			//String email = (String) table.extractRow()[4];
+			table.removeRow();
+			//EditorController.deleteEditor(App.userID, issn);
 		});
+		
+		passRoleButton.addActionListener(e -> {
+			Object[] data = table.extractRow();
+			if (App.validate(data)) {	
+				String userTitle = (String) data[0];
+				String firstNames = (String) data[1];
+				String lastName = (String) data[2];
+				String university = (String) data[3];
+				String email = (String) data[4];
+				String fullName = userTitle +' '+ firstNames +' '+ lastName;
+				int dialogResult = JOptionPane.showConfirmDialog(this,
+					"Do you want to make "+ fullName + " new chief editor?", "Retire", JOptionPane.YES_NO_OPTION
+				);
+				if (dialogResult == 0) {
+					EditorController.transferChief(issn, email);
+					JOptionPane.showMessageDialog(this,
+						"You are no longer chief editor of this journal.", "", JOptionPane.INFORMATION_MESSAGE
+					);
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Editor details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		
 		submitButton.addActionListener(e -> {
 			Object[][] data = table.extractAll();
 			String[] editorsEmails = new String[data.length];
 			for (int i=0; i < data.length; i++) {
-				String userTitle = data[i][0].toString();
-				String firstNames = data[i][1].toString();
-				String lastName = data[i][2].toString();
-				String university = data[i][3].toString();
-				String email = data[i][4].toString();
-				String fullName = userTitle +' '+ firstNames +' '+ lastName;
-				if (App.validate(userTitle, firstNames, lastName, university, email)) {	
-					editorsEmails[i] = email;
+				if (App.validate(data[i])) {
+					String userTitle = (String) data[i][0];
+					String firstNames = (String) data[i][1];
+					String lastName = (String) data[i][2];
+					String university = (String) data[i][3];
+					String email = (String) data[i][4];
+					String fullName = userTitle +' '+ firstNames +' '+ lastName;
 					if (!UserController.validateEmail(email)) {
 						String password = null;
 						while (!App.validate(password)) {
-							JOptionPane.showInputDialog("Enter password for "+ fullName +":");
+							password = JOptionPane.showInputDialog("Enter password for "+ fullName +":");
 						}
 						UserController.addUser(email, password, userTitle, firstNames, lastName, university);
-					}				
+					}
+					editorsEmails[i] = email;
 				}
 				else {
-					JOptionPane.showMessageDialog(this,
-						"Editor's details missing.", "Add editors", JOptionPane.WARNING_MESSAGE
-					);
+					JOptionPane.showMessageDialog(this, "Editor details missing.", "Add editors", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 			}
@@ -116,7 +125,7 @@ public class EditorPanel extends AppPanel {
 				if (!isEditor){
 					EditorController.addEditor(issn, editorsEmails[o]);
 				}
-				isEditor=false;
+				isEditor = false;
 			}								
 			JOptionPane.showMessageDialog(this, "Editors changed.", "Add editors", JOptionPane.INFORMATION_MESSAGE);				
 		});		
@@ -181,13 +190,11 @@ public class EditorPanel extends AppPanel {
 	}
 
 	public String[] getActionsArray(String journal){
-		if (App.userID == EditorController.getChiefEditorID(journal)){
-			String [] actionsArray = {"See articles","Publish journal","Retire","Register other editor","Pass role","See roles"};
-			return actionsArray;
+		if (App.userID == EditorController.getChiefEditorID(journal)) {
+			return new String[] {"See articles","Publish journal","Retire","Register other editor","Pass role","See roles"};
 		}
 		else {
-			String[] actionsArray = {"See articles","Retire"};
-			return actionsArray;
+			return new String[] {"See articles","Retire"};
 		}			
 	}
 

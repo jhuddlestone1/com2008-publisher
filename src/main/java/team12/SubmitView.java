@@ -56,17 +56,17 @@ public class SubmitView extends AppView {
 				Object[][] data = authorTable.extractAll();
 				String[] authorEmails = new String[data.length];
 				for (int i=0; i < data.length; i++) {
-					String title = data[i][0].toString();
-					String firstNames = data[i][1].toString();
-					String lastName = data[i][2].toString();
-					String university = data[i][3].toString();
-					String email = data[i][4].toString();
-					String fullName = title +' '+ firstNames +' '+ lastName;
-					if (App.validate(email, title, firstNames, lastName, university)) {
+					if (App.validate(data[i])) {
+						String title = (String) data[i][0];
+						String firstNames = (String) data[i][1];
+						String lastName = (String) data[i][2];
+						String university = (String) data[i][3];
+						String email = (String) data[i][4];
+						String fullName = title +' '+ firstNames +' '+ lastName;
 						if (!UserController.validateEmail(email)) {
 							String password = null;
 							while (!App.validate(password)) {
-								JOptionPane.showInputDialog("Enter password for "+ fullName +":");
+								password = JOptionPane.showInputDialog("Enter password for "+ fullName +":");
 							}
 							UserController.addUser(email, password, title, firstNames, lastName, university);
 						}
