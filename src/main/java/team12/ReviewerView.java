@@ -10,12 +10,14 @@ public class ReviewerView extends AppView {
 	
 	JButton createButton = new JButton("Create new review");
 	JButton updateButton = new JButton("Update list");
+	JButton finalButton = new JButton("Finalise review");
 	JLabel remainingReviews = new JLabel(" ");
 	ArticleTable initialPanel = new ArticleTable();
 	ArticleTable finalPanel = new ArticleTable();
 	TextPanel abstractPanel = new TextPanel();
 	JButton downloadButton = new JButton("Download article (PDF)");
 	Object[][] data;
+	Object[][] submittedReviews;
 	File file;
 		
 	void update(App app) {
@@ -31,8 +33,10 @@ public class ReviewerView extends AppView {
 		else {
 			data = new Object[0][0];
 		}
+		submittedReviews = ReviewerController.getRepliedReviews(app.userID);
 		initialPanel.update(data);
-		//finalPanel.update(finalResults);
+		finalPanel.update(submittedReviews);
+		
 		file = null;
 	}
 		
@@ -44,8 +48,9 @@ public class ReviewerView extends AppView {
 		
 		add(new JLabel("Team 12 Academic Publishing"));
 		add(new JLabel("Review submissions")).setFont(App.headerFont);
-		add(createButton, "split 2");
+		add(createButton, "split 3");
 		add(updateButton);
+		add(finalButton);
 		add(remainingReviews);
 		add(initialPanel, "split 2, grow");
 		add(finalPanel, "grow");
@@ -64,6 +69,22 @@ public class ReviewerView extends AppView {
 			}
 			else JOptionPane.showMessageDialog(null, "No review selected.", "Create review", JOptionPane.WARNING_MESSAGE);
 		});
+		
+		finalButton.addActionListener(e -> {
+			int row = finalPanel.getRow();
+			if (row >= 0) {
+				int submissionID = (int) submittedReviews[row][0];
+				FinalReviewView finalReviewView = new FinalReviewView(app, submittedReviews[row]); //what data to pass
+				if (finalReviewView.data.length > 0) {
+					finalReviewView.update();
+					app.content.add(finalReviewView, "review");
+					app.switchView("review");
+				}
+				else JOptionPane.showMessageDialog(null, "No reviews available.", "View review", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else JOptionPane.showMessageDialog(null, "No review selected.", "Create review", JOptionPane.WARNING_MESSAGE);
+		});
+		
 		updateButton.addActionListener(e -> update(app));
 		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
 	}

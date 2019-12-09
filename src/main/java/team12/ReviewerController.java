@@ -19,6 +19,13 @@ public class ReviewerController {
         Object[][] result = Query.formTable(query,vars);
         return result.length;
     }
+    
+    public static Object[][] getRepliedReviews(int reviewerID){
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE Submission.submissionID IN (SELECT submissionID FROM Review WHERE reviewID IN (SELECT reviewID FROM Criticism WHERE answer IS NOT NULL) AND reviewerID = ?)";
+        Object[] vars = {reviewerID};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
 
     //add review to a submission
     public static boolean addReview(String summary, String typoList, String[] criticisms, String iniVerdict, int submissionID, int reviewerID){
