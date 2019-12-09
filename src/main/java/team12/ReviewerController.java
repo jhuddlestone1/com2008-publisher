@@ -7,7 +7,7 @@ public class ReviewerController {
     //[[submissionID | title | abstract | pdfFile | reviewNumber | isApproved | mainAuthorID | ISSN | title | forename | surname | uniAffiliation | email]]
     public static Object[][] getSubmissions(int reviewerID){
         String reviewerStatus = UserController.getUserStatus(reviewerID);
-        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE uniAffiliation!=? AND reviewNumber < 3 AND Submission.submissionID NOT IN (SELECT submissionID FROM SubmissionAuthors WHERE SubmissionAuthors.authorID = ?) AND  Submission.submissionID NOT IN (SELECT submissionID FROM Review WHERE Review.reviewerID = ?)";
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE uniAffiliation!=? AND reviewNumber < 3 AND Submission.submissionID NOT IN (SELECT submissionID FROM SubmissionAuthors WHERE SubmissionAuthors.authorID = ?) AND Submission.submissionID NOT IN (SELECT submissionID FROM Review WHERE Review.reviewerID = ?)";
         Object[] vars = {reviewerStatus, reviewerID, reviewerID};
         Object[][] result = Query.formTable(query,vars);
         return result;
@@ -21,7 +21,7 @@ public class ReviewerController {
     }
     
     public static Object[][] getRepliedReviews(int reviewerID){
-        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE Submission.submissionID IN (SELECT submissionID FROM Review WHERE reviewID IN (SELECT reviewID FROM Criticism WHERE answer IS NOT NULL) AND reviewerID = ?)";
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN INNER JOIN Review ON Submission.submissionID = Review.submissionID WHERE reviewID IN (SELECT reviewID FROM Criticism WHERE answer IS NOT NULL) AND reviewerID = ? AND finVerdict IS NULL";
         Object[] vars = {reviewerID};
         Object[][] result = Query.formTable(query,vars);
         return result;

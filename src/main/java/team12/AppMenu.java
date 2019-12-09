@@ -32,5 +32,4 @@ public class AppMenu extends JMenu {
 		logOut.addActionListener(e -> app.logout());
 		quitProgram.addActionListener(e -> app.quit());
 	}
-	// TODO: add 'Change user details' to menu
 }

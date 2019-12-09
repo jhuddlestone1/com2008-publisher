@@ -73,7 +73,7 @@ public class ReviewView extends AppView {
 				}
 				else JOptionPane.showMessageDialog(null, "Number of responses must match number of criticisms.", "Submit response", JOptionPane.INFORMATION_MESSAGE); 
 			} catch (Exception error) { error.printStackTrace(); }
-		}); // TODO: do something!
+		});
 	}
 	
 }

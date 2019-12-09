@@ -28,13 +28,14 @@ public class FinalReviewView extends AppView {
 	ButtonGroup ratingButtons = new ButtonGroup();	
 	
 	void update() {
-		/*
-		replies = AuthorController.getCriticisms((int) data[0]);
-		summaryPanel.setText((String) data[1]);
-		errorsPanel.setText((String) data[2]);
+		
+		replies = AuthorController.getCriticisms((int) data[17]);
+		summaryPanel.setText((String) data[18]);
+		errorsPanel.setText((String) data[19]);
 		questionsPanel.setText(App.getColumn(replies,1));
-		verdict.setText((String) data[3]);
-		*/
+		responsePanel.setText(App.getColumn(replies,2));
+		verdict.setText((String) data[20]);
+		
 	}
 	
 	public FinalReviewView(App app, Object[] data) {
@@ -63,8 +64,8 @@ public class FinalReviewView extends AppView {
 		add(weakReject);
 		add(weakAccept);
 		add(strongAccept);
-		add(submitButton, "split 2");
 		add(backButton);
+		add(submitButton, "split 2");
 
 		strongReject.addActionListener(e -> finalVerdict = "Strong reject");
 		weakReject.addActionListener(e -> finalVerdict = "Weak reject");
@@ -78,11 +79,12 @@ public class FinalReviewView extends AppView {
 		
 		submitButton.addActionListener(e -> {
 			if (App.validate(finalVerdict)){
-				//submit final review
-				}
+				ReviewerController.addFinalVerdict(finalVerdict, (int) data[17]);
+				app.switchView("reviewer");
+				app.content.remove(this);
+			}
 			else JOptionPane.showMessageDialog(null, "Choose final verdict.", "Submit final review", JOptionPane.WARNING_MESSAGE);
-			
-		}); // TODO: do something!
+		});
 	}
 	
 }

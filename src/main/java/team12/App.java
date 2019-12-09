@@ -66,7 +66,7 @@ public class App extends JFrame {
 	}
 		
 	// If this field is greater than zero, we know a user is logged in, and which one!
-	int userID; // TODO: this should *not* be static!!
+	int userID;
 	
 	CardLayout layout = new CardLayout();
 	JMenuBar menubar = new JMenuBar();
@@ -106,7 +106,6 @@ public class App extends JFrame {
 		userID = id;
 		content.removeAll();
 		
-		// TODO: add decision logic for user permissions;
 		// maybe add menu items based on array of permissions corresponding to view names?
 		// Add views here
 		content.add(new MainView(this), "main");

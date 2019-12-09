@@ -134,9 +134,8 @@ public class EditorTab extends AppPanel {
 		});
 		
 		articleTable.selector.addListSelectionListener(e -> {
-			// TODO: switch to final verdicts!!
 			int submissionID = (int) submissionData[articleTable.getRow()][0];
-			String verdictString = String.join(", ", EditorController.getInitialVerdict(submissionID));
+			String verdictString = String.join(", ", EditorController.getFinalVerdict(submissionID));
 			verdictPanel.update(verdictString);
 		});
 		
