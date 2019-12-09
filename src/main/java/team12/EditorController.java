@@ -54,7 +54,7 @@ public class EditorController {
     //returns chief editor of the given journal
     public static int getChiefEditorByISSN(int issn){
         String query = "SELECT chiefEditorID FROM Journal WHERE ISSN=?";
-        Object[] vars = {journalTitle};
+        Object[] vars = {issn};
         int result = (Integer)(Query.formTable(query,vars)[0][0]); 
         return result;
     }    
