@@ -17,6 +17,22 @@ public class TextPanel extends AppPanel {
 		refresh();
 	}
 	
+	void setText(Object... text) {
+		textArea.setText("");
+		append(text);
+	}
+	
+	void append(Object text) {
+		textArea.append(text.toString() +"\n");
+		refresh();
+	}
+	
+	void append(Object... text) {
+		for (Object line : text)
+			textArea.append(line.toString() +"\n");
+		refresh();
+	}
+	
 	void update(Object text) {
 		setText(text);
 	}

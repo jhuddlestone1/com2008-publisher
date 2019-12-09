@@ -40,14 +40,33 @@ public class App extends JFrame {
 	*/
 	// Utility to check that items are not null
 	static boolean validate(Object... items) {
+		if (items == null) return false;
 		for (Object item : items) {
 			if (item == null || item.toString().trim().isEmpty()) return false;
 		}
 		return true;
 	}
 	
+	static Object[] getColumn(Object[][] object, int index) {
+		Object[] result = new Object[object.length];
+		for (int i=0; i < object.length; i++) {
+			result[i] = object[i][index];
+		}
+		return result;
+	}
+	
+	static Object[][] getColumns(Object[][] object, int... indexes) {
+		Object[][] result = new Object[object.length][indexes.length];
+		for (int i=0; i < object.length; i++) {
+			for (int j=0; j < indexes.length; j++) {
+				result[i][j] = object[i][indexes[j]];
+			}
+		}
+		return result;
+	}
+		
 	// If this field is greater than zero, we know a user is logged in, and which one!
-	static int userID; // TODO: this should *not* be static!!
+	int userID; // TODO: this should *not* be static!!
 	
 	CardLayout layout = new CardLayout();
 	JMenuBar menubar = new JMenuBar();
@@ -96,7 +115,6 @@ public class App extends JFrame {
 		content.add(new AuthorView(this), "author");
 		content.add(new SubmitView(this), "submit");
 		content.add(new EditorView(this), "editor");
-		content.add(new JournalView(this), "journal");
 		content.add(new UserView(this), "user");
 		
 		pack();                      // resizes app to contain all elements

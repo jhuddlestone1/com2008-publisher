@@ -11,6 +11,11 @@ public class TabPanel extends JTabbedPane {
 		repaint();
 	}
 	
+	public void remove(JPanel panel) {
+		remove(panel);
+		refresh();
+	}
+	
 	public void empty() {
 		removeAll();
 		refresh();

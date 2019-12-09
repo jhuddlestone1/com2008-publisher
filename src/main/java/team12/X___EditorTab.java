@@ -6,7 +6,7 @@ import javax.swing.filechooser.*;
 import java.io.*;
 import java.util.*;
 
-public class EditorPanel extends AppPanel {
+public class EditorTab extends AppPanel {
 
 	JComboBox actions;
 	TablePanel table = new TablePanel();
@@ -14,6 +14,8 @@ public class EditorPanel extends AppPanel {
 	JButton removeButton = new JButton("Remove editor");
 	JButton passRoleButton = new JButton("Pass role");
 	JButton submitButton = new JButton("Submit");
+	JButton publishArticleButton = new JButton("Publish article");
+	JButton rejectArticleButton = new JButton("Reject article");
 
 	public void empty() {
 		removeAll();
@@ -40,11 +42,11 @@ public class EditorPanel extends AppPanel {
 		
 	}
 	*/
-	public EditorPanel() {
+	public EditorTab(App app) {
 		super("wrap", "grow");
 	}
 	
-	public EditorPanel(Object... items) {
+	public EditorTab(App app, Object... items) {
 		this();
 		int issn = Integer.parseInt(items[0].toString());
 		String journal = items[1].toString();
@@ -135,11 +137,12 @@ public class EditorPanel extends AppPanel {
 			String action = (String) actions.getSelectedItem();
 			
 			switch (action) {
-				case "Publish journal":
+				case "Publish edition":
 					//DO SOMETHING
 					break;
-				case "See articles":
+				case "Publish articles":
 					getArticleTable(journal);
+					
 					break;					
 				case "Register other editor":
 					getEditorTable(issn);
@@ -158,7 +161,7 @@ public class EditorPanel extends AppPanel {
 						"Do you want to retire from the board for the "+ journal + "?", "Retire", JOptionPane.YES_NO_OPTION
 					);
 					if (dialogResult == 0) {
-						if (App.userID == EditorController.getChiefEditorID(journal)){
+						if (app.userID == EditorController.getChiefEditorID(journal)){
 							if (EditorController.deleteChiefEditor(issn)){
 								JOptionPane.showMessageDialog(null,
 									"You're no longer editor of this journal", "", JOptionPane.INFORMATION_MESSAGE
@@ -172,7 +175,7 @@ public class EditorPanel extends AppPanel {
 							} 
 						}
 						else {
-							EditorController.deleteEditor(App.userID, issn);
+							EditorController.deleteEditor(app.userID, issn);
 							JOptionPane.showMessageDialog(null,
 								"You're no longer editor of this journal", "", JOptionPane.INFORMATION_MESSAGE
 							);
@@ -184,17 +187,17 @@ public class EditorPanel extends AppPanel {
 		});
 	}
 	
-	public EditorPanel(ArrayList items) {
+	public EditorTab(App app, ArrayList items) {
 		this();
 		update(items);
 	}
 
 	public String[] getActionsArray(String journal){
-		if (App.userID == EditorController.getChiefEditorID(journal)) {
-			return new String[] {"See articles","Publish journal","Retire","Register other editor","Pass role","See roles"};
+		if (app.userID == EditorController.getChiefEditorID(journal)) {
+			return new String[] {"Publish articles","Publish edition","Retire","Register other editor","Pass role","See roles"};
 		}
 		else {
-			return new String[] {"See articles","Retire"};
+			return new String[] {"Publish articles","Retire"};
 		}			
 	}
 

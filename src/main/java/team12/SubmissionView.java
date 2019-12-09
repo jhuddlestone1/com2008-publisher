@@ -23,13 +23,11 @@ public class SubmissionView extends AppView {
 		super("wrap", "align center, grow", "[grow][grow][grow][][]");
 		summaryPanel.setBorder(App.titledBorder("Summary"));
 		errorsPanel.setBorder(App.titledBorder("Proofing errors"));
-		questionsPanel.setBorder(App.titledBorder("Questions"));
+		questionsPanel.setBorder(App.titledBorder("Criticisms (new line separates)"));
 		ratingButtons.add(strongReject);
 		ratingButtons.add(weakReject);
 		ratingButtons.add(weakAccept);
 		ratingButtons.add(strongAccept);
-		
-		// TODO: link this page to the previous one!
 		
 		add(summaryPanel, "grow");
 		add(errorsPanel, "grow");
@@ -56,7 +54,7 @@ public class SubmissionView extends AppView {
 			String questions = questionsPanel.getText();
 			if (App.validate(summary, errors, questions, verdict)) {
 				ReviewerController.addReview(
-					summary, errors, questions.split("\\n+"), verdict, submissionID, app.userID
+					summary, errors, questions.trim().split("\\n+"), verdict, submissionID, app.userID
 				);
 				JOptionPane.showMessageDialog(null, "Review submitted.", "Submit review", JOptionPane.INFORMATION_MESSAGE);
 				app.switchView("reviewer");

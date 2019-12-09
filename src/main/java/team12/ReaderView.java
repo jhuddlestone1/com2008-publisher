@@ -16,7 +16,10 @@ public class ReaderView extends AppView {
 	File file;
 	
 	void search(String query) {
-		data = UserController.getPublishedArticles(query);
+		if (searchPanel.searchJournal.isSelected())
+			data = UserController.getPublishedJournals(query);
+		else 
+			data = UserController.getPublishedArticles(query);
 		articlePanel.update(data);
 		file = null;
 	}
@@ -31,7 +34,7 @@ public class ReaderView extends AppView {
 		add(abstractPanel, "grow");
 		add(downloadButton);
 		
-		search(null);
+		search("");
 		
 		// TODO: filter search
 		searchPanel.searchButton.addActionListener(e -> search(searchPanel.searchField.getText()));

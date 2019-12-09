@@ -9,9 +9,9 @@ public class EditorController {
     //Journal section
 
     //add new journal to database in table Journal
-    public static void addJournal(int issn, String journalTitle, int chiefEditorID){
-        String queryU = "SELECT * FROM Journal WHERE journalTitle=?";
-        Object[] varsU = {journalTitle};
+    public static boolean addJournal(int issn, String journalTitle, int chiefEditorID){
+        String queryU = "SELECT * FROM Journal WHERE journalTitle=? OR ISSN=?";
+        Object[] varsU = {journalTitle, issn};
         if (Query.execute(queryU, varsU).isEmpty()){
             //add journal to table Journal
             String query1 = "INSERT INTO Journal(ISSN,journalTitle,chiefEditorID) VALUES(?,?,?)";
@@ -21,10 +21,9 @@ public class EditorController {
             String query2 = "INSERT INTO JournalEditors(ISSN,editorID) VALUES(?,?)";
             Object[] vars2 = {issn,chiefEditorID};
             Query.execute(query2, vars2);
+            return true;
         }
-        else {
-            System.out.println("Journal name already exists");
-        }
+        else return false;
     }
  
     //display journals an editor has access to
@@ -111,7 +110,7 @@ public class EditorController {
 
     public static Object[][] getSubmissions(String journalTitle){
         int issn = getISSN(journalTitle);
-        String query = "SELECT * FROM Submission WHERE ISSN=? AND isApproved=0";
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE Submission.ISSN=? AND isApproved=0 AND reviewNumber>=3";
         Object[] vars = {issn};
         Object[][] result = Query.formTable(query,vars);
         return result;
@@ -154,6 +153,12 @@ public class EditorController {
         Object[] vars2 = {submissionID,page,editionID};
         Query.execute(query2, vars2);
     }
+    
+    public static void rejectArticles(int submissionID){
+        String query1 = "UPDATE Submission SET isApproved = -1 WHERE submissionID=?";
+        Object[] vars1 = {submissionID};
+        Query.execute(query1,vars1);
+    }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -174,6 +179,7 @@ public class EditorController {
         Object[] vars = {issn, email};
         Query.execute(query, vars);
     }
+    
     //return list of editors of a journal in 2d array
     //[[userID | title | forename | surname | uniAffiliation | email | authEditor | authAuthor | authReviewer]]
     public static Object[][] getEditors(int issn){
@@ -187,6 +193,13 @@ public class EditorController {
     //does not remove editor as an user 
     public static void deleteEditor(int userID, int issn){
         String query = "DELETE FROM JournalEditors WHERE editorID=? AND ISSN=?";
+        Object[] vars = {userID,issn};
+        Query.execute(query, vars);
+    }
+    
+    //remove all except named editor from a journal
+    public static void deleteAllExceptChiefEditor(int userID, int issn){
+        String query = "DELETE FROM JournalEditors WHERE editorID!=? AND ISSN=?";
         Object[] vars = {userID,issn};
         Query.execute(query, vars);
     }
@@ -206,7 +219,7 @@ public class EditorController {
             Query.execute(query, vars);
             return true;
         }
-        else {return false;}
+        else return false;
     }
 
     //transfer the chief editor role to another editor operating the journal
@@ -224,6 +237,7 @@ public class EditorController {
             System.out.println("Editor is not on the board");
         }
     }
+    
     public static void main(String[]args) {
         //deleteEditor one more parameter - issn
     }

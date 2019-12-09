@@ -20,12 +20,20 @@ public class TablePanel extends JScrollPane {
 		setViewportView(table);
 	}
 	
+	int countRows() {
+		return table.getRowCount();
+	}
+	
+	int countColumns() {
+		return table.getColumnCount();
+	}
+	
 	int getRow() {
 		return table.getSelectedRow();
 	}
 	
 	void addRow() {
-		model.addRow(new Object[table.getColumnCount()]);
+		model.addRow(new Object[countColumns()]);
 	}
 	
 	void addRow(Object[] data) {
@@ -33,7 +41,7 @@ public class TablePanel extends JScrollPane {
 	}
 	
 	void removeRow() {
-		if (!selector.isSelectionEmpty() && table.getRowCount() > 1) {
+		if (!selector.isSelectionEmpty() && countRows() > 1) {
 			model.removeRow(getRow());
 		}
 	}
@@ -49,7 +57,8 @@ public class TablePanel extends JScrollPane {
 	
 	Object[] extractRow() {
 		int row = getRow();
-		int cols = table.getColumnCount();
+		if (row < 0) return null;
+		int cols = countColumns();
 		Object[] data = new String[cols];
 		for (int i=0; i < cols; i++) {
 			data[i] = table.getValueAt(row, i);
@@ -58,8 +67,9 @@ public class TablePanel extends JScrollPane {
 	}
 	
 	Object[][] extractAll() {
-		int rows = table.getRowCount();
-		int cols = table.getColumnCount();
+		int rows = countRows();
+		if (rows == 0) return null;
+		int cols = countColumns();
 		Object[][] data = new String[rows][cols];
 		for (int i=0; i < rows; i++) {
 			for (int j=0; j < cols; j++) {

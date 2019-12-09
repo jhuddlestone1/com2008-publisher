@@ -24,7 +24,7 @@ public class AuthorController {
     //[[submissionID | title | abstract | pdfFilename | mainAuthorID]]
     //submissionID obtained can be used in getReview(int submissionID)
     public static Object[][] getSubmissions(int authorID){
-        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE submissionID IN (SELECT submissionID FROM SubmissionAuthors WHERE authorID=?)";
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE submissionID IN (SELECT submissionID FROM SubmissionAuthors WHERE authorID=?)";
         Object[] vars = {authorID};
         Object[][] result = Query.formTable(query,vars);
         return result;
@@ -59,6 +59,14 @@ public class AuthorController {
     public static Object[][] getReviews(int submissionID){ 
         String query = "SELECT * FROM Review WHERE submissionID = ?";
         Object[] vars = {submissionID};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+    
+    //get reviews of a submission
+    public static Object[][] getCriticisms(int reviewID){ 
+        String query = "SELECT * FROM Criticism WHERE reviewID = ?";
+        Object[] vars = {reviewID};
         Object[][] result = Query.formTable(query,vars);
         return result;
     }

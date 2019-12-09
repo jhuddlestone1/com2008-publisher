@@ -7,10 +7,17 @@ public class ReviewerController {
     //[[submissionID | title | abstract | pdfFile | reviewNumber | isApproved | mainAuthorID | ISSN | title | forename | surname | uniAffiliation | email]]
     public static Object[][] getSubmissions(int reviewerID){
         String reviewerStatus = UserController.getUserStatus(reviewerID);
-        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID WHERE uniAffiliation!=? AND reviewNumber<3";
-        Object[] vars = {reviewerStatus};
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE uniAffiliation!=? AND reviewNumber < 3 AND Submission.submissionID NOT IN (SELECT submissionID FROM SubmissionAuthors WHERE SubmissionAuthors.authorID = ?) AND  Submission.submissionID NOT IN (SELECT submissionID FROM Review WHERE Review.reviewerID = ?)";
+        Object[] vars = {reviewerStatus, reviewerID, reviewerID};
         Object[][] result = Query.formTable(query,vars);
         return result;
+    }
+    
+    public static int getReviewsNumber(int reviewerID){
+        String query = "SELECT * FROM Review WHERE reviewerID=?";
+        Object[] vars = {reviewerID};
+        Object[][] result = Query.formTable(query,vars);
+        return result.length;
     }
 
     //add review to a submission

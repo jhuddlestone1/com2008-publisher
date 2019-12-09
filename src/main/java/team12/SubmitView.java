@@ -17,9 +17,17 @@ public class SubmitView extends AppView {
 	JButton backButton = new JButton("Back to list");
 	JButton submitButton = new JButton("Submit article");
 	JFileChooser fileChooser = new JFileChooser();
+	JComboBox journalSelector;
+	Object[][] journals;
 	File file;
 	
 	void initialise(int userID) {
+		journals = UserController.getJournals("");
+		String[] journalNames = new String[journals.length];
+		for (int i=0; i < journals.length; i++) {
+			journalNames[i] = (String) journals[i][1]; // journal title
+		}
+		journalSelector = new JComboBox(journalNames);
 		Object[][] data = {UserController.getUserDetails(userID)};
 		authorTable.update(data);
 		file = null;
@@ -32,7 +40,9 @@ public class SubmitView extends AppView {
 		abstractPanel.setBorder(App.titledBorder("Abstract"));
 		authorTable.setBorder(App.titledBorder("Authors"));
 		
-		add(new JLabel("Title:"), "split 3");
+		add(new JLabel("Select journal for submission: "), "align left, split 2");
+		add(journalSelector);
+		add(new JLabel("Title: "), "split 3");
 		add(articleTitle, "growx");
 		add(uploadButton);
 		add(abstractPanel, "grow");
@@ -54,14 +64,10 @@ public class SubmitView extends AppView {
 		backButton.addActionListener(e -> app.switchView("author"));
 		
 		submitButton.addActionListener(e -> {
-			
-			// TODO: fix this with something not totally arbitrary
-			int issn = 12345678;
-			
-			
 			if (file != null && App.validate(articleTitle.getText(), abstractPanel.getText())) {
 				Object[][] data = authorTable.extractAll();
 				String[] authorEmails = new String[data.length];
+				int issn = (int) journals[journalSelector.getSelectedIndex()][0];
 				for (int i=0; i < data.length; i++) {
 					if (App.validate(data[i])) {
 						String title = (String) data[i][0];

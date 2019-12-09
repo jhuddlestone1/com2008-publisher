@@ -48,6 +48,21 @@ public class UserController {
         Object[] vars2 = {email,hashedPassword,salt,email};
         Query.execute(query2, vars2);
     }
+	
+    //add new user into database in tables UserLogin and UserDetails
+    public static void updateUser(String email, String password, String title, String forename, String surname, String uniAffiliation){
+        //insert user's personal information into table UserDetails
+        String query1 = "UPDATE UserDetails SET title=?, forename=?, surname=?, uniAffiliation=? WHERE email=?";
+        Object[] vars1 = {title,forename,surname,uniAffiliation,email};
+        Query.execute(query1,vars1); //execute this first to get the auto incremented userID, to be put into UserLogin
+
+        //insert user's login details into table UserLogin
+        String salt = getSalt();
+        String hashedPassword = getSecurePassword(password,salt);
+        String query2 = "UPDATE UserLogin SET password=?, salt=? WHERE email=?";
+        Object[] vars2 = {hashedPassword,salt,email};
+        Query.execute(query2, vars2);
+    }
 
 
     //check if email exists - return "invalid email"
@@ -95,13 +110,28 @@ public class UserController {
     }
     
     //return userID with given email
-    //to be store as global variable - userID
     //userID needed to get list of journals/submissions/review when logged in as different role
     public static int getUserID(String email){
         String query = "SELECT userID FROM UserLogin WHERE email=?";
         Object[] vars = {email};
         int userID = (Integer) Query.formTable(query,vars)[0][0];
         return userID;
+    }
+    
+    //return email with given userID
+    public static String getEmail(int userID){
+        String query = "SELECT email FROM UserLogin WHERE userID=?";
+        Object[] vars = {userID};
+        String email = (String) Query.formTable(query,vars)[0][0];
+        return email;
+    }
+
+    //return uni affiliation of user to avoid conflict of interest
+    public static String getUserStatus(int userID){
+        String query = "SELECT uniAffiliation FROM UserDetails WHERE userID=?";
+        Object[] vars = {userID};
+        String result = (String) Query.formTable(query,vars)[0][0];
+        return result;
     }
     
     //return userID with given email
@@ -114,14 +144,6 @@ public class UserController {
         return userDetails;
     }
 
-    //return uni affiliation of user to avoid conflict of interest
-    public static String getUserStatus(int userID){
-        String query = "SELECT uniAffiliation FROM UserDetails WHERE userID=?";
-        Object[] vars = {userID};
-        String result = (String) Query.formTable(query,vars)[0][0];
-        return result;
-    }
-
     //delete user from tables UserLogin and UserDetails
     public static void deleteUser(String email){
         String query = "DELETE UserLogin.*,UserDetails.* FROM UserLogin INNER JOIN UserDetails ON UserLogin.email = UserDetails.email WHERE UserLogin.email=?";
@@ -130,19 +152,29 @@ public class UserController {
     }
 
     //journal title provided by user for searching
-    public static Object[] getJournals(String title){
-        String query = "SELECT * FROM Journal WHERE journalTitle=?";
-        Object[] vars = {title};
-        Object[] result = Query.formTable(query,vars)[0];
-        return result;
-    }
-
-    public static Object[][] getPublishedArticles(String title){
-        String query = "SELECT * FROM Submission INNER JOIN Article ON Submission.submissionID = Article.submissionID WHERE Submission.isApproved=1 AND Submission.title LIKE CONCAT('%', ?, '%')";
+    public static Object[][] getJournals(String title){
+        String query = "SELECT * FROM Journal WHERE journalTitle LIKE CONCAT('%', ?, '%')";
         Object[] vars = {title};
         Object[][] result = Query.formTable(query,vars);
         return result;
     }
+
+    //journal title provided by user for searching
+    public static Object[][] getPublishedJournals(String title){
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE Submission.isApproved=1 AND Journal.journalTitle LIKE CONCAT('%', ?, '%')";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+
+    public static Object[][] getPublishedArticles(String title){
+        String query = "SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN WHERE Submission.isApproved=1 AND Submission.title LIKE CONCAT('%', ?, '%')";
+        Object[] vars = {title};
+        Object[][] result = Query.formTable(query,vars);
+        return result;
+    }
+    
+    // SELECT * FROM Submission INNER JOIN UserDetails ON Submission.mainAuthorID = UserDetails.userID INNER JOIN Journal ON Submission.ISSN = Journal.ISSN
     
     public static void main(String[]args){
 
