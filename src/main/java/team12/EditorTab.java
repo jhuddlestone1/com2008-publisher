@@ -83,12 +83,10 @@ public class EditorTab extends AppPanel {
 			);
 			if (confirm == 0) {
 				if (app.userID == EditorController.getChiefEditorID(journal)) {
-					if (!EditorController.deleteChiefEditor(issn)) {
-						JOptionPane.showMessageDialog(null,
-							"You cannot retire until you appoint a new editor", "Retire from journal", JOptionPane.WARNING_MESSAGE
-						);
-						this.getParent().remove(this);
-					}
+					JOptionPane.showMessageDialog(null,
+						"You cannot retire until you pass on the chief editor role.", "Retire from journal", JOptionPane.WARNING_MESSAGE
+					);
+					this.getParent().remove(this);
 				}
 				else {
 					EditorController.deleteEditor(app.userID, issn);
