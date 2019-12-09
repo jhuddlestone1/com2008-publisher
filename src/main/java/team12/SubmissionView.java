@@ -27,6 +27,7 @@ public class SubmissionView extends AppView {
 			summaryPanel.setText((String) data[reviewNumber][1]);
 			errorsPanel.setText((String) data[reviewNumber][2]);
 			questionsPanel.setText(App.getColumn(criticisms,1));
+			responsePanel.setText(App.getColumn(criticisms,2));
 			verdict.setText((String) data[reviewNumber][3]);
 		}
 		else JOptionPane.showMessageDialog(null, "Review not available.", "Select review", JOptionPane.INFORMATION_MESSAGE);
