@@ -35,7 +35,7 @@ public class AuthorView extends AppView {
 			int row = articleTable.getRow();
 			if (row >= 0) {
 				int submissionID = (int) data[row][0];
-				ReviewView reviewView = new ReviewView(app, AuthorController.getReviews(submissionID));
+				SubmissionView reviewView = new SubmissionView(app, AuthorController.getReviews(submissionID));
 				if (reviewView.data.length > 0 && !(boolean) data[row][5]) {
 					reviewView.update(0);
 					app.content.add(reviewView, "review");

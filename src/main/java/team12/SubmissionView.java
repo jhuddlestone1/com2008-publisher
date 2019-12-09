@@ -3,64 +3,76 @@ package team12;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.*;
+import java.io.*;
 
 public class SubmissionView extends AppView {
 	
-	JRadioButton strongReject = new JRadioButton("Strong reject");
-	JRadioButton weakReject = new JRadioButton("Weak reject");
-	JRadioButton weakAccept = new JRadioButton("Weak accept");
-	JRadioButton strongAccept = new JRadioButton("Strong accept");
-	ButtonGroup ratingButtons = new ButtonGroup();
-	String verdict;
+	JComboBox reviewSelector = new JComboBox(new String[] {"Review 1", "Review 2", "Review 3"});
+	JLabel verdict = new JLabel();
+	Object[][] data;
 	
 	TextPanel summaryPanel = new TextPanel();
 	TextPanel errorsPanel = new TextPanel();
 	TextPanel questionsPanel = new TextPanel();
+	TextPanel responsePanel = new TextPanel();
 	JButton backButton = new JButton("Back to list");
-	JButton submitButton = new JButton("Submit review");
+	JButton uploadButton = new JButton("Re-upload article (PDF)");
+	JButton submitButton = new JButton("Submit reply");
+	Object[][] criticisms;
 	
-	public SubmissionView(App app, int submissionID) {
-		super("wrap", "align center, grow", "[grow][grow][grow][][]");
+	void update(int reviewNumber) {
+		if (reviewNumber < data.length) { // review total
+			criticisms = AuthorController.getCriticisms((int) data[reviewNumber][0]);
+			summaryPanel.setText((String) data[reviewNumber][1]);
+			errorsPanel.setText((String) data[reviewNumber][2]);
+			questionsPanel.setText(App.getColumn(criticisms,1));
+			verdict.setText((String) data[reviewNumber][3]);
+		}
+		else JOptionPane.showMessageDialog(null, "Review not available.", "Select review", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public SubmissionView(App app, Object[][] data) {
+		super("wrap 2", "align center, grow", "[][grow][grow][grow][][]");
+		this.data = data;
+		
 		summaryPanel.setBorder(App.titledBorder("Summary"));
 		errorsPanel.setBorder(App.titledBorder("Proofing errors"));
 		questionsPanel.setBorder(App.titledBorder("Criticisms (new line separates)"));
-		ratingButtons.add(strongReject);
-		ratingButtons.add(weakReject);
-		ratingButtons.add(weakAccept);
-		ratingButtons.add(strongAccept);
+		responsePanel.setBorder(App.titledBorder("Response to criticisms (new line separates)"));
 		
-		add(summaryPanel, "grow");
+		add(reviewSelector, "align left, split 3");
+		add(new JLabel("Verdict: "), "align left");
+		add(verdict);
+		verdict.setFont(App.headerFont);
+		
+		add(summaryPanel, "grow, skip");
+		add(responsePanel, "grow, span 1 3");
 		add(errorsPanel, "grow");
 		add(questionsPanel, "grow");
-		add(strongReject, "split 4");
-		add(weakReject);
-		add(weakAccept);
-		add(strongAccept);
-		add(backButton, "split 2");
+		add(backButton);
+		add(uploadButton, "split 2");
 		add(submitButton);
 		
-		strongReject.addActionListener(e -> verdict = "Strong reject");
-		weakReject.addActionListener(e -> verdict = "Weak reject");
-		weakAccept.addActionListener(e -> verdict = "Weak accept");
-		strongAccept.addActionListener(e -> verdict = "Strong accept");
-		
+		reviewSelector.addActionListener(e -> update(reviewSelector.getSelectedIndex()));
 		backButton.addActionListener(e -> {
-			app.switchView("reviewer");
+			app.switchView("author");
 			app.content.remove(this);
 		});
+		uploadButton.addActionListener(e -> {});
 		submitButton.addActionListener(e -> {
-			String summary = summaryPanel.getText();
-			String errors = errorsPanel.getText();
-			String questions = questionsPanel.getText();
-			if (App.validate(summary, errors, questions, verdict)) {
-				ReviewerController.addReview(
-					summary, errors, questions.trim().split("\\n+"), verdict, submissionID, app.userID
-				);
-				JOptionPane.showMessageDialog(null, "Review submitted.", "Submit review", JOptionPane.INFORMATION_MESSAGE);
-				app.switchView("reviewer");
-				app.content.remove(this);
-			}
-			else JOptionPane.showMessageDialog(null, "Some fields missing.", "Submit review", JOptionPane.WARNING_MESSAGE);
+			try {
+				String[] responses = responsePanel.getText().trim().split("\\n+");
+				Object[] criticismIDs = App.getColumn(criticisms, 0);
+				if (App.validate((Object) responses) && responses.length == criticisms.length) {
+					for (int i=0; i < responses.length; i++) {
+						
+						AuthorController.addAnswer(responses[i], (int) criticismIDs[i]);	
+					}
+					JOptionPane.showMessageDialog(null, "Response submitted.", "Submit response", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else JOptionPane.showMessageDialog(null, "Number of responses must match number of criticisms.", "Submit response", JOptionPane.INFORMATION_MESSAGE); 
+			} catch (Exception error) { error.printStackTrace(); }
 		});
 	}
 	
