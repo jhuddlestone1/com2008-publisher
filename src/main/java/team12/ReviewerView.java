@@ -63,7 +63,7 @@ public class ReviewerView extends AppView {
 			int row = initialPanel.getRow();
 			if (row >= 0) {
 			int submissionID = (int) data[row][0];
-				SubmissionView submissionView = new SubmissionView(app, submissionID);
+				ReviewView submissionView = new ReviewView(app, submissionID);
 				app.content.add(submissionView, "submission");
 				app.switchView("submission");
 			}
