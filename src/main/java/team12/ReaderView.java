@@ -9,28 +9,31 @@ import java.io.*;
 public class ReaderView extends AppView {
 	
 	SearchPanel searchPanel = new SearchPanel();
-	ArticleTable articlePanel = new ArticleTable();
+	ArticleTable articleTable = new ArticleTable();
 	TextPanel abstractPanel = new TextPanel();
 	JButton downloadButton = new JButton("Download article (PDF)");
 	Object[][] data;
 	File file;
 	
 	void search(String query) {
+		abstractPanel.empty();
+		//articleTable.table.getSelectionModel().clearSelection();
+		//articleTable.table.getColumnModel().getSelectionModel().clearSelection();
 		if (searchPanel.searchJournal.isSelected())
 			data = UserController.getPublishedJournals(query);
 		else 
 			data = UserController.getPublishedArticles(query);
-		articlePanel.update(data);
+		articleTable.update(data);
 		file = null;
 	}
 	
 	public ReaderView(App app) {
 		super("wrap", "align center, grow", "[][grow][grow][]");
-		articlePanel.setBorder(App.titledBorder("Results"));
+		articleTable.setBorder(App.titledBorder("Results"));
 		abstractPanel.setBorder(App.titledBorder("Abstract"));
 		
 		add(searchPanel, "growx");
-		add(articlePanel, "grow");
+		add(articleTable, "grow");
 		add(abstractPanel, "grow");
 		add(downloadButton);
 		
@@ -38,8 +41,10 @@ public class ReaderView extends AppView {
 		
 		// TODO: filter search
 		searchPanel.searchButton.addActionListener(e -> search(searchPanel.searchField.getText()));
-		articlePanel.selector.addListSelectionListener(e -> {
-			abstractPanel.update(data[articlePanel.getRow()][2]);
+		articleTable.selector.addListSelectionListener(e -> {
+			int row = articleTable.getRow();
+			if (row < 0) return;
+			abstractPanel.update(data[row][2]);
 			//file = ; // TODO: prepare PDF for download
 		});
 		downloadButton.addActionListener(e -> file = null); // TODO: get PDF from database and reset File object
